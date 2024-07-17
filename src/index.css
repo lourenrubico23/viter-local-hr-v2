@@ -1,0 +1,216 @@
+@font-face {
+  font-family: "poppinsRegular";
+  src: url(/font/Poppins-Regular.ttf) format("truetype");
+  font-display: fallback;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /*  reference color
+  primary: #9F1659  
+  secondary: #e33589  
+  accent: #F7E300 
+  dark: "#3a3b36",
+  lightWarning: "#fffde7",
+  warning: "#f09a02",
+  alert: "#3f0505",
+   */
+  :root {
+    --primary-color: 159 22 89;
+    --secondary-color: 227 53 137;
+    --accent-color: 247 227 0;
+    --lightWarning-color: 225 253 231;
+    --alert-color: 63 5 5;
+    --dark-color: 58 59 54;
+    --warning-color: 240 154 2;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold;
+  }
+  body {
+    @apply leading-relaxed font-[poppinsRegular] text-xs min-h-full text-dark;
+  }
+  pre {
+    @apply font-[poppinsRegular];
+  }
+  nav {
+    @apply bg-primary;
+  }
+  table {
+    @apply border-collapse border-spacing-2 text-left w-full table-auto;
+  }
+  table tr:hover {
+    @apply bg-gray-100;
+  }
+  table tr {
+    @apply border-b border-solid border-gray-300;
+  }
+  table th {
+    @apply font-bold bg-gray-200 py-1 pr-3 capitalize;
+  }
+  table td {
+    @apply py-2 pr-3;
+  }
+  input,
+  select {
+    @apply border border-solid border-gray-300 p-2 rounded-lg w-full h-[40px] truncate bg-transparent outline-none;
+  }
+  textarea {
+    @apply block border border-solid border-gray-300 p-2 rounded-lg w-full min-h-28 resize-y bg-transparent outline-none;
+  }
+  label {
+    @apply text-xs text-primary transform -translate-y-6 -translate-x-1 absolute left-3 top-4 px-1  z-10 isolate capitalize;
+  }
+  label:after {
+    @apply content-[''] w-[97%] h-[2.5px] absolute left-px top-[7.2px] bg-white -z-10;
+  }
+  input:disabled,
+  select:disabled,
+  textarea:disabled,
+  :disabled {
+    @apply bg-gray-100 border-gray-200 cursor-not-allowed hover:bg-gray-100 hover:text-inherit hover:border-gray-200;
+  }
+  input::file-selector-button {
+    @apply mr-5 border-0 bg-primary disabled:bg-gray-200 rounded-md text-white cursor-pointer px-1 py-0;
+  }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    @apply border border-solid border-primary outline-0;
+  }
+}
+
+@layer components {
+  .wrapper {
+    @apply relative min-h-screen print:pt-0 pt-[4rem] ml-1 lg:ml-48 pr-6 pl-4 transition-all duration-150 ease-linear;
+  }
+  .content {
+    @apply pt-4 w-[600px];
+  }
+  .navigation {
+    @apply w-[176px] fixed left-0 top-0 mt-[4rem] h-full z-50 transition ease-linear duration-150;
+  }
+  .nav {
+    @apply flex items-center;
+  }
+  .btn-primary {
+    @apply flex items-center justify-center text-white gap-2 px-3 py-1 bg-primary rounded-md border-primary border  hover:bg-white hover:text-primary hover:border-gray-300 duration-300 ease-in;
+  }
+  .btn-primary:disabled {
+    @apply opacity-50 hover:bg-white hover:text-primary hover:border-gray-300;
+  }
+  .btn-action-table {
+    @apply cursor-pointer text-gray-500 text-base align-middle !py-1 md:!px-2.5 !px-1 rounded-md hover:bg-gray-300 duration-200 ease-in;
+  }
+  .btn-action-table svg {
+    @apply w-3 h-3;
+  }
+  .btn-modal-submit {
+    @apply flex items-center justify-center text-white gap-2 px-3 py-1.5 bg-primary rounded-md border-primary border hover:bg-white hover:text-primary hover:border-gray-300 duration-300 ease-in w-full;
+  }
+  .btn-modal-submit:disabled {
+    @apply opacity-50 hover:bg-primary hover:text-white hover:border-primary;
+  }
+  .btn-modal-cancel {
+    @apply flex items-center justify-center text-dark gap-2 px-3 py-1.5 bg-white rounded-md border-gray-300 border w-full;
+  }
+  .btn-modal-cancel:disabled {
+    @apply opacity-50 hover:bg-white hover:text-dark hover:border-gray-300;
+  }
+  .modal {
+    @apply bg-dark/0 transition-all opacity-0;
+  }
+  .modal > .animate-slideUp {
+    @apply translate-y-3 transition-all;
+  }
+  .modal.show {
+    @apply bg-dark/50 opacity-100;
+  }
+  .modal.show > .animate-slideUp {
+    @apply translate-y-0;
+  }
+  .modal-wrapper {
+    @apply bg-white h-full flex flex-col max-w-[400px] w-full p-5;
+  }
+  .modal-title {
+    @apply flex justify-between items-center mb-5;
+  }
+  .modal-content{
+    @apply overflow-y-auto flex flex-col justify-between h-full
+  }
+  .modal-form{
+    @apply flex flex-col justify-between h-full
+  }
+  .input-wrapper{
+    @apply mb-2 my-[18px] relative flex flex-col gap-2
+  }
+  .form-btn{
+    @apply flex gap-2 pt-4
+  }
+  /* .loading-bar::after {
+    @apply content-[''] absolute top-0 left-0 w-[180%] h-full  bg-gradient-to-r from-transparent via-[#eeeeee] to-transparent  animate-loading;
+  } */
+  button {
+    @apply flex text-xs items-center gap-2;
+  }
+  .search {
+    @apply flex items-center w-[25rem] relative my-3;
+  }
+  .search-icon {
+    @apply text-gray-400 text-[16px] absolute left-0 h-full rounded-tr-md rounded-br-md flex items-center px-1;
+  }
+  .search input {
+    @apply h-[37px] border-[1px] border-gray-300 text-xs pl-6;
+  }
+  .search input:focus {
+    @apply outline-none border-primary;
+  }
+  /* .site-table {
+    @apply shadow-md my-5 rounded-xl;
+  } */
+
+  /* .site-table thead tr th:first-child {
+    @apply w-[2rem] pl-1;
+  }
+  .site-table thead tr th:nth-child(2) {
+    @apply w-[6rem];
+  }
+  .site-table thead tr th:nth-child(3) {
+    @apply w-[20rem] p-0;
+  }
+  .site-table tbody tr td:first-child {
+    @apply w-[2rem] pl-1;
+  }
+  .site-table tbody tr td:nth-child(3) {
+    @apply p-0;
+  }
+  .site-table tbody tr td:last-child {
+    @apply justify-end;
+  }
+  .site-table thead tr th:last-child {
+    @apply flex justify-end;
+  } */
+}
+
+@layer utilities {
+  .tooltip-action-table {
+    @apply relative p-1 mr-1.5 bg-transparent leading-none;
+  }
+  .tooltip-action-table::after {
+    @apply content-[attr(data-tooltip)] capitalize absolute -translate-x-2/4 bottom-full -top-[24px] bg-dark/80 text-white p-1 rounded-sm h-fit leading-none z-20 whitespace-nowrap text-center opacity-0 text-[10px] pointer-events-none transition ease-linear scale-0 duration-75 left-1/2;
+  }
+  .tooltip-action-table:hover::after {
+    @apply scale-100 opacity-100;
+  }
+  .toggle-menu {
+    @apply duration-200 cursor-pointer hover:bg-dark/5 left-0 h-fit p-3 absolute top-0.5 text-xl z-50 !bg-white;
+  }
+}
