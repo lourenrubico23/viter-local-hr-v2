@@ -92,9 +92,6 @@
   .wrapper {
     @apply relative min-h-screen print:pt-0 pt-[4rem] ml-1 lg:ml-48 pr-6 pl-4 transition-all duration-150 ease-linear;
   }
-  .content {
-    @apply pt-4 w-[600px];
-  }
   .navigation {
     @apply w-[176px] fixed left-0 top-0 mt-[4rem] h-full z-50 transition ease-linear duration-150;
   }
@@ -162,7 +159,7 @@
     @apply flex text-xs items-center gap-2;
   }
   .search {
-    @apply flex items-center w-[25rem] relative my-3;
+    @apply flex items-center w-full lg:w-[25rem] relative my-3;
   }
   .search-icon {
     @apply text-gray-400 text-[16px] absolute left-0 h-full rounded-tr-md rounded-br-md flex items-center px-1;

@@ -3,6 +3,7 @@ import FBSLogo from "@/components/svg/FBSLogo";
 import { FaRegEnvelope } from "react-icons/fa6";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlineLogout } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -26,9 +27,9 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed w-full bg-white z-50 py-3 border-b-[2px] border-primary pr-2">
+      <header className="fixed w-full bg-white z-50 py-3 border-b-[2px] border-primary lg:pr-2 px-5 lg:px-0">
         <div className="w-full">
-          <div className="flex items-center w-full gap-4 justify-between px-3.5">
+          <div className="flex items-center w-full gap-4 justify-between pl-1 lg:pl-3.5 lg:px-3.5">
             <div className="flex items-center">
               <div className="max-w-[150px] max-h-[40px]">
                 <a href="#">
@@ -60,11 +61,11 @@ const Header = () => {
                 <span>lourenrubico@gmail.com</span>
               </span>
             </a>
-            <a>
+            <Link to="/account">
               <span className="flex items-center gap-2 font-normal py-1 hover:text-primary">
                 <FaRegUserCircle className="text-xs" /> <span>Account</span>
               </span>
-            </a>
+            </Link>
             <a href="">
               <span className="flex items-center gap-2 font-normal py-1 hover:text-primary">
                 <MdOutlineLogout className="text-xs" /> <span>Logout</span>

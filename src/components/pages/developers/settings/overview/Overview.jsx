@@ -1,12 +1,11 @@
+import Header from "@/components/partials/Header";
 import React from "react";
 import Navigation from "../../Navigation";
-import Header from "@/components/partials/Header";
 import { StoreContext } from "@/store/StoreContext";
-import { setIsSettingsOpen } from "@/store/StoreAction";
-import UserList from "./UserList";
 import Footer from "@/components/partials/Footer";
+import { setIsSettingsOpen } from "@/store/StoreAction";
 
-const User = () => {
+const Overview = () => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   React.useEffect(() => {
@@ -16,16 +15,17 @@ const User = () => {
   return (
     <>
       <Header />
-      <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-1"} `}>
-        <Navigation menu="settings" submenu="users" />
+      <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-2"}`}>
+        <Navigation menu="settings" submenu="overview" />
         <div className="title text-base py-2.5 ml-7">
-          <h2>Users</h2>
+          <h2>Overview</h2>
         </div>
-        <UserList/>
-        <Footer/>
+        <span className="mt-5 block">We will be right back. </span>
+        <Footer />
       </div>
+      
     </>
   );
 };
 
-export default User;
+export default Overview;

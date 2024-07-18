@@ -6,7 +6,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
 
-const ModalAddSystem = ({setIsItemEdit}) => {
+const ModalAddSystem = ({setIsItemEdit, isItemEdit}) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
 

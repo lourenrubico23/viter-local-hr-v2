@@ -1,17 +1,17 @@
-import NoData from '@/components/partials/NoData'
-import SearchBar from '@/components/partials/SearchBar'
-import ServerError from '@/components/partials/ServerError'
-import Status from '@/components/partials/Status'
-import TableLoading from '@/components/partials/TableLoading'
-import React from 'react'
-import { FaEdit, FaUserAltSlash } from 'react-icons/fa'
-import { FaKey } from 'react-icons/fa6'
+import NoData from "@/components/partials/NoData";
+import SearchBar from "@/components/partials/SearchBar";
+import ServerError from "@/components/partials/ServerError";
+import Status from "@/components/partials/Status";
+import TableLoading from "@/components/partials/TableLoading";
+import React from "react";
+import { FaEdit, FaUserAltSlash } from "react-icons/fa";
+import { FaKey } from "react-icons/fa6";
 
 const FbsAdminTable = () => {
   return (
     <>
-    <SearchBar/>
-    <div className="shadow-md rounded-md overflow-y-auto">
+      <SearchBar />
+      <div className="shadow-md rounded-md overflow-y-auto min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
         {/* <FetchingSpinner /> */}
         <table>
           <thead>
@@ -27,13 +27,13 @@ const FbsAdminTable = () => {
             {/* <TableSpinner /> */}
 
             <tr className="text-center">
-              <td colSpan="100%">
+              <td colSpan="100%" className="p-10">
                 <TableLoading />
               </td>
             </tr>
 
             <tr className="text-center">
-              <td colSpan="100%">
+              <td colSpan="100%" className="p-10">
                 <NoData />
               </td>
             </tr>
@@ -51,7 +51,7 @@ const FbsAdminTable = () => {
               </td>
               <td>Louren Rubico</td>
               <td>Lourenrubico@gmail.com</td>
-              <td className="flex items-center gap-3 justify-end">
+              <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
                 <button className="tooltip-action-table" data-tooltip="Edit">
                   <FaEdit className="text-gray-600" />
                 </button>
@@ -69,15 +69,14 @@ const FbsAdminTable = () => {
                 </button>
               </td>
             </tr>
-            
           </tbody>
         </table>
         <div className="text-center mt-5">
-              <span className=" pb-10">End of List.</span>
-            </div>
+          <span className=" pb-10">End of List.</span>
+        </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default FbsAdminTable
+export default FbsAdminTable;

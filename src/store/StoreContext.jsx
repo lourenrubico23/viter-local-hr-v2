@@ -12,6 +12,10 @@ const initVal = {
   isLoading: false,
   isAdd: false,
   isItemEdit: null,
+  isArchive: false,
+  isRestore: false,
+  isDelete: false,
+  isSearch: false,
 };
 
 const StoreContext = React.createContext();

@@ -11,7 +11,7 @@ const OtherTable = () => {
   return (
     <>
       <SearchBar />
-      <div className="shadow-md rounded-md overflow-y-auto">
+      <div className="shadow-md rounded-md overflow-y-auto min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
         {/* <FetchingSpinner /> */}
         <table>
           <thead>
@@ -28,13 +28,13 @@ const OtherTable = () => {
           <tbody className="relative">
             {/* <TableSpinner /> */}
             <tr className="text-center">
-              <td colSpan="100%">
+              <td colSpan="100%" className="p-10">
                 <TableLoading />
               </td>
             </tr>
 
             <tr className="text-center">
-              <td colSpan="100%">
+              <td colSpan="100%" className="p-10">
                 <NoData />
               </td>
             </tr>
@@ -54,7 +54,7 @@ const OtherTable = () => {
               <td>lourenrubico@gmail.com</td>
               <td>Developer</td>
               <td>000000</td>
-              <td className="flex items-center gap-3 justify-end">
+              <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
                 <button
                   className="tooltip-action-table"
                   data-tooltip="Inactivate"

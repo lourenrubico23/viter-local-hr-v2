@@ -10,6 +10,12 @@ export const setSuccess = (val) => {
     payload: val,
   };
 };
+export const setMessage = (val) => {
+  return {
+    type: "MESSAGE",
+    payload: val,
+  };
+};
 export const setIsShow = (val) => {
   return {
     type: "IS_SHOW",
@@ -43,6 +49,30 @@ export const setIsAdd = (val) => {
 export const setIsItemEdit = (val) => {
   return {
     type: "IS_ITEM_EDIT",
+    payload: val,
+  };
+};
+export const setIsArchive = (val) => {
+  return {
+    type: "IS_ARCHIVE",
+    payload: val,
+  };
+};
+export const setIsRestore = (val) => {
+  return {
+    type: "IS_RESTORE",
+    payload: val,
+  };
+};
+export const setIsDelete = (val) => {
+  return {
+    type: "IS_DELETE",
+    payload: val,
+  };
+};
+export const setIsSearch = (val) => {
+  return {
+    type: "IS_SEARCH",
     payload: val,
   };
 };

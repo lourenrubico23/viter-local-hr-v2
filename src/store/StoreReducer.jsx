@@ -10,6 +10,11 @@ export const StoreReducer = (state, action) => {
         ...state,
         success: action.payload,
       };
+    case "MESSAGE":
+      return {
+        ...state,
+        message: action.payload,
+      };
     case "IS_SHOW":
       return {
         ...state,
@@ -40,6 +45,27 @@ export const StoreReducer = (state, action) => {
         ...state,
         isItemEdit: action.payload,
       };
+    case "IS_ARCHIVE":
+      return {
+        ...state,
+        isArchive: action.payload,
+      };
+    case "IS_RESTORE":
+      return {
+        ...state,
+        isRestore: action.payload,
+      };
+    case "IS_DELETE":
+      return {
+        ...state,
+        isDelete: action.payload,
+      };
+    case "IS_SEARCH":
+      return {
+        ...state,
+        isSearch: action.payload,
+      };
+
     default:
       return state;
   }

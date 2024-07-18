@@ -12,6 +12,8 @@ import {
 } from "@/store/StoreAction";
 import SystemTable from "@/components/pages/developers/settings/users/system/SystemTable";
 import ModalAddSystem from "@/components/pages/developers/settings/users/system/ModalAddSystem";
+import ModalSuccess from "@/components/partials/ModalSuccess";
+import ModalError from "@/components/partials/ModalError";
 
 const System = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -27,7 +29,7 @@ const System = () => {
   return (
     <>
       <Header />
-      <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-1"}`}>
+      <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-2"}`}>
         <Navigation menu="settings" submenu="users" />
         <div className="py-3 ml-2 flex justify-between">
           <BreadCrumbs />
@@ -43,11 +45,15 @@ const System = () => {
           <h2>Users System</h2>
         </div>
         <div className="pb-4">
-          <SystemTable />
+          <SystemTable setIsItemEdit={setIsItemEdit} />
         </div>
-      <Footer />
+        <Footer />
       </div>
-      {store.isAdd && <ModalAddSystem setIsItemEdit={setIsItemEdit} />}
+      {store.success && <ModalSuccess/>}
+      {store.isAdd && (
+        <ModalAddSystem setIsItemEdit={setIsItemEdit} />
+      )}
+      {store.error && <ModalError/>}
     </>
   );
 };

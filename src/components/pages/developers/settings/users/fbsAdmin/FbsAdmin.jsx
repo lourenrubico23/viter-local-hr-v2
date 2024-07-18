@@ -26,7 +26,7 @@ const FbsAdmin = () => {
   return (
     <>
       <Header />
-      <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-1"}`}>
+      <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-2"}`}>
         <Navigation menu="settings" submenu="users" />
         <div className="py-3 ml-2 flex justify-between">
           <BreadCrumbs />
@@ -41,10 +41,10 @@ const FbsAdmin = () => {
         <div className="text-base">
           <h2>Users FBS Admin</h2>
         </div>
-        <div className="pb-30">
+        <div className="pb-4">
           <FbsAdminTable />
         </div>
-      <Footer />
+        <Footer />
       </div>
       {store.isAdd && <ModalAddFbsAdmin setIsItemEdit={setIsItemEdit} />}
     </>

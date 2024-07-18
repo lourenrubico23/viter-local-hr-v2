@@ -1,0 +1,14 @@
+RewriteEngine On
+# use for authentication
+RewriteCond %{HTTP:Authorization} ^(.+)$
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+Header set Access-Control-Allow-Origin *
+
+# USER ROLE
+RewriteRule ^role$ controllers/settings/role/role.php [L]
+RewriteRule ^role/([0-9]+)$ controllers/settings/role/role.php?roleid=$1 [L]
+RewriteRule ^role/active/([0-9]+)$ controllers/settings/role/active.php?roleid=$1 [L]
+RewriteRule ^role/page/([0-9]+)$ controllers/settings/role/page.php?start=$1 [L]

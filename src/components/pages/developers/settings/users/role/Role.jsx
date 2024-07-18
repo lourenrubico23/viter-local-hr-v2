@@ -12,6 +12,8 @@ import {
   setIsSettingsOpen,
 } from "@/store/StoreAction";
 import Footer from "@/components/partials/Footer";
+import ModalSuccess from "@/components/partials/ModalSuccess";
+import ModalError from "@/components/partials/ModalError";
 
 const Role = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -27,7 +29,7 @@ const Role = () => {
   return (
     <>
       <Header />
-      <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-1"}`}>
+      <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-2"}`}>
         <Navigation menu="settings" submenu="users" />
         <div className="py-3 ml-2 flex justify-between">
           <BreadCrumbs />
@@ -42,12 +44,14 @@ const Role = () => {
         <div className="text-base">
           <h2>Users Role</h2>
         </div>
-        <div className="pb-30">
-          <RoleTable />
+        <div className="pb-4">
+          <RoleTable setIsItemEdit={setIsItemEdit}/>
         </div>
       <Footer />
       </div>
+      {store.success && <ModalSuccess/>}
       {store.isAdd && <ModalAddRole setIsItemEdit={setIsItemEdit} />}
+      {store.error && <ModalError/>}
     </>
   );
 };

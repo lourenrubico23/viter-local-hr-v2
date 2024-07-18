@@ -27,7 +27,7 @@ const Other = () => {
   return (
     <>
       <Header />
-      <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-1"}`}>
+      <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-2"}`}>
         <Navigation menu="settings" submenu="users" />
         <div className="py-3 ml-2 flex justify-between">
           <BreadCrumbs />

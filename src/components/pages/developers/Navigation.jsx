@@ -66,7 +66,13 @@ const Navigation = ({ menu, submenu }) => {
             <nav className="navigation-list">
               <ul>
                 {/* Overview */}
-                <li className={`flex items-center justify-between text-white my-1.5 ${menu === "overview" ? "bg-primary text-white" : "hover:bg-secondary/40"}`}>
+                <li
+                  className={`flex items-center justify-between text-white my-1.5 ${
+                    menu === "overview"
+                      ? "bg-primary text-white"
+                      : "hover:bg-secondary/40"
+                  }`}
+                >
                   <Link className="px-4 py-0.5 w-full">
                     <div className="nav">
                       <BsFillGrid1X2Fill className="text-sm" />
@@ -76,7 +82,13 @@ const Navigation = ({ menu, submenu }) => {
                 </li>
 
                 {/* Time */}
-                <li className={`flex items-center justify-between text-white my-1.5 ${menu === "time" ? "bg-primary text-white" : "hover:bg-secondary/40"}`}>
+                <li
+                  className={`flex items-center justify-between text-white my-1.5 ${
+                    menu === "time"
+                      ? "bg-primary text-white"
+                      : "hover:bg-secondary/40"
+                  }`}
+                >
                   <Link className="px-4 py-0.5 w-full">
                     <div className="nav">
                       <MdTimer className="text-base" />
@@ -86,7 +98,13 @@ const Navigation = ({ menu, submenu }) => {
                 </li>
 
                 {/* Leave */}
-                <li className={`flex items-center justify-between text-white my-1.5 ${menu === "leave" ? "bg-primary text-white" : "hover:bg-secondary/40"}`}>
+                <li
+                  className={`flex items-center justify-between text-white my-1.5 ${
+                    menu === "leave"
+                      ? "bg-primary text-white"
+                      : "hover:bg-secondary/40"
+                  }`}
+                >
                   <Link className="px-4 py-0.5 w-full">
                     <div className="nav">
                       <BsFillCalendarEventFill className="text-sm" />
@@ -96,7 +114,13 @@ const Navigation = ({ menu, submenu }) => {
                 </li>
 
                 {/* Overtime */}
-                <li className={`flex items-center justify-between text-white my-1.5 ${menu === "overtime" ? "bg-primary text-white" : "hover:bg-secondary/40"}`}>
+                <li
+                  className={`flex items-center justify-between text-white my-1.5 ${
+                    menu === "overtime"
+                      ? "bg-primary text-white"
+                      : "hover:bg-secondary/40"
+                  }`}
+                >
                   <Link className="px-4 py-0.5 w-full">
                     <div className="nav">
                       <MdWorkHistory className="text-sm" />
@@ -106,7 +130,13 @@ const Navigation = ({ menu, submenu }) => {
                 </li>
 
                 {/* Employee */}
-                <li className={`flex items-center justify-between text-white my-1.5 ${menu === "employee" ? "bg-primary text-white" : "hover:bg-secondary/40"}`}>
+                <li
+                  className={`flex items-center justify-between text-white my-1.5 ${
+                    menu === "employee"
+                      ? "bg-primary text-white"
+                      : "hover:bg-secondary/40"
+                  }`}
+                >
                   <Link className="px-4 py-0.5 w-full">
                     <div className="nav">
                       <HiUserGroup className="text-sm" />
@@ -116,7 +146,13 @@ const Navigation = ({ menu, submenu }) => {
                 </li>
 
                 {/* Client */}
-                <li className={`flex items-center justify-between text-white my-1.5 ${menu === "client" ? "bg-primary text-white" : "hover:bg-secondary/40"}`}>
+                <li
+                  className={`flex items-center justify-between text-white my-1.5 ${
+                    menu === "client"
+                      ? "bg-primary text-white"
+                      : "hover:bg-secondary/40"
+                  }`}
+                >
                   <Link className="px-4 py-0.5 w-full">
                     <div className="nav">
                       <FaBuildingUser className="text-sm" />
@@ -126,7 +162,13 @@ const Navigation = ({ menu, submenu }) => {
                 </li>
 
                 {/* Announcement */}
-                <li className={`flex items-center justify-between text-white my-1.5 ${menu === "announcement" ? "bg-primary text-white" : "hover:bg-secondary/40"}`}>
+                <li
+                  className={`flex items-center justify-between text-white my-1.5 ${
+                    menu === "announcement"
+                      ? "bg-primary text-white"
+                      : "hover:bg-secondary/40"
+                  }`}
+                >
                   <Link className="px-4 py-0.5 w-full">
                     <div className="nav">
                       <HiSpeakerphone className="text-sm" />
@@ -136,7 +178,13 @@ const Navigation = ({ menu, submenu }) => {
                 </li>
 
                 {/* Calendar */}
-                <li className={`flex items-center justify-between text-white my-1.5 ${menu === "announcement" ? "bg-primary text-white" : "hover:bg-secondary/40"}`}>
+                <li
+                  className={`flex items-center justify-between text-white my-1.5 ${
+                    menu === "announcement"
+                      ? "bg-primary text-white"
+                      : "hover:bg-secondary/40"
+                  }`}
+                >
                   <Link className="px-4 py-0.5 w-full">
                     <div className="nav">
                       <FaCalendarDays className="text-sm" />
@@ -146,7 +194,13 @@ const Navigation = ({ menu, submenu }) => {
                 </li>
 
                 {/* Work Schedule */}
-                <li className={`flex items-center justify-between text-white my-1.5 ${menu === "work" ? "bg-primary text-white" : "hover:bg-secondary/40"}`}>
+                <li
+                  className={`flex items-center justify-between text-white my-1.5 ${
+                    menu === "work"
+                      ? "bg-primary text-white"
+                      : "hover:bg-secondary/40"
+                  }`}
+                >
                   <Link className="px-4 py-0.5 w-full">
                     <div className="nav">
                       <FaBuildingUser className="text-sm" />
@@ -196,31 +250,31 @@ const Navigation = ({ menu, submenu }) => {
 
                 {store.isSettingsOpen && (
                   <ul className="submenu ml-12 my-1 text-[12px]">
-                    <li
-                      className={`pl-2 mb-1 my-px hover:text-accent border-l-2 border-transparent ${
-                        submenu === "users"
-                          ? "!border-accent text-white"
-                          : "hover:border-white !text-white"
-                      }`}
-                    >
-                      <Link className="!p-0" to={`${devNavUrl}/settings/users`}>
+                    <Link className="!p-0" to={`${devNavUrl}/settings/users`}>
+                      <li
+                        className={`pl-2 mb-1 my-px hover:text-accent border-l-2 border-transparent ${
+                          submenu === "users"
+                            ? "!border-accent text-white"
+                            : "hover:border-white !text-white"
+                        }`}
+                      >
                         User
-                      </Link>
-                    </li>
-                    <li
-                      className={`pl-2 mb-1 my-px hover:text-accent border-l-2 border-transparent ${
-                        submenu === "overview"
-                          ? "!border-accent text-white"
-                          : "hover:border-white !text-white"
-                      }`}
+                      </li>
+                    </Link>
+                    <Link
+                      className="!p-0"
+                      to={`${devNavUrl}/settings/overview`}
                     >
-                      <Link
-                        className="!p-0"
-                        to={`${devNavUrl}/settings/overview`}
+                      <li
+                        className={`pl-2 mb-1 my-px hover:text-accent border-l-2 border-transparent ${
+                          submenu === "overview"
+                            ? "!border-accent text-white"
+                            : "hover:border-white !text-white"
+                        }`}
                       >
                         Overview
-                      </Link>
-                    </li>
+                      </li>
+                    </Link>
                   </ul>
                 )}
               </ul>
@@ -236,15 +290,15 @@ const Navigation = ({ menu, submenu }) => {
           </div>
         </div>
       </div>
-      <span
-        className={`${
-          store.isShow ? "" : "translate-x-full"
-        } fixed z-30 w-screen h-screen bg-dark/50 ${
-          isMobileOrTablet ? "" : "lg:hidden"
-        }`}
-        onClick={handleShowNavigation}
-        onTouchMove={handleShowNavigation}
-      ></span>
+      {store.isShow && (
+        <span
+          className={`fixed z-30 w-full h-full bg-dark/50 ${
+            isMobileOrTablet ? "" : "lg:hidden"
+          }`}
+          onClick={handleShowNavigation}
+          onTouchMove={handleShowNavigation}
+        />
+      )}
     </>
   );
 };
