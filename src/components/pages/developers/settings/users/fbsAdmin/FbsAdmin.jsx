@@ -1,20 +1,22 @@
-import Header from "@/components/partials/Header";
-import React from "react";
-import Navigation from "../../../Navigation";
 import BreadCrumbs from "@/components/partials/BreadCrumbs";
-import { FaPlus } from "react-icons/fa6";
-import FbsAdminTable from "./FbsAdminTable";
 import Footer from "@/components/partials/Footer";
-import { StoreContext } from "@/store/StoreContext";
+import Header from "@/components/partials/Header";
 import {
   setIsAdd,
-  setIsItemEdit,
-  setIsSettingsOpen,
+  setIsSettingsOpen
 } from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import React from "react";
+import { FaPlus } from "react-icons/fa6";
+import Navigation from "../../../Navigation";
+import FbsAdminTable from "./FbsAdminTable";
 import ModalAddFbsAdmin from "./ModalAddFbsAdmin";
+import ModalSuccess from "@/components/partials/ModalSuccess";
+import ModalError from "@/components/partials/ModalError";
 
 const FbsAdmin = () => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const [itemEdit, setItemEdit] = React.useState(null);
 
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -23,6 +25,7 @@ const FbsAdmin = () => {
   React.useEffect(() => {
     dispatch(setIsSettingsOpen(true));
   }, []);
+
   return (
     <>
       <Header />
@@ -42,11 +45,13 @@ const FbsAdmin = () => {
           <h2>Users FBS Admin</h2>
         </div>
         <div className="pb-4">
-          <FbsAdminTable />
+          <FbsAdminTable setItemEdit={setItemEdit}/>
         </div>
         <Footer />
       </div>
-      {store.isAdd && <ModalAddFbsAdmin setIsItemEdit={setIsItemEdit} />}
+      {store.isAdd && <ModalAddFbsAdmin  itemEdit={itemEdit} setItemEdit={setItemEdit} />}
+      {store.success && <ModalSuccess />}
+      {store.error && <ModalError />}
     </>
   );
 };

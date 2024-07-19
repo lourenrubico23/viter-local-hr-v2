@@ -11,7 +11,6 @@ const initVal = {
   isFetching: false,
   isLoading: false,
   isAdd: false,
-  isItemEdit: null,
   isArchive: false,
   isRestore: false,
   isDelete: false,

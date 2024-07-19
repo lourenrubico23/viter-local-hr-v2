@@ -8,7 +8,21 @@ RewriteCond %{REQUEST_FILENAME} !-f
 Header set Access-Control-Allow-Origin *
 
 # USER ROLE
-RewriteRule ^role$ controllers/settings/role/role.php [L]
-RewriteRule ^role/([0-9]+)$ controllers/settings/role/role.php?roleid=$1 [L]
-RewriteRule ^role/active/([0-9]+)$ controllers/settings/role/active.php?roleid=$1 [L]
-RewriteRule ^role/page/([0-9]+)$ controllers/settings/role/page.php?start=$1 [L]
+RewriteRule ^role$ controllers/settings/user/role/role.php [L]
+RewriteRule ^role/([0-9]+)$ controllers/settings/user/role/role.php?roleid=$1 [L]
+RewriteRule ^role/active/([0-9]+)$ controllers/settings/user/role/active.php?roleid=$1 [L]
+RewriteRule ^role/page/([0-9]+)$ controllers/settings/user/role/page.php?start=$1 [L]
+
+# USER SYSTEM
+RewriteRule ^system$ controllers/settings/user/system/system.php [L]
+RewriteRule ^system/([0-9]+)$ controllers/settings/user/system/system.php?systemid=$1 [L]
+RewriteRule ^system/active/([0-9]+)$ controllers/settings/user/system/active.php?systemid=$1 [L]
+RewriteRule ^system/page/([0-9]+)$ controllers/settings/user/system/page.php?start=$1 [L]
+RewriteRule ^system/search$ controllers/settings/user/system/search.php [L]
+
+# USER ADMIN
+RewriteRule ^admin$ controllers/settings/user/admin/admin.php [L]
+RewriteRule ^admin/([0-9]+)$ controllers/settings/user/admin/admin.php?adminid=$1 [L]
+RewriteRule ^admin/active/([0-9]+)$ controllers/settings/user/admin/active.php?adminid=$1 [L]
+RewriteRule ^admin/page/([0-9]+)$ controllers/settings/user/admin/page.php?start=$1 [L]
+RewriteRule ^admin/search$ controllers/settings/user/admin/search.php [L]

@@ -6,7 +6,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
 
-const ModalAddOther = ({ setIsItemEdit }) => {
+const ModalAddOther = ({setItemEdit}) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
 
@@ -14,7 +14,6 @@ const ModalAddOther = ({ setIsItemEdit }) => {
     setAnimate("translate-x-full");
     setTimeout(() => {
       dispatch(setIsAdd(false));
-      setIsItemEdit(false);
     }, 200);
   };
 
@@ -45,10 +44,10 @@ const ModalAddOther = ({ setIsItemEdit }) => {
                 </InputSelect>
               </div>
               <div className="input-wrapper">
-                <InputText label="*Subscriber" type="text" name="none" />
+                <InputText label="*First Name" type="text" name="none" />
               </div>
               <div className="input-wrapper">
-                <InputText label="*Employee" type="text" name="none" />
+                <InputText label="*Last Name" type="text" name="none" />
               </div>
             </div>
 

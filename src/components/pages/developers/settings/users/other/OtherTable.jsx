@@ -7,7 +7,7 @@ import React from "react";
 import { FaUserAltSlash } from "react-icons/fa";
 import { FaKey } from "react-icons/fa6";
 
-const OtherTable = () => {
+const OtherTable = ({ setItemEdit }) => {
   return (
     <>
       <SearchBar />
@@ -16,8 +16,8 @@ const OtherTable = () => {
         <table>
           <thead>
             <tr>
-              <th className="pl-2">#</th>
-              <th>Status</th>
+              <th className="pl-2 w-[1rem]">#</th>
+              <th className="w-[1rem]">Status</th>
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>

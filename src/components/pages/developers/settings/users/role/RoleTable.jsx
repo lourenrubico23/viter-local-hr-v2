@@ -1,5 +1,5 @@
+import useQueryData from "@/components/custom-hooks/useQueryData";
 import FetchingSpinner from "@/components/partials/FetchingSpinner";
-import Loadmore from "@/components/partials/LoadMore";
 import ModalArchive from "@/components/partials/ModalArchive";
 import ModalDelete from "@/components/partials/ModalDelete";
 import ModalRestore from "@/components/partials/ModalRestore";
@@ -8,18 +8,22 @@ import ServerError from "@/components/partials/ServerError";
 import Status from "@/components/partials/Status";
 import TableLoading from "@/components/partials/TableLoading";
 import TableSpinner from "@/components/partials/TableSpinner";
-import { setIsAdd, setIsArchive, setIsDelete, setIsRestore } from "@/store/StoreAction";
+import {
+  setIsAdd,
+  setIsArchive,
+  setIsDelete,
+  setIsRestore,
+} from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
 import { FaArchive, FaEdit } from "react-icons/fa";
 import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
 
-const RoleTable = ({ setIsItemEdit }) => {
+const RoleTable = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
-  const [isId, setIsId] = React.useState("");
+  const [id, setIsId] = React.useState("");
   const [isData, setIsData] = React.useState("");
 
   const [page, setPage] = React.useState(1);
@@ -27,55 +31,44 @@ const RoleTable = ({ setIsItemEdit }) => {
 
   let counter = 1;
 
+  // used if the page doesnt have a search
   const {
-    data: role,
-    error,
-    fetchNextPage,
-    hasNextPage,
+    isLoading,
     isFetching,
     isFetchingNextPage,
-    isLoading,
-    status,
-  } = useInfiniteQuery({
-    queryFn: async ({ pageParam = 1 }) =>
-      await queryDataInfinite(
-        `/v2/departments/search`, // search endpoint
-        `/v2/departments/page/${pageParam}` // list endpoint
-      ),
-    getNextPageParam: (lastPage) => {
-      if (lastPage.page < lastPage.total) {
-        return lastPage.page + lastPage.count;
-      }
-      return;
-    },
-    refetchOnWindowFocus: false,
-  });
+    error,
+    data: role,
+  } = useQueryData(
+    `/v2/role`, // endpoint
+    "get", // method
+    "role" // key
+  );
 
   const handleEdit = (item) => {
     dispatch(setIsAdd(true));
-    setIsItemEdit(item);
+    setItemEdit(item);
   };
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData();
-    setIsId();
+    setIsData(item.user_role_name);
+    setIsId(item.user_role_aid);
     setIsArchiving(true);
     setIsRestore(false);
   };
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData();
-    setIsId();
+    setIsData(item.user_role_name);
+    setIsId(item.user_role_aid);
     setIsArchiving(false);
     setIsRestore(true);
   };
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData();
-    setIsId();
+    setIsData(item.user_role_name);
+    setIsId(item.user_role_aid);
   };
 
   React.useEffect(() => {
@@ -87,111 +80,100 @@ const RoleTable = ({ setIsItemEdit }) => {
 
   return (
     <>
-     <div className="shadow-md rounded-md overflow-y-auto mt-3 min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
-      {isFetching && !isFetchingNextPage && status !== "loading" && (
-        <FetchingSpinner />
-      )}
-      <table>
-        <thead>
-          <tr>
-            <th className="pl-2">#</th>
-            <th>Status</th>
-            <th>Role Name</th>
-            <th>Role Description</th>
-            <th className="text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="relative">
-          {isLoading && !isFetchingNextPage && status !== "pending" && (
-            <TableSpinner />
-          )}
-          {status === "pending" && (
-            <tr className="text-center">
-              <td colSpan="100%" className="p-10">
-                {status === "pending" ? <TableLoading /> : <NoData />}
-              </td>
+      {isFetching && !isLoading && <FetchingSpinner />}
+      <div className="shadow-md rounded-md overflow-y-auto mt-3 min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
+        <table className="relative">
+          {isLoading && <TableSpinner />}
+          <thead>
+            <tr>
+              <th className="pl-2 w-[1rem]">#</th>
+              <th className="w-[1rem]">Status</th>
+              <th>Role Name</th>
+              <th>Role Description</th>
+              <th className="text-right">Actions</th>
             </tr>
-          )}
+          </thead>
+          <tbody className="relative">
+            {isLoading && (
+              <tr className="text-center">
+                <td colSpan="100%" className="p-10">
+                  <TableLoading />
+                </td>
+              </tr>
+            )}
 
-          {error && (
-            <tr className="text-center ">
-              <td colSpan="100%" className="p-10">
-                <ServerError />
-              </td>
-            </tr>
-          )}
+            {role?.data.length === 0 && (
+              <tr className="text-center">
+                <td colSpan="100%" className="p-10">
+                  <NoData />
+                </td>
+              </tr>
+            )}
 
-          {role?.data.map((item, key) => (
-            <React.Fragment key={key}>
-              {page.data.map((item, key) => (
-                <tr key={key}>
-                  <td className="pl-2">{counter++}</td>
-                  <td>
+            {error && (
+              <tr className="text-center ">
+                <td colSpan="100%" className="p-10">
+                  <ServerError />
+                </td>
+              </tr>
+            )}
+
+            {role?.data.map((item, key) => (
+              <tr key={key}>
+                <td className="pl-2">{counter++}</td>
+                <td>
                   {item.user_role_is_active === 1 ? (
-                        <Status text="Active" />
-                      ) : (
-                        <Status text="Inactive" />
-                      )}
-                  </td>
-                  <td>{item.user_role_name}</td>
-                  <td>{item.user_role_description}</td>
-                  <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
-                    {item.user_role_is_active ? (
-                      <>
-                      <button
-                      className="tooltip-action-table"
-                      data-tooltip="Edit"
-                      onClick={() => handleEdit(item)}
-                    >
-                      <FaEdit className="text-gray-600" />
-                    </button>
-                    <button
-                      className="tooltip-action-table"
-                      data-tooltip="Archive"
-                      onClick={() => handleArchive(item)}
-                    >
-                      <FaArchive className=" text-gray-600 text-[10px]" />
-                    </button>
-                    
-                      </>
-                    ) : (
-                      <>
+                    <Status text="Active" />
+                  ) : (
+                    <Status text="Inactive" />
+                  )}
+                </td>
+                <td>{item.user_role_name}</td>
+                <td>{item.user_role_description}</td>
+                <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
+                  {item.user_role_is_active ? (
+                    <>
                       <button
                         className="tooltip-action-table"
-                        data-tooltip="Inactivate"
+                        data-tooltip="Edit"
+                        onClick={() => handleEdit(item)}
+                      >
+                        <FaEdit className="text-gray-600" />
+                      </button>
+                      <button
+                        className="tooltip-action-table"
+                        data-tooltip="Archive"
+                        onClick={() => handleArchive(item)}
+                      >
+                        <FaArchive className=" text-gray-600 text-[10px]" />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        className="tooltip-action-table"
+                        data-tooltip="Restore"
                         onClick={() => handleRestore(item)}
                       >
                         <MdRestore className="text-gray-600" />
                       </button>
-                    <button
+                      <button
                         className="tooltip-action-table"
-                        data-tooltip="Inactivate"
+                        data-tooltip="Delete"
                         onClick={() => handleDelete(item)}
                       >
                         <MdDelete className="text-gray-600" />
                       </button>
-                      </>
-                    )}
-                    
-                  </td>
-                </tr>
-              ))}
-            </React.Fragment>
-          ))}
-        </tbody>
-      </table>
-      <div className="text-center mt-5">
-      <Loadmore 
-          fetchNextPage={fetchNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          hasNextPage={hasNextPage}
-          setPage={setPage}
-          page={page}
-          refView={ref}/>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </div>
 
-    {store.isArchive && (
+      {store.isArchive && (
         <ModalArchive
           setIsArchive={setIsArchive}
           queryKey={"role"}
@@ -217,9 +199,6 @@ const RoleTable = ({ setIsItemEdit }) => {
         />
       )}
     </>
-   
-
-
   );
 };
 

@@ -46,12 +46,6 @@ export const setIsAdd = (val) => {
     payload: val,
   };
 };
-export const setIsItemEdit = (val) => {
-  return {
-    type: "IS_ITEM_EDIT",
-    payload: val,
-  };
-};
 export const setIsArchive = (val) => {
   return {
     type: "IS_ARCHIVE",

@@ -11,6 +11,7 @@ checkPayload($data);
 // get data
 $role->user_role_is_active = 1;
 $role->user_role_name = checkIndex($data, "user_role_name");
+$role->user_role_description = $data["user_role_description"];
 $role->user_role_created = date("Y-m-d H:i:s");
 $role->user_role_datetime = date("Y-m-d H:i:s");
 

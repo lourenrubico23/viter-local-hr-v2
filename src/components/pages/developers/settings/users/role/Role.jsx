@@ -1,25 +1,23 @@
-import Header from "@/components/partials/Header";
-import React from "react";
 import Navigation from "@/components/pages/developers/Navigation";
 import BreadCrumbs from "@/components/partials/BreadCrumbs";
-import { FaPlus } from "react-icons/fa6";
-import RoleTable from "./RoleTable";
-import ModalAddRole from "./ModalAddRole";
-import { StoreContext } from "@/store/StoreContext";
-import {
-  setIsAdd,
-  setIsItemEdit,
-  setIsSettingsOpen,
-} from "@/store/StoreAction";
 import Footer from "@/components/partials/Footer";
-import ModalSuccess from "@/components/partials/ModalSuccess";
+import Header from "@/components/partials/Header";
 import ModalError from "@/components/partials/ModalError";
+import ModalSuccess from "@/components/partials/ModalSuccess";
+import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import React from "react";
+import { FaPlus } from "react-icons/fa6";
+import ModalAddRole from "./ModalAddRole";
+import RoleTable from "./RoleTable";
 
 const Role = () => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const [itemEdit, setItemEdit] = React.useState(null);
 
   const handleAdd = () => {
     dispatch(setIsAdd(true));
+    setItemEdit(null);
   };
 
   React.useEffect(() => {
@@ -45,13 +43,14 @@ const Role = () => {
           <h2>Users Role</h2>
         </div>
         <div className="pb-4">
-          <RoleTable setIsItemEdit={setIsItemEdit}/>
+          <RoleTable setItemEdit={setItemEdit} />
         </div>
-      <Footer />
+        <Footer />
       </div>
-      {store.success && <ModalSuccess/>}
-      {store.isAdd && <ModalAddRole setIsItemEdit={setIsItemEdit} />}
-      {store.error && <ModalError/>}
+
+      {store.isAdd && <ModalAddRole itemEdit={itemEdit} />}
+      {store.success && <ModalSuccess />}
+      {store.error && <ModalError />}
     </>
   );
 };

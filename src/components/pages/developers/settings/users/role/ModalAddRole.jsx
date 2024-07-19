@@ -15,7 +15,7 @@ import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
 
-const ModalAddRole = ({ setIsItemEdit }) => {
+const ModalAddRole = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
 
@@ -23,7 +23,6 @@ const ModalAddRole = ({ setIsItemEdit }) => {
     setAnimate("translate-x-full");
     setTimeout(() => {
       dispatch(setIsAdd(false));
-      setIsItemEdit(false);
     }, 200);
   };
 
@@ -32,8 +31,10 @@ const ModalAddRole = ({ setIsItemEdit }) => {
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
-        setIsItemEdit ? `/v2/role/${setIsItemEdit.user_role_aid}` : `/v2/role`,
-        setIsItemEdit ? "put" : "post",
+        itemEdit
+          ? `/v2/role/${itemEdit.user_role_aid}` // update
+          : `/v2/role`, // create
+        itemEdit ? "put" : "post",
         values
       ),
     onSuccess: (data) => {
@@ -46,9 +47,7 @@ const ModalAddRole = ({ setIsItemEdit }) => {
         console.log("Success");
         dispatch(setIsAdd(false));
         dispatch(setSuccess(true));
-        dispatch(
-          setMessage(`Successfully ${setIsItemEdit ? "Updated" : "Added"}.`)
-        );
+        dispatch(setMessage(`Successfully ${itemEdit ? "Updated" : "Added"}.`));
       }
     },
   });
@@ -58,16 +57,15 @@ const ModalAddRole = ({ setIsItemEdit }) => {
   }, []);
 
   const initVal = {
-    user_role_aid: setIsItemEdit ? setIsItemEdit.user_role_aid : "",
-    user_role_name: setIsItemEdit ? setIsItemEdit.user_role_name : "",
-    user_role_description: setIsItemEdit
-      ? setIsItemEdit.user_role_description
-      : "",
+    user_role_aid: itemEdit ? itemEdit.user_role_aid : "",
+    user_role_name: itemEdit ? itemEdit.user_role_name : "",
+    user_role_description: itemEdit ? itemEdit.user_role_description : "",
 
-    user_role_name_old: setIsItemEdit ? setIsItemEdit.user_role_name : "",
+    user_role_name_old: itemEdit ? itemEdit.user_role_name : "",
   };
   const yupSchema = Yup.object({
     user_role_name: Yup.string().required("Required"),
+    user_role_description: Yup.string().required("Required"),
   });
 
   return (
@@ -106,7 +104,7 @@ const ModalAddRole = ({ setIsItemEdit }) => {
                     <InputTextArea
                       label="*Description"
                       type="text"
-                      name="user_name_description"
+                      name="user_role_description"
                       disabled={mutation.isPending}
                     />
                   </div>

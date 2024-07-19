@@ -1,18 +1,20 @@
-import { StoreContext } from '@/store/StoreContext'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import React from 'react'
-import { queryData } from '../helpers/queryData'
-import { setError, setMessage, setSuccess } from '@/store/StoreAction'
-import { FaArchive } from 'react-icons/fa'
+import { StoreContext } from "@/store/StoreContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React from "react";
+import { queryData } from "../helpers/queryData";
+import { setError, setMessage, setSuccess } from "@/store/StoreAction";
+import { FaArchive } from "react-icons/fa";
+import { GrFormClose } from "react-icons/gr";
+import ButtonSpinner from "./ButtonSpinner";
 
 const ModalArchive = ({ setIsArchive, mysqlEndpoint, queryKey, item }) => {
-    const {store, dispatch} = React.useContext(StoreContext)
+  const { store, dispatch } = React.useContext(StoreContext);
 
-    const handleClose = () => {
-        dispatch(setIsArchive(false))
-    }
+  const handleClose = () => {
+    dispatch(setIsArchive(false));
+  };
 
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (values) => queryData(mysqlEndpoint, "put", values),
@@ -44,11 +46,11 @@ const ModalArchive = ({ setIsArchive, mysqlEndpoint, queryKey, item }) => {
   return (
     <div className=" fixed top-0 left-0 h-screen w-full flex justify-center items-center z-[999]">
       <div
-        className=" backdrop bg-black/80 h-full w-full absolute top-0 left-0 z-[-1] "
+        className=" backdrop bg-black/55 h-full w-full absolute top-0 left-0 z-[-1] "
         onClick={handleClose}
       ></div>
       <div className="max-w-[450px] w-full bg-white rounded-md">
-        <div className="flex items-center justify-between p-4  ">
+        <div className="flex items-center justify-between p-4 pb-2 ">
           <div></div>
           <h2 className="translate-y-2">
             <FaArchive className="text-[30px]" />
@@ -57,8 +59,10 @@ const ModalArchive = ({ setIsArchive, mysqlEndpoint, queryKey, item }) => {
             <GrFormClose className="text-[35px]" />
           </button>
         </div>
-        <div className="p-4 text-center">
-          <h3 className="text-sm">Are you sure you want to archive {item}?</h3>
+        <div className="p-5 text-center">
+          <h3 className="text-sm pb-2">
+            Are you sure you want to archive {item}?
+          </h3>
           <div className="flex justify-center mt-5 gap-2">
             <button
               className="inline-block rounded-md w-full px-5 py-2 bg-primary text-white"
@@ -77,7 +81,7 @@ const ModalArchive = ({ setIsArchive, mysqlEndpoint, queryKey, item }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ModalArchive
+export default ModalArchive;

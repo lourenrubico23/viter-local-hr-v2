@@ -40,11 +40,6 @@ export const StoreReducer = (state, action) => {
         ...state,
         isAdd: action.payload,
       };
-    case "IS_ITEM_EDIT":
-      return {
-        ...state,
-        isItemEdit: action.payload,
-      };
     case "IS_ARCHIVE":
       return {
         ...state,

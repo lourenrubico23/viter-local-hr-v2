@@ -1,22 +1,20 @@
-import Header from "@/components/partials/Header";
-import React from "react";
+import useQueryData from "@/components/custom-hooks/useQueryData";
 import Navigation from "@/components/pages/developers/Navigation";
-import { FaPlus } from "react-icons/fa6";
+import ModalAddSystem from "@/components/pages/developers/settings/users/system/ModalAddSystem";
+import SystemTable from "@/components/pages/developers/settings/users/system/SystemTable";
 import BreadCrumbs from "@/components/partials/BreadCrumbs";
 import Footer from "@/components/partials/Footer";
-import { StoreContext } from "@/store/StoreContext";
-import {
-  setIsAdd,
-  setIsItemEdit,
-  setIsSettingsOpen,
-} from "@/store/StoreAction";
-import SystemTable from "@/components/pages/developers/settings/users/system/SystemTable";
-import ModalAddSystem from "@/components/pages/developers/settings/users/system/ModalAddSystem";
-import ModalSuccess from "@/components/partials/ModalSuccess";
+import Header from "@/components/partials/Header";
 import ModalError from "@/components/partials/ModalError";
+import ModalSuccess from "@/components/partials/ModalSuccess";
+import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import React from "react";
+import { FaPlus } from "react-icons/fa6";
 
 const System = () => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const [itemEdit, setItemEdit] = React.useState(null);
 
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -25,6 +23,17 @@ const System = () => {
   React.useEffect(() => {
     dispatch(setIsSettingsOpen(true));
   }, []);
+
+  const {
+    isLoading: roleIsLoading,
+    isFetching: roleIsFetching,
+    error: roleError,
+    data: role,
+  } = useQueryData(
+    `/v2/role`, // endpoint
+    "get", // method
+    "role" // key
+  );
 
   return (
     <>
@@ -45,15 +54,14 @@ const System = () => {
           <h2>Users System</h2>
         </div>
         <div className="pb-4">
-          <SystemTable setIsItemEdit={setIsItemEdit} />
+          <SystemTable setItemEdit={setItemEdit} />
         </div>
         <Footer />
       </div>
-      {store.success && <ModalSuccess/>}
-      {store.isAdd && (
-        <ModalAddSystem setIsItemEdit={setIsItemEdit} />
-      )}
-      {store.error && <ModalError/>}
+
+      {store.isAdd && <ModalAddSystem itemEdit={itemEdit} role={role} />}
+      {store.success && <ModalSuccess />}
+      {store.error && <ModalError />}
     </>
   );
 };

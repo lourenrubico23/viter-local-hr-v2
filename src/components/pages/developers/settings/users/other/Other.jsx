@@ -1,20 +1,19 @@
-import Header from "@/components/partials/Header";
-import React from "react";
 import Navigation from "@/components/pages/developers/Navigation";
-import { FaPlus } from "react-icons/fa6";
 import BreadCrumbs from "@/components/partials/BreadCrumbs";
-import OtherTable from "./OtherTable";
-import ModalAddOther from "./ModalAddOther";
-import { StoreContext } from "@/store/StoreContext";
-import {
-  setIsAdd,
-  setIsItemEdit,
-  setIsSettingsOpen,
-} from "@/store/StoreAction";
 import Footer from "@/components/partials/Footer";
+import Header from "@/components/partials/Header";
+import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import React from "react";
+import { FaPlus } from "react-icons/fa6";
+import ModalAddOther from "./ModalAddOther";
+import OtherTable from "./OtherTable";
+import ModalSuccess from "@/components/partials/ModalSuccess";
+import ModalError from "@/components/partials/ModalError";
 
 const Other = () => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const [itemEdit, setItemEdit] = React.useState(null);
 
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -43,11 +42,14 @@ const Other = () => {
           <h2>Users Other</h2>
         </div>
         <div className="pb-30">
-          <OtherTable />
+          <OtherTable setItemEdit={setItemEdit} />
         </div>
-      <Footer />
+        <Footer />
       </div>
-      {store.isAdd && <ModalAddOther setIsItemEdit={setIsItemEdit} />}
+
+      {store.isAdd && <ModalAddOther itemEdit={itemEdit} setItemEdit={setItemEdit} />}
+      {store.success && <ModalSuccess/>}
+      {store.error && <ModalError/>}
     </>
   );
 };

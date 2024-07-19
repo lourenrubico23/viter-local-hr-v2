@@ -14,6 +14,7 @@ if (array_key_exists("roleid", $_GET)) {
   // get data
   $role->user_role_aid = $_GET['roleid'];
   $role->user_role_name = checkIndex($data, "user_role_name");
+  $role->user_role_description = $data["user_role_description"];
 
   $role->user_role_datetime = date("Y-m-d H:i:s");
   checkId($role->user_role_aid);
