@@ -59,7 +59,7 @@ const System = () => {
         <Footer />
       </div>
 
-      {store.isAdd && <ModalAddSystem itemEdit={itemEdit} role={role} setItemEdit={setItemEdit}/>}
+      {store.isAdd && <ModalAddSystem itemEdit={itemEdit} role={role}/>}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>

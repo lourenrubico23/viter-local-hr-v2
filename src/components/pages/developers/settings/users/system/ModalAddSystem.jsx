@@ -68,7 +68,7 @@ const ModalAddSystem = ({ itemEdit, role }) => {
     user_system_fname: itemEdit ? itemEdit.user_system_fname : "",
     user_system_lname: itemEdit ? itemEdit.user_system_lname : "",
     user_system_email: itemEdit ? itemEdit.user_system_email : "",
-    user_system_role_id: itemEdit ? itemEdit.user_system_role_id : "",
+    user_system_role_id: itemEdit ? itemEdit.user_system_role_id : activeRole[0].user_role_aid, //may laman na ang role sa umpisa pa lang, ang laman ay ang pinaka nasa una ng array which is Developer lang.
 
     user_system_fname_old: itemEdit ? itemEdit.user_system_fname : "",
   };
@@ -76,7 +76,6 @@ const ModalAddSystem = ({ itemEdit, role }) => {
     user_system_fname: Yup.string().required("Required"),
     user_system_lname: Yup.string().required("Required"),
     user_system_email: Yup.string().required("Required"),
-    user_system_role_id: Yup.string().required("Required"),
   });
 
   return (

@@ -146,16 +146,13 @@ class System
             $sql .= "user_system_fname = :user_system_fname, ";
             $sql .= "user_system_lname = :user_system_lname, ";
             $sql .= "user_system_email = :user_system_email, ";
-            $sql .= "user_system_role_id = :user_system_role_id, ";
-            $sql .= "user_system_lastname = :user_system_lastname, ";
             $sql .= "user_system_datetime = :user_system_datetime ";
-            $sql .= "where user_system_aid = :user_system_aid";
+            $sql .= "where user_system_aid = :user_system_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_system_fname" => $this->user_system_fname,
                 "user_system_lname" => $this->user_system_lname,
                 "user_system_email" => $this->user_system_email,
-                "user_system_role_id" => $this->user_system_role_id,
                 "user_system_datetime" => $this->user_system_datetime,
                 "user_system_aid" => $this->user_system_aid,
             ]);
