@@ -10,6 +10,7 @@ import ModalAddOther from "./ModalAddOther";
 import OtherTable from "./OtherTable";
 import ModalSuccess from "@/components/partials/ModalSuccess";
 import ModalError from "@/components/partials/ModalError";
+import useQueryData from "@/components/custom-hooks/useQueryData";
 
 const Other = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -18,6 +19,17 @@ const Other = () => {
   const handleAdd = () => {
     dispatch(setIsAdd(true));
   };
+
+  const {
+    isLoading: roleIsLoading,
+    isFetching: roleIsFetching,
+    error: roleError,
+    data: role,
+  } = useQueryData(
+    `/v2/role`, // endpoint
+    "get", // method
+    "role" // key
+  );
 
   React.useEffect(() => {
     dispatch(setIsSettingsOpen(true));
@@ -47,7 +59,7 @@ const Other = () => {
         <Footer />
       </div>
 
-      {store.isAdd && <ModalAddOther itemEdit={itemEdit} setItemEdit={setItemEdit} />}
+      {store.isAdd && <ModalAddOther itemEdit={itemEdit} setItemEdit={setItemEdit} role={role}/>}
       {store.success && <ModalSuccess/>}
       {store.error && <ModalError/>}
     </>

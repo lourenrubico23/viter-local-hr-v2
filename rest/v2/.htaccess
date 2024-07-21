@@ -26,3 +26,10 @@ RewriteRule ^admin/([0-9]+)$ controllers/settings/user/admin/admin.php?adminid=$
 RewriteRule ^admin/active/([0-9]+)$ controllers/settings/user/admin/active.php?adminid=$1 [L]
 RewriteRule ^admin/page/([0-9]+)$ controllers/settings/user/admin/page.php?start=$1 [L]
 RewriteRule ^admin/search$ controllers/settings/user/admin/search.php [L]
+
+# USER OTHER
+RewriteRule ^other$ controllers/settings/user/other/other.php [L]
+RewriteRule ^other/([0-9]+)$ controllers/settings/user/other/other.php?otherid=$1 [L]
+RewriteRule ^other/active/([0-9]+)$ controllers/settings/user/other/active.php?otherid=$1 [L]
+RewriteRule ^other/page/([0-9]+)$ controllers/settings/user/other/page.php?start=$1 [L]
+RewriteRule ^other/search$ controllers/settings/user/other/search.php [L]

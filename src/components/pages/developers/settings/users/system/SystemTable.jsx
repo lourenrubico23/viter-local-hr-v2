@@ -109,10 +109,11 @@ const SystemTable = ({ setItemEdit }) => {
         setOnSearch={setOnSearch}
         onSearch={onSearch}
       />
-      <div className="shadow-md rounded-md overflow-y-auto min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
-        {isFetching && !isFetchingNextPage && status !== "loading" && (
+      {isFetching && !isFetchingNextPage && status !== "loading" && (
           <FetchingSpinner />
         )}
+      <div className="shadow-md rounded-md overflow-y-auto min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
+        
         <table>
           <thead>
             <tr>

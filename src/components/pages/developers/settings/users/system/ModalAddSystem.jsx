@@ -1,4 +1,4 @@
-import { InputSelect, InputText } from "@/components/helpers/FormInputs";
+import { InputText } from "@/components/helpers/FormInputs";
 import { queryData } from "@/components/helpers/queryData";
 import ButtonSpinner from "@/components/partials/ButtonSpinner";
 import ModalWrapper from "@/components/partials/ModalWrapper";
@@ -26,10 +26,12 @@ const ModalAddSystem = ({ itemEdit, role }) => {
     }, 200);
   };
 
-  //activeRole will be an array containing only the elements from role.data where user_role_is_active is 1.
+  //activeRole will be an array containing only the elements from role.data where user_role_name is Developer.
   const activeRole = role?.data.filter(
-    (role) => role.user_role_is_active === 1
+    (role) =>
+      role.user_role_name === "Developer" && role.user_role_is_active === 1
   );
+  console.log(activeRole);
 
   const queryClient = useQueryClient();
 
@@ -74,6 +76,7 @@ const ModalAddSystem = ({ itemEdit, role }) => {
     user_system_fname: Yup.string().required("Required"),
     user_system_lname: Yup.string().required("Required"),
     user_system_email: Yup.string().required("Required"),
+    user_system_role_id: Yup.string().required("Required"),
   });
 
   return (
@@ -125,16 +128,20 @@ const ModalAddSystem = ({ itemEdit, role }) => {
                     />
                   </div>
                   <div className="input-wrapper">
-                    {activeRole.map((item, key) => (
-                      <InputText
-                        label="*Role"
-                        type="text"
-                        value={item.user_role_name}
-                        name="user_system_role_id"
-                        key={key}
-                        disabled
-                      />
-                    ))}
+                    {activeRole.length > 0 ? (
+                      activeRole.map((item, key) => (
+                        <InputText
+                          label="*Role"
+                          type="text"
+                          value={item.user_role_name}
+                          name="user_system_role_id"
+                          key={key}
+                          disabled
+                        />
+                      ))
+                    ) : (
+                      <span>No developer role found</span>
+                    )}
                   </div>
                 </div>
 

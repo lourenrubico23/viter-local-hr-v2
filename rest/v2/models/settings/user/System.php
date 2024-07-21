@@ -44,6 +44,7 @@ class System
         return $query;
     }
 
+
     public function readLimit()
     {
         try {
@@ -72,8 +73,8 @@ class System
         try {
             $sql = "select * ";
             $sql .= "from ";
-            $sql .= "{$this->tblUserSystem} as ben, ";
-            $sql .= "{$this->tblUserRole} as type ";
+            $sql .= "{$this->tblUserSystem} as sys, ";
+            $sql .= "{$this->tblUserRole} as role ";
             $sql .= "where sys.user_system_role_id = role.user_role_aid ";
             $sql .= "where sys.user_system_aid = :user_system_aid ";
             $query = $this->connection->prepare($sql);
