@@ -15,16 +15,17 @@ import {
   setIsArchive,
   setIsDelete,
   setIsRestore,
+  setIsSearch,
 } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
-import { FaEdit, FaUserAltSlash } from "react-icons/fa";
-import { FaKey } from "react-icons/fa6";
+import { FaArchive, FaEdit, FaUserAltSlash } from "react-icons/fa";
+import { FaKey, FaUserGroup } from "react-icons/fa6";
 import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
 
-const OtherTable = ({ setItemEdit }) => {
+const DepartmentTable = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
@@ -34,6 +35,9 @@ const OtherTable = ({ setItemEdit }) => {
   const [page, setPage] = React.useState(1);
   const search = React.useRef({ value: "" });
   const { ref, inView } = useInView();
+  
+  const [isFilter, setIsFilter] = React.useState(false);
+  const [isStatus, setIsStatus] = React.useState("all");
 
   let counter = 1;
 
@@ -47,13 +51,18 @@ const OtherTable = ({ setItemEdit }) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ["other", onSearch, store.isSearch],
+    queryKey: ["department", onSearch, store.isSearch, isFilter, isStatus],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/v2/other/search`, // search endpoint
-        `/v2/other/page/${pageParam}`, // list endpoint
-        store.isSearch, // search boolean
-        { searchValue: search.current.value, id: "" } // search value
+        `/v2/department/search`, // search endpoint
+        `/v2/department/page/${pageParam}`, // list endpoint
+        store.isSearch || isFilter, // search boolean
+        {
+          searchValue: search.current.value,
+          id: "",
+          isFilter,
+          department_is_active: isStatus,
+        } // search value
       ),
     getNextPageParam: (lastPage) => {
       if (lastPage.page < lastPage.total) {
@@ -64,6 +73,18 @@ const OtherTable = ({ setItemEdit }) => {
     refetchOnWindowFocus: false,
   });
 
+  const handleChangeStatus = (e) => {
+    setIsStatus(e.target.value);
+    setIsFilter(false);
+    dispatch(setIsSearch(false));
+    search.current.value = "";
+    if (e.target.value !== "all") {
+      setIsFilter(true);
+    }
+    setPage(1);
+    console.log(isStatus);
+  };
+
   const handleEdit = (item) => {
     dispatch(setIsAdd(true));
     setItemEdit(item);
@@ -71,24 +92,24 @@ const OtherTable = ({ setItemEdit }) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.user_other_fname);
-    setIsId(item.user_other_aid);
+    setIsData(item.department_name);
+    setIsId(item.department_aid);
     setIsArchiving(true);
     setIsRestore(false);
   };
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.user_other_fname);
-    setIsId(item.user_other_aid);
+    setIsData(item.department_name);
+    setIsId(item.department_aid);
     setIsArchiving(false);
     setIsRestore(true);
   };
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.user_other_fname);
-    setIsId(item.user_other_aid);
+    setIsData(item.department_name);
+    setIsId(item.department_aid);
   };
 
   React.useEffect(() => {
@@ -97,31 +118,56 @@ const OtherTable = ({ setItemEdit }) => {
       fetchNextPage();
     }
   }, [inView]);
-
   return (
     <>
-      <SearchBar
-        search={search}
-        dispatch={dispatch}
-        store={store}
-        result={result?.pages}
-        isFetching={isFetching}
-        setOnSearch={setOnSearch}
-        onSearch={onSearch}
-      />
+      <div className="flex items-center gap-3 w-full">
+        <div className="flex items-center gap-3 w-full">
+          <div className="relative flex flex-col gap-2 w-[120px]">
+            <label className="z-10">Status</label>
+            <select
+              name="status"
+              value={isStatus}
+              onChange={(e) => handleChangeStatus(e)}
+              disabled={isFetching || status === "pending"}
+            >
+              <option value="all">All</option>
+              <option value="1">Active</option>
+              <option value="0">Inactive</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <span>
+              <FaUserGroup className="text-gray-500" />
+            </span>
+            {result?.pages[0].data.length}
+            {/* to count the number of results o laman ng table */}
+          </div>
+        </div>
+
+        <div>
+          <SearchBar
+            search={search}
+            dispatch={dispatch}
+            store={store}
+            result={result?.pages}
+            isFetching={isFetching}
+            setOnSearch={setOnSearch}
+            onSearch={onSearch}
+          />
+        </div>
+      </div>
 
       {isFetching && !isFetchingNextPage && status !== "loading" && (
         <FetchingSpinner />
       )}
+
       <div className="shadow-md rounded-md overflow-y-auto min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
         <table>
           <thead>
             <tr>
               <th className="pl-2 w-[1rem]">#</th>
               <th className="w-[1rem]">Status</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
+              <th>Department Name</th>
               <th className="text-right">Actions</th>
             </tr>
           </thead>
@@ -151,35 +197,15 @@ const OtherTable = ({ setItemEdit }) => {
                   <tr key={key}>
                     <td className="pl-2">{counter++}</td>
                     <td>
-                      {item.user_other_is_active === 1 ? (
+                      {item.department_is_active === 1 ? (
                         <Status text="Active" />
                       ) : (
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>
-                      {item.user_other_fname} {item.user_other_lname}
-                    </td>
-                    <td>{item.user_other_email}</td>
-                    <td>{item.user_role_name}</td>
+                    <td>{item.department_name}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
-                      {item.user_other_is_active ? (
-                        <>
-                          <button
-                            className="tooltip-action-table"
-                            data-tooltip="Inactivate"
-                            onClick={() => handleArchive(item)}
-                          >
-                            <FaUserAltSlash className="text-gray-600" />
-                          </button>
-                          <button
-                            className="tooltip-action-table"
-                            data-tooltip="Password"
-                          >
-                            <FaKey className="text-gray-600" />
-                          </button>
-                        </>
-                      ) : (
+                      {item.department_is_active ? (
                         <>
                           <button
                             className="tooltip-action-table"
@@ -188,6 +214,16 @@ const OtherTable = ({ setItemEdit }) => {
                           >
                             <FaEdit className="text-gray-600" />
                           </button>
+                          <button
+                            className="tooltip-action-table"
+                            data-tooltip="Archive"
+                            onClick={() => handleArchive(item)}
+                          >
+                            <FaArchive className=" text-gray-600 text-[10px]" />
+                          </button>
+                        </>
+                      ) : (
+                        <>
                           <button
                             className="tooltip-action-table"
                             data-tooltip="Restore"
@@ -227,8 +263,8 @@ const OtherTable = ({ setItemEdit }) => {
       {store.isArchive && (
         <ModalArchive
           setIsArchive={setIsArchive}
-          queryKey={"other"}
-          mysqlEndpoint={`/v2/other/active/${id}`}
+          queryKey={"department"}
+          mysqlEndpoint={`/v2/department/active/${id}`}
           item={isData}
           archive={isArchiving}
         />
@@ -236,16 +272,16 @@ const OtherTable = ({ setItemEdit }) => {
       {store.isDelete && (
         <ModalDelete
           setIsDelete={setIsDelete}
-          queryKey={"other"}
-          mysqlEndpoint={`/v2/other/${id}`}
+          queryKey={"department"}
+          mysqlEndpoint={`/v2/department/${id}`}
           item={isData}
         />
       )}
       {store.isRestore && (
         <ModalRestore
           setIsRestore={setIsRestore}
-          queryKey={"other"}
-          mysqlEndpoint={`/v2/other/active/${id}`}
+          queryKey={"department"}
+          mysqlEndpoint={`/v2/department/active/${id}`}
           item={isData}
         />
       )}
@@ -253,4 +289,4 @@ const OtherTable = ({ setItemEdit }) => {
   );
 };
 
-export default OtherTable;
+export default DepartmentTable;

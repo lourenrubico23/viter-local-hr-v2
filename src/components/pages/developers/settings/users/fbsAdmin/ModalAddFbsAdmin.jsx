@@ -2,7 +2,12 @@ import { InputText } from "@/components/helpers/FormInputs";
 import { queryData } from "@/components/helpers/queryData";
 import ButtonSpinner from "@/components/partials/ButtonSpinner";
 import ModalWrapper from "@/components/partials/ModalWrapper";
-import { setIsAdd } from "@/store/StoreAction";
+import {
+  setError,
+  setIsAdd,
+  setMessage,
+  setSuccess,
+} from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
@@ -71,7 +76,7 @@ const ModalAddFbsAdmin = ({ itemEdit }) => {
       handleClose={handleClose}
     >
       <div className="modal-title">
-        <h2>Add FBS Admin User</h2>
+        <h2>{itemEdit ? "Edit" : "Add"} FBS Admin User</h2>
         <button onClick={handleClose}>
           <GrFormClose className="text-[25px]" />
         </button>
@@ -108,7 +113,7 @@ const ModalAddFbsAdmin = ({ itemEdit }) => {
                   <div className="input-wrapper">
                     <InputText
                       label="*Email Address"
-                      type="text"
+                      type="email"
                       name="user_admin_email"
                       disabled={mutation.isPending}
                     />
@@ -124,7 +129,11 @@ const ModalAddFbsAdmin = ({ itemEdit }) => {
                     >
                       {mutation.isPending ? <ButtonSpinner /> : "Save"}
                     </button>
-                    <button className="btn-modal-cancel" onClick={handleClose}>
+                    <button
+                      className="btn-modal-cancel"
+                      type="button"
+                      onClick={handleClose}
+                    >
                       Cancel
                     </button>
                   </div>

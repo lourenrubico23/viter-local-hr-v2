@@ -33,3 +33,10 @@ RewriteRule ^other/([0-9]+)$ controllers/settings/user/other/other.php?otherid=$
 RewriteRule ^other/active/([0-9]+)$ controllers/settings/user/other/active.php?otherid=$1 [L]
 RewriteRule ^other/page/([0-9]+)$ controllers/settings/user/other/page.php?start=$1 [L]
 RewriteRule ^other/search$ controllers/settings/user/other/search.php [L]
+
+# SETTINGS DEPARTMENT
+RewriteRule ^department$ controllers/settings/department/department.php [L]
+RewriteRule ^department/([0-9]+)$ controllers/settings/department/department.php?departmentid=$1 [L]
+RewriteRule ^department/active/([0-9]+)$ controllers/settings/department/active.php?departmentid=$1 [L]
+RewriteRule ^department/page/([0-9]+)$ controllers/settings/department/page.php?start=$1 [L]
+RewriteRule ^department/search$ controllers/settings/department/search.php [L]

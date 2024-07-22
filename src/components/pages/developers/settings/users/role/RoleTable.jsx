@@ -129,7 +129,9 @@ const RoleTable = ({ setItemEdit }) => {
                   )}
                 </td>
                 <td>{item.user_role_name}</td>
-                <td>{item.user_role_description}</td>
+                <td className="truncate max-w-[3rem]">
+                  {item.user_role_description}
+                </td>
                 <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
                   {item.user_role_is_active ? (
                     <>

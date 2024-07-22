@@ -129,15 +129,15 @@ const Navigation = ({ menu, submenu }) => {
                   </Link>
                 </li>
 
-                {/* Employee */}
+                {/* Employees */}
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
-                    menu === "employee"
+                    menu === "employees"
                       ? "bg-primary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
-                  <Link className="px-4 py-0.5 w-full">
+                  <Link to={`${devNavUrl}/employees`} className="px-4 py-0.5 w-full">
                     <div className="nav">
                       <HiUserGroup className="text-sm" />
                       <span className="ml-2.5">EMPLOYEES</span>
@@ -261,6 +261,7 @@ const Navigation = ({ menu, submenu }) => {
                         User
                       </li>
                     </Link>
+
                     <Link
                       className="!p-0"
                       to={`${devNavUrl}/settings/overview`}
@@ -273,6 +274,36 @@ const Navigation = ({ menu, submenu }) => {
                         }`}
                       >
                         Overview
+                      </li>
+                    </Link>
+
+                    <Link
+                      className="!p-0"
+                      to={`${devNavUrl}/settings/department`}
+                    >
+                      <li
+                        className={`pl-2 mb-1 my-px hover:text-accent border-l-2 border-transparent ${
+                          submenu === "department"
+                            ? "!border-accent text-white"
+                            : "hover:border-white !text-white"
+                        }`}
+                      >
+                        Department
+                      </li>
+                    </Link>
+
+                    <Link
+                      className="!p-0"
+                      to={`${devNavUrl}/settings/notification`}
+                    >
+                      <li
+                        className={`pl-2 mb-1 my-px hover:text-accent border-l-2 border-transparent ${
+                          submenu === "notification"
+                            ? "!border-accent text-white"
+                            : "hover:border-white !text-white"
+                        }`}
+                      >
+                        Notification
                       </li>
                     </Link>
                   </ul>

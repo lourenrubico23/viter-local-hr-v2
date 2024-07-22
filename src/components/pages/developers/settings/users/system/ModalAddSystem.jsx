@@ -68,7 +68,11 @@ const ModalAddSystem = ({ itemEdit, role }) => {
     user_system_fname: itemEdit ? itemEdit.user_system_fname : "",
     user_system_lname: itemEdit ? itemEdit.user_system_lname : "",
     user_system_email: itemEdit ? itemEdit.user_system_email : "",
-    user_system_role_id: itemEdit ? itemEdit.user_system_role_id : activeRole[0].user_role_aid, //may laman na ang role sa umpisa pa lang, ang laman ay ang pinaka nasa una ng array which is Developer lang.
+    user_system_role_id: itemEdit
+      ? itemEdit.user_system_role_id
+      : activeRole && activeRole.length > 0
+      ? activeRole[0].user_role_aid
+      : null, //may laman na ang role sa umpisa pa lang, ang laman ay ang pinaka nasa una ng array which is Developer lang.
 
     user_system_fname_old: itemEdit ? itemEdit.user_system_fname : "",
   };
@@ -84,7 +88,7 @@ const ModalAddSystem = ({ itemEdit, role }) => {
       handleClose={handleClose}
     >
       <div className="modal-title">
-        <h2>Add System User</h2>
+        <h2>{itemEdit ? "Edit" : "Add"} System User</h2>
         <button onClick={handleClose}>
           <GrFormClose className="text-[25px]" />
         </button>
@@ -121,13 +125,13 @@ const ModalAddSystem = ({ itemEdit, role }) => {
                   <div className="input-wrapper">
                     <InputText
                       label="*Email Address"
-                      type="text"
+                      type="email"
                       name="user_system_email"
                       disabled={mutation.isPending}
                     />
                   </div>
                   <div className="input-wrapper">
-                    {activeRole.length > 0 ? (
+                    {activeRole ? (
                       activeRole.map((item, key) => (
                         <InputText
                           label="*Role"
@@ -153,7 +157,7 @@ const ModalAddSystem = ({ itemEdit, role }) => {
                     >
                       {mutation.isPending ? <ButtonSpinner /> : "Save"}
                     </button>
-                    <button className="btn-modal-cancel" onClick={handleClose}>
+                    <button className="btn-modal-cancel" type="button" onClick={handleClose}>
                       Cancel
                     </button>
                   </div>

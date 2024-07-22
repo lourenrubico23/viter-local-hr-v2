@@ -18,6 +18,7 @@ const System = () => {
 
   const handleAdd = () => {
     dispatch(setIsAdd(true));
+    setItemEdit(null);
   };
 
   React.useEffect(() => {
@@ -59,7 +60,7 @@ const System = () => {
         <Footer />
       </div>
 
-      {store.isAdd && <ModalAddSystem itemEdit={itemEdit} role={role}/>}
+      {store.isAdd && <ModalAddSystem itemEdit={itemEdit} role={role} />}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>

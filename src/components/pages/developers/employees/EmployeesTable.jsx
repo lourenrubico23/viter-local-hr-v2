@@ -1,30 +1,22 @@
-import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
-import FetchingSpinner from "@/components/partials/FetchingSpinner";
-import Loadmore from "@/components/partials/LoadMore";
-import ModalArchive from "@/components/partials/ModalArchive";
-import ModalDelete from "@/components/partials/ModalDelete";
-import ModalRestore from "@/components/partials/ModalRestore";
-import NoData from "@/components/partials/NoData";
-import SearchBar from "@/components/partials/SearchBar";
-import ServerError from "@/components/partials/ServerError";
-import Status from "@/components/partials/Status";
-import TableLoading from "@/components/partials/TableLoading";
-import TableSpinner from "@/components/partials/TableSpinner";
-import {
-  setIsAdd,
-  setIsArchive,
-  setIsDelete,
-  setIsRestore,
-} from "@/store/StoreAction";
-import { StoreContext } from "@/store/StoreContext";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import React from "react";
-import { FaEdit, FaUserAltSlash } from "react-icons/fa";
-import { FaKey } from "react-icons/fa6";
-import { MdDelete, MdRestore } from "react-icons/md";
-import { useInView } from "react-intersection-observer";
+import { queryDataInfinite } from '@/components/helpers/queryDataInfinite';
+import FetchingSpinner from '@/components/partials/FetchingSpinner';
+import Loadmore from '@/components/partials/LoadMore';
+import NoData from '@/components/partials/NoData';
+import SearchBar from '@/components/partials/SearchBar';
+import ServerError from '@/components/partials/ServerError';
+import Status from '@/components/partials/Status';
+import TableLoading from '@/components/partials/TableLoading';
+import TableSpinner from '@/components/partials/TableSpinner';
+import { setIsAdd, setIsArchive, setIsDelete, setIsRestore, setIsSearch } from '@/store/StoreAction';
+import { StoreContext } from '@/store/StoreContext';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import React from 'react'
+import { FaArchive, FaEdit } from 'react-icons/fa';
+import { FaUserGroup } from 'react-icons/fa6';
+import { MdDelete, MdRestore } from 'react-icons/md';
+import { useInView } from 'react-intersection-observer';
 
-const OtherTable = ({ setItemEdit }) => {
+const EmployeesTable = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
@@ -34,6 +26,9 @@ const OtherTable = ({ setItemEdit }) => {
   const [page, setPage] = React.useState(1);
   const search = React.useRef({ value: "" });
   const { ref, inView } = useInView();
+
+  const [isFilter, setIsFilter] = React.useState(false);
+  const [isStatus, setIsStatus] = React.useState("all");
 
   let counter = 1;
 
@@ -47,13 +42,18 @@ const OtherTable = ({ setItemEdit }) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ["other", onSearch, store.isSearch],
+    queryKey: ["employees", onSearch, store.isSearch, isFilter, isStatus],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/v2/other/search`, // search endpoint
-        `/v2/other/page/${pageParam}`, // list endpoint
-        store.isSearch, // search boolean
-        { searchValue: search.current.value, id: "" } // search value
+        `/v2/employees/search`, // search endpoint
+        `/v2/employees/page/${pageParam}`, // list endpoint
+        store.isSearch || isFilter, // search boolean
+        {
+          searchValue: search.current.value,
+          id: "",
+          isFilter,
+          employees_is_active: isStatus,
+        } // search value
       ),
     getNextPageParam: (lastPage) => {
       if (lastPage.page < lastPage.total) {
@@ -64,31 +64,39 @@ const OtherTable = ({ setItemEdit }) => {
     refetchOnWindowFocus: false,
   });
 
-  const handleEdit = (item) => {
-    dispatch(setIsAdd(true));
-    setItemEdit(item);
+  const handleChangeStatus = (e) => {
+    setIsStatus(e.target.value);
+    setIsFilter(false);
+    dispatch(setIsSearch(false));
+    search.current.value = "";
+    if (e.target.value !== "all") {
+      setIsFilter(true);
+    }
+    setPage(1);
+    console.log(isStatus);
   };
+
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.user_other_fname);
-    setIsId(item.user_other_aid);
+    setIsData(item.employees_name);
+    setIsId(item.employees_aid);
     setIsArchiving(true);
     setIsRestore(false);
   };
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.user_other_fname);
-    setIsId(item.user_other_aid);
+    setIsData(item.employees_name);
+    setIsId(item.employees_aid);
     setIsArchiving(false);
     setIsRestore(true);
   };
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.user_other_fname);
-    setIsId(item.user_other_aid);
+    setIsData(item.employees_name);
+    setIsId(item.employees_aid);
   };
 
   React.useEffect(() => {
@@ -100,28 +108,67 @@ const OtherTable = ({ setItemEdit }) => {
 
   return (
     <>
-      <SearchBar
-        search={search}
-        dispatch={dispatch}
-        store={store}
-        result={result?.pages}
-        isFetching={isFetching}
-        setOnSearch={setOnSearch}
-        onSearch={onSearch}
-      />
+    <div className="flex items-center gap-3 w-full">
+        <div className="flex items-center gap-3 w-full">
+          <div className="relative flex flex-col gap-2 w-[120px]">
+            <label className="z-10">Status</label>
+            <select
+              name="status"
+              value={isStatus}
+              onChange={(e) => handleChangeStatus(e)}
+              disabled={isFetching || status === "pending"}
+            >
+              <option value="all">All</option>
+              <option value="1">Active</option>
+              <option value="0">Inactive</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <span>
+              <FaUserGroup className="text-gray-500" />
+            </span>
+            {result?.pages[0].data.length}
+            {/* to count the number of results o laman ng table */}
+          </div>
+          <div className="relative flex flex-col gap-2 w-[17rem]">
+            <label className="z-10">Department</label>
+            <select
+              name="status"
+              
+            >
+              <option value="all">All</option>
+              <option value="1">Active</option>
+              <option value="0">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <SearchBar
+            search={search}
+            dispatch={dispatch}
+            store={store}
+            result={result?.pages}
+            isFetching={isFetching}
+            setOnSearch={setOnSearch}
+            onSearch={onSearch}
+          />
+        </div>
+      </div>
 
       {isFetching && !isFetchingNextPage && status !== "loading" && (
         <FetchingSpinner />
       )}
-      <div className="shadow-md rounded-md overflow-y-auto min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
+
+<div className="shadow-md rounded-md overflow-y-auto min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
         <table>
           <thead>
             <tr>
               <th className="pl-2 w-[1rem]">#</th>
               <th className="w-[1rem]">Status</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
+              <th>Employee Number</th>
+              <th>Employee Name</th>
+              <th>Work Email</th>
               <th className="text-right">Actions</th>
             </tr>
           </thead>
@@ -151,43 +198,28 @@ const OtherTable = ({ setItemEdit }) => {
                   <tr key={key}>
                     <td className="pl-2">{counter++}</td>
                     <td>
-                      {item.user_other_is_active === 1 ? (
+                      {item.employees_is_active === 1 ? (
                         <Status text="Active" />
                       ) : (
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>
-                      {item.user_other_fname} {item.user_other_lname}
-                    </td>
-                    <td>{item.user_other_email}</td>
-                    <td>{item.user_role_name}</td>
+                    <td>{item.employees_number}</td>
+                    <td>{item.employees_name}</td>
+                    <td>{item.employees_work_email}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
-                      {item.user_other_is_active ? (
+                      {item.department_is_active ? (
                         <>
                           <button
                             className="tooltip-action-table"
-                            data-tooltip="Inactivate"
+                            data-tooltip="Archive"
                             onClick={() => handleArchive(item)}
                           >
-                            <FaUserAltSlash className="text-gray-600" />
-                          </button>
-                          <button
-                            className="tooltip-action-table"
-                            data-tooltip="Password"
-                          >
-                            <FaKey className="text-gray-600" />
+                            <FaArchive className=" text-gray-600 text-[10px]" />
                           </button>
                         </>
                       ) : (
                         <>
-                          <button
-                            className="tooltip-action-table"
-                            data-tooltip="Edit"
-                            onClick={() => handleEdit(item)}
-                          >
-                            <FaEdit className="text-gray-600" />
-                          </button>
                           <button
                             className="tooltip-action-table"
                             data-tooltip="Restore"
@@ -223,34 +255,8 @@ const OtherTable = ({ setItemEdit }) => {
           />
         </div>
       </div>
-
-      {store.isArchive && (
-        <ModalArchive
-          setIsArchive={setIsArchive}
-          queryKey={"other"}
-          mysqlEndpoint={`/v2/other/active/${id}`}
-          item={isData}
-          archive={isArchiving}
-        />
-      )}
-      {store.isDelete && (
-        <ModalDelete
-          setIsDelete={setIsDelete}
-          queryKey={"other"}
-          mysqlEndpoint={`/v2/other/${id}`}
-          item={isData}
-        />
-      )}
-      {store.isRestore && (
-        <ModalRestore
-          setIsRestore={setIsRestore}
-          queryKey={"other"}
-          mysqlEndpoint={`/v2/other/active/${id}`}
-          item={isData}
-        />
-      )}
     </>
-  );
-};
+  )
+}
 
-export default OtherTable;
+export default EmployeesTable

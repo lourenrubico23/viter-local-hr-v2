@@ -16,11 +16,13 @@ class Role
     public $user_role_search;
 
     public $tblUserRole;
+    public $tblUserSystem;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblUserRole = "hris_user_role";
+        $this->tblUserSystem = "hris_user_system";
     }
 
     public function readAll()
@@ -149,6 +151,21 @@ class Role
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_role_name" => "{$this->user_role_name}",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function checkAssociationRoleName()
+    {
+        try {
+            $sql = "select user_system_role_id from {$this->tblUserSystem} ";
+            $sql .= "where user_system_role_id = :user_system_role_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_system_role_id" => $this->user_role_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

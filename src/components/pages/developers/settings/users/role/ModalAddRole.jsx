@@ -74,7 +74,7 @@ const ModalAddRole = ({ itemEdit }) => {
       handleClose={handleClose}
     >
       <div className="modal-title">
-        <h2>Add Role</h2>
+        <h2>{itemEdit ? "Edit" : "Add"} Role</h2>
         <button onClick={handleClose}>
           <GrFormClose className="text-[25px]" />
         </button>
@@ -119,7 +119,11 @@ const ModalAddRole = ({ itemEdit }) => {
                     >
                       {mutation.isPending ? <ButtonSpinner /> : "Add"}
                     </button>
-                    <button className="btn-modal-cancel" onClick={handleClose}>
+                    <button
+                      className="btn-modal-cancel"
+                      type="button"
+                      onClick={handleClose}
+                    >
                       Cancel
                     </button>
                   </div>

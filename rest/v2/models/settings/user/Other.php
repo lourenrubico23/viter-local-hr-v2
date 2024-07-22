@@ -1,10 +1,12 @@
 <?php
 
-class Other{
+class Other
+{
     public $user_other_aid;
     public $user_other_is_active;
     public $user_other_fname;
     public $user_other_lname;
+    public $user_other_email;
     public $user_other_role_id;
     public $user_other_created;
     public $user_other_datetime;
@@ -88,8 +90,11 @@ class Other{
     {
         try {
             $sql = "select * ";
-            $sql .= "from {$this->tblUserOther} ";
-            $sql .= "where user_other_fname like :user_other_fname ";
+            $sql .= "from ";
+            $sql .= "{$this->tblUserOther} as other, ";
+            $sql .= "{$this->tblUserRole} as role ";
+            $sql .= "where other.user_other_role_id = role.user_role_aid ";
+            $sql .= "and other.user_other_fname like :user_other_fname ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_other_fname" => "%{$this->user_other_search}%",
@@ -108,12 +113,14 @@ class Other{
             $sql .= "(user_other_is_active, ";
             $sql .= "user_other_fname, ";
             $sql .= "user_other_lname, ";
+            $sql .= "user_other_email, ";
             $sql .= "user_other_role_id, ";
             $sql .= "user_other_created, ";
             $sql .= "user_other_datetime ) values ( ";
             $sql .= ":user_other_is_active, ";
             $sql .= ":user_other_fname, ";
             $sql .= ":user_other_lname, ";
+            $sql .= ":user_other_email, ";
             $sql .= ":user_other_role_id, ";
             $sql .= ":user_other_created, ";
             $sql .= ":user_other_datetime )";
@@ -122,6 +129,7 @@ class Other{
                 "user_other_is_active" => $this->user_other_is_active,
                 "user_other_fname" => $this->user_other_fname,
                 "user_other_lname" => $this->user_other_lname,
+                "user_other_email" => $this->user_other_email,
                 "user_other_role_id" => $this->user_other_role_id,
                 "user_other_created" => $this->user_other_created,
                 "user_other_datetime" => $this->user_other_datetime,
@@ -139,6 +147,7 @@ class Other{
             $sql = "update {$this->tblUserOther} set ";
             $sql .= "user_other_fname = :user_other_fname, ";
             $sql .= "user_other_lname = :user_other_lname, ";
+            $sql .= "user_other_email = :user_other_email, ";
             $sql .= "user_other_role_id = :user_other_role_id, ";
             $sql .= "user_other_datetime = :user_other_datetime ";
             $sql .= "where user_other_aid = :user_other_aid";
@@ -146,6 +155,7 @@ class Other{
             $query->execute([
                 "user_other_fname" => $this->user_other_fname,
                 "user_other_lname" => $this->user_other_lname,
+                "user_other_email" => $this->user_other_email,
                 "user_other_role_id" => $this->user_other_role_id,
                 "user_other_datetime" => $this->user_other_datetime,
                 "user_other_aid" => $this->user_other_aid,
@@ -184,6 +194,22 @@ class Other{
                 "user_other_datetime" => $this->user_other_datetime,
                 "user_other_aid" => $this->user_other_aid,
             ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    public function readAllRole()
+    {
+        try {
+            $sql = "select * from {$this->tblUserRole} ";
+            $sql .= "where user_role_name = :user_role_name ";
+            $sql .= "and user_role_name = :user_role_name ";
+            $sql .= "order by user_role_is_active desc, ";
+            $sql .= "user_role_aid asc ";
+            $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
         }

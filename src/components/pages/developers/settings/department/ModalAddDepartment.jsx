@@ -1,4 +1,4 @@
-import { InputSelect, InputText } from "@/components/helpers/FormInputs";
+import { InputText } from "@/components/helpers/FormInputs";
 import { queryData } from "@/components/helpers/queryData";
 import ButtonSpinner from "@/components/partials/ButtonSpinner";
 import ModalWrapper from "@/components/partials/ModalWrapper";
@@ -15,7 +15,7 @@ import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
 
-const ModalAddOther = ({ itemEdit, role }) => {
+const ModalAddDepartment = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
 
@@ -26,26 +26,19 @@ const ModalAddOther = ({ itemEdit, role }) => {
     }, 200);
   };
 
-  //activeRole will be an array containing only the elements from role.data where user_role_is_active is 1.
-  const activeRole = role?.data.filter(
-    (role) =>
-      role.user_role_is_active === 1 &&
-      role.user_role_name.toLowerCase() !== "developer"
-  );
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `/v2/other/${itemEdit.user_other_aid}` // update
-          : `/v2/other`, // create
+          ? `/v2/department/${itemEdit.department_aid}` // update
+          : `/v2/department`, // create
         itemEdit ? "put" : "post",
         values
       ),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["other"] });
+      queryClient.invalidateQueries({ queryKey: ["department"] });
       if (!data.success) {
         dispatch(setError(true));
         dispatch(setMessage(data.error));
@@ -64,27 +57,23 @@ const ModalAddOther = ({ itemEdit, role }) => {
   }, []);
 
   const initVal = {
-    user_other_aid: itemEdit ? itemEdit.user_other_aid : "",
-    user_other_fname: itemEdit ? itemEdit.user_other_fname : "",
-    user_other_lname: itemEdit ? itemEdit.user_other_lname : "",
-    user_other_email: itemEdit ? itemEdit.user_other_email : "",
-    user_other_role_id: itemEdit ? itemEdit.user_other_role_id : "",
+    department_aid: itemEdit ? itemEdit.department_aid : "",
+    department_name: itemEdit ? itemEdit.department_name : "",
 
-    user_other_fname_old: itemEdit ? itemEdit.user_other_fname : "",
+    department_name_old: itemEdit ? itemEdit.department_name : "",
   };
+
   const yupSchema = Yup.object({
-    user_other_fname: Yup.string().required("Required"),
-    user_other_lname: Yup.string().required("Required"),
-    user_other_email: Yup.string().required("Required"),
-    user_other_role_id: Yup.string().required("Required"),
+    department_name: Yup.string().required("Required"),
   });
+
   return (
     <ModalWrapper
       className={`transition-all ease-linear transform duration-200 ${animate}`}
       handleClose={handleClose}
     >
-      <div className="modal-title">
-        <h2>{itemEdit ? "Edit" : "Add"} Other User</h2>
+         <div className="modal-title">
+        <h2>{itemEdit ? "Edit" : "Add"} Department</h2>
         <button onClick={handleClose}>
           <GrFormClose className="text-[25px]" />
         </button>
@@ -103,47 +92,10 @@ const ModalAddOther = ({ itemEdit, role }) => {
               <Form className="modal-form">
                 <div className="form-input">
                   <div className="input-wrapper">
-                    <InputSelect
-                      label="*Role"
-                      type="text"
-                      name="user_other_role_id"
-                      disabled={mutation.isPending}
-                    >
-                      {activeRole.length === 0 ? (
-                        <option>No Data</option>
-                      ) : (
-                        activeRole.map((item, key) => (
-                          <>
-                            <option hidden></option>
-                            <option value={item.user_role_aid} key={key}>
-                              {item.user_role_name}
-                            </option>
-                          </>
-                        ))
-                      )}
-                    </InputSelect>
-                  </div>
-                  <div className="input-wrapper">
                     <InputText
-                      label="*First Name"
+                      label="*Department Name"
                       type="text"
-                      name="user_other_fname"
-                      disabled={mutation.isPending}
-                    />
-                  </div>
-                  <div className="input-wrapper">
-                    <InputText
-                      label="*Last Name"
-                      type="text"
-                      name="user_other_lname"
-                      disabled={mutation.isPending}
-                    />
-                  </div>
-                  <div className="input-wrapper">
-                    <InputText
-                      label="*Email"
-                      type="email"
-                      name="user_other_email"
+                      name="department_name"
                       disabled={mutation.isPending}
                     />
                   </div>
@@ -156,7 +108,7 @@ const ModalAddOther = ({ itemEdit, role }) => {
                       type="submit"
                       disabled={mutation.isPending || !props.dirty}
                     >
-                      {mutation.isPending ? <ButtonSpinner /> : "Add"}
+                      {mutation.isPending ? <ButtonSpinner /> : "Save"}
                     </button>
                     <button className="btn-modal-cancel" type="button" onClick={handleClose}>
                       Cancel
@@ -172,4 +124,4 @@ const ModalAddOther = ({ itemEdit, role }) => {
   );
 };
 
-export default ModalAddOther;
+export default ModalAddDepartment;

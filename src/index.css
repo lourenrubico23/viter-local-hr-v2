@@ -159,13 +159,13 @@
     @apply flex text-xs items-center gap-2;
   }
   .search {
-    @apply flex items-center w-full lg:w-[25rem] relative my-3;
+    @apply flex items-center justify-end w-full lg:w-[25rem] relative my-3;
   }
   .search-icon {
-    @apply text-gray-400 text-[16px] absolute left-0 h-full rounded-tr-md rounded-br-md flex items-center px-1;
+    @apply text-gray-400 text-[16px] absolute left-0 h-full flex items-center px-1;
   }
   .search input {
-    @apply h-[37px] border-[1px] border-gray-300 text-xs pl-6;
+    @apply border-[1px] border-gray-300 text-xs pl-6;
   }
   .search input:focus {
     @apply outline-none border-primary;

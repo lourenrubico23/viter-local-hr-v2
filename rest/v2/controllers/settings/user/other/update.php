@@ -15,6 +15,7 @@ if (array_key_exists("otherid", $_GET)) {
   $other->user_other_aid = $_GET['otherid'];
   $other->user_other_fname = checkIndex($data, "user_other_fname");
   $other->user_other_lname = checkIndex($data, "user_other_lname");
+  $other->user_other_email = checkIndex($data, "user_other_email");
   $other->user_other_role_id = checkIndex($data, "user_other_role_id");
 
 

@@ -1,20 +1,16 @@
-import BreadCrumbs from "@/components/partials/BreadCrumbs";
-import Footer from "@/components/partials/Footer";
 import Header from "@/components/partials/Header";
-import {
-  setIsAdd,
-  setIsSettingsOpen
-} from "@/store/StoreAction";
-import { StoreContext } from "@/store/StoreContext";
 import React from "react";
+import Navigation from "../Navigation";
+import { StoreContext } from "@/store/StoreContext";
+import { setIsSettingsOpen } from "@/store/StoreAction";
 import { FaPlus } from "react-icons/fa6";
-import Navigation from "../../../Navigation";
-import FbsAdminTable from "./FbsAdminTable";
-import ModalAddFbsAdmin from "./ModalAddFbsAdmin";
+import EmployeesTable from "./EmployeesTable";
+import Footer from "@/components/partials/Footer";
+import ModalAddEmployees from "./ModalAddEmployees";
 import ModalSuccess from "@/components/partials/ModalSuccess";
 import ModalError from "@/components/partials/ModalError";
 
-const FbsAdmin = () => {
+const Employees = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
 
@@ -23,17 +19,15 @@ const FbsAdmin = () => {
     setItemEdit(null);
   };
 
-  React.useEffect(() => {
-    dispatch(setIsSettingsOpen(true));
-  }, []);
-
   return (
     <>
       <Header />
       <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-2"}`}>
-        <Navigation menu="settings" submenu="users" />
+        <Navigation menu="employees" />
         <div className="py-3 ml-2 flex justify-between">
-          <BreadCrumbs />
+          <div className="text-base ml-2">
+            <h2>Employee</h2>
+          </div>
           <button
             className="flex items-center gap-1 text-primary"
             onClick={handleAdd}
@@ -42,19 +36,17 @@ const FbsAdmin = () => {
             Add
           </button>
         </div>
-        <div className="text-base">
-          <h2>Users FBS Admin</h2>
-        </div>
         <div className="pb-4">
-          <FbsAdminTable setItemEdit={setItemEdit}/>
+          <EmployeesTable setItemEdit={setItemEdit} />
         </div>
         <Footer />
       </div>
-      {store.isAdd && <ModalAddFbsAdmin  itemEdit={itemEdit} setItemEdit={setItemEdit} />}
+
+      {store.isAdd && <ModalAddEmployees itemEdit={itemEdit} />}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>
   );
 };
 
-export default FbsAdmin;
+export default Employees;

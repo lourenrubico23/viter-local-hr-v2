@@ -19,6 +19,7 @@ const ModalSuccess = () => {
       handleClose();
     }, 3000);
   }, []);
+  
   return (
     <>
       <div
