@@ -73,46 +73,6 @@ class Department
         return $query;
     }
 
-    public function filterByStatus()
-    {
-        try {
-            $sql = "select * ";
-            $sql .= "from {$this->tblDepartment} ";
-            $sql .= "where department_is_active = :department_is_active ";
-            $sql .= "order by department_name asc ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "department_is_active" => $this->department_is_active,
-            ]);
-        } catch (PDOException $ex) {
-            $query = false;
-        }
-        return $query;
-    }
-
-    public function filterByStatusAndSearch()
-    {
-        try {
-            $sql = "select * ";
-            $sql .= "from {$this->tblDepartment} ";
-            $sql .= "where department_is_active = :department_is_active ";
-            $sql .= "and (department_name like :department_name ";
-            $sql .= ") ";
-            $sql .= "order by department_is_active desc, ";
-            $sql .= "department_name asc ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "department_name" => "%{$this->department_search}%",
-                "department_is_active" => $this->department_is_active,
-            ]);
-        } catch (PDOException $ex) {
-            $query = false;
-        }
-        return $query;
-    }
-
-
-
     public function create()
     {
         try {
@@ -200,6 +160,44 @@ class Department
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "department_name" => "{$this->department_name}",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function filterByStatus()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblDepartment} ";
+            $sql .= "where department_is_active = :department_is_active ";
+            $sql .= "order by department_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "department_is_active" => $this->department_is_active,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function filterByStatusAndSearch()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblDepartment} ";
+            $sql .= "where department_is_active = :department_is_active ";
+            $sql .= "and (department_name like :department_name ";
+            $sql .= ") ";
+            $sql .= "order by department_is_active desc, ";
+            $sql .= "department_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "department_name" => "%{$this->department_search}%",
+                "department_is_active" => $this->department_is_active,
             ]);
         } catch (PDOException $ex) {
             $query = false;

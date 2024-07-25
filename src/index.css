@@ -140,17 +140,17 @@
   .modal-title {
     @apply flex justify-between items-center;
   }
-  .modal-content{
-    @apply overflow-y-auto flex flex-col justify-between h-full
+  .modal-content {
+    @apply overflow-y-auto flex flex-col justify-between h-full;
   }
-  .modal-form{
-    @apply flex flex-col justify-between h-full
+  .modal-form {
+    @apply flex flex-col justify-between h-full;
   }
-  .input-wrapper{
-    @apply mb-2 my-[18px] relative flex flex-col gap-2
+  .input-wrapper {
+    @apply mb-2 my-[18px] relative flex flex-col gap-2;
   }
-  .form-btn{
-    @apply flex gap-2 pt-4
+  .form-btn {
+    @apply flex gap-2 pt-4;
   }
   /* .loading-bar::after {
     @apply content-[''] absolute top-0 left-0 w-[180%] h-full  bg-gradient-to-r from-transparent via-[#eeeeee] to-transparent  animate-loading;
@@ -162,10 +162,10 @@
     @apply flex items-center justify-end w-full lg:w-[25rem] relative my-3;
   }
   .search-icon {
-    @apply text-gray-400 text-[16px] absolute left-0 h-full flex items-center px-1;
+    @apply text-gray-400 text-[16px] absolute left-0 h-full flex items-center px-2;
   }
   .search input {
-    @apply border-[1px] border-gray-300 text-xs pl-6;
+    @apply border-[1px] border-gray-300 text-xs pl-7;
   }
   .search input:focus {
     @apply outline-none border-primary;

@@ -1,22 +1,31 @@
-import { queryDataInfinite } from '@/components/helpers/queryDataInfinite';
-import FetchingSpinner from '@/components/partials/FetchingSpinner';
-import Loadmore from '@/components/partials/LoadMore';
-import NoData from '@/components/partials/NoData';
-import SearchBar from '@/components/partials/SearchBar';
-import ServerError from '@/components/partials/ServerError';
-import Status from '@/components/partials/Status';
-import TableLoading from '@/components/partials/TableLoading';
-import TableSpinner from '@/components/partials/TableSpinner';
-import { setIsAdd, setIsArchive, setIsDelete, setIsRestore, setIsSearch } from '@/store/StoreAction';
-import { StoreContext } from '@/store/StoreContext';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import React from 'react'
-import { FaArchive, FaEdit } from 'react-icons/fa';
-import { FaUserGroup } from 'react-icons/fa6';
-import { MdDelete, MdRestore } from 'react-icons/md';
-import { useInView } from 'react-intersection-observer';
+import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
+import FetchingSpinner from "@/components/partials/FetchingSpinner";
+import Loadmore from "@/components/partials/LoadMore";
+import ModalArchive from "@/components/partials/ModalArchive";
+import ModalDelete from "@/components/partials/ModalDelete";
+import ModalRestore from "@/components/partials/ModalRestore";
+import NoData from "@/components/partials/NoData";
+import SearchBar from "@/components/partials/SearchBar";
+import ServerError from "@/components/partials/ServerError";
+import Status from "@/components/partials/Status";
+import TableLoading from "@/components/partials/TableLoading";
+import TableSpinner from "@/components/partials/TableSpinner";
+import {
+  setIsAdd,
+  setIsArchive,
+  setIsDelete,
+  setIsRestore,
+  setIsSearch,
+} from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React from "react";
+import { FaArchive, FaEdit } from "react-icons/fa";
+import { FaUserGroup } from "react-icons/fa6";
+import { MdDelete, MdRestore } from "react-icons/md";
+import { useInView } from "react-intersection-observer";
 
-const EmployeesTable = ({ setItemEdit }) => {
+const EmployeesTable = ({ setItemEdit, departmentData }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
@@ -28,9 +37,16 @@ const EmployeesTable = ({ setItemEdit }) => {
   const { ref, inView } = useInView();
 
   const [isFilter, setIsFilter] = React.useState(false);
-  const [isStatus, setIsStatus] = React.useState("all");
+  const [statusData, setStatusData] = React.useState("all");
+  const [department, setDepartment] = React.useState("all");
 
   let counter = 1;
+
+  //activeDepartment will be an array containing only the elements from department.data where department_is_active is 1.
+  const activeDepartment = departmentData?.data.filter(
+    (item) => item.department_is_active === 1
+  );
+ 
 
   const {
     data: result,
@@ -42,7 +58,14 @@ const EmployeesTable = ({ setItemEdit }) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ["employees", onSearch, store.isSearch, isFilter, isStatus],
+    queryKey: [
+      "employees",
+      onSearch,
+      store.isSearch,
+      isFilter,
+      statusData,
+      department,
+    ],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
         `/v2/employees/search`, // search endpoint
@@ -52,7 +75,8 @@ const EmployeesTable = ({ setItemEdit }) => {
           searchValue: search.current.value,
           id: "",
           isFilter,
-          employees_is_active: isStatus,
+          employees_is_active: statusData === "all" ? "" : statusData,
+          employees_department_id: department === "all" ? "" : department,
         } // search value
       ),
     getNextPageParam: (lastPage) => {
@@ -65,7 +89,20 @@ const EmployeesTable = ({ setItemEdit }) => {
   });
 
   const handleChangeStatus = (e) => {
-    setIsStatus(e.target.value);
+    setStatusData(e.target.value);
+    setIsFilter(false);
+    setDepartment("all");
+    dispatch(setIsSearch(false));
+    search.current.value = "";
+    if (e.target.value !== "all") {
+      setIsFilter(true);
+    }
+    setPage(1);
+    console.log(statusData);
+  };
+
+  const handleChangeDepartment = (e) => {
+    setDepartment(e.target.value);
     setIsFilter(false);
     dispatch(setIsSearch(false));
     search.current.value = "";
@@ -73,13 +110,12 @@ const EmployeesTable = ({ setItemEdit }) => {
       setIsFilter(true);
     }
     setPage(1);
-    console.log(isStatus);
+    console.log(department);
   };
-
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.employees_name);
+    setIsData(item.employees_fname);
     setIsId(item.employees_aid);
     setIsArchiving(true);
     setIsRestore(false);
@@ -87,7 +123,7 @@ const EmployeesTable = ({ setItemEdit }) => {
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.employees_name);
+    setIsData(item.employees_fname);
     setIsId(item.employees_aid);
     setIsArchiving(false);
     setIsRestore(true);
@@ -95,7 +131,7 @@ const EmployeesTable = ({ setItemEdit }) => {
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.employees_name);
+    setIsData(item.employees_fname);
     setIsId(item.employees_aid);
   };
 
@@ -108,13 +144,13 @@ const EmployeesTable = ({ setItemEdit }) => {
 
   return (
     <>
-    <div className="flex items-center gap-3 w-full">
+      <div className="flex items-center gap-3 w-full">
         <div className="flex items-center gap-3 w-full">
           <div className="relative flex flex-col gap-2 w-[120px]">
             <label className="z-10">Status</label>
             <select
               name="status"
-              value={isStatus}
+              value={statusData}
               onChange={(e) => handleChangeStatus(e)}
               disabled={isFetching || status === "pending"}
             >
@@ -123,23 +159,33 @@ const EmployeesTable = ({ setItemEdit }) => {
               <option value="0">Inactive</option>
             </select>
           </div>
+
+          <div className="relative flex flex-col gap-2 w-[17rem]">
+            <label className="z-10">Department</label>
+            <select
+              name="department"
+              value={department}
+              onChange={(e) => handleChangeDepartment(e)}
+              disabled={isFetching || status === "pending"}
+            >
+              <option value="all">All</option>
+              {activeDepartment?.length === 0 ? (
+                <option>No Data</option>
+              ) : (
+                activeDepartment?.map((item, key) => (
+                  <option value={item.department_aid} key={key}>
+                    {item.department_name}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
           <div className="flex items-center gap-2">
             <span>
               <FaUserGroup className="text-gray-500" />
             </span>
             {result?.pages[0].data.length}
             {/* to count the number of results o laman ng table */}
-          </div>
-          <div className="relative flex flex-col gap-2 w-[17rem]">
-            <label className="z-10">Department</label>
-            <select
-              name="status"
-              
-            >
-              <option value="all">All</option>
-              <option value="1">Active</option>
-              <option value="0">Inactive</option>
-            </select>
           </div>
         </div>
 
@@ -160,7 +206,7 @@ const EmployeesTable = ({ setItemEdit }) => {
         <FetchingSpinner />
       )}
 
-<div className="shadow-md rounded-md overflow-y-auto min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
+      <div className="shadow-md rounded-md overflow-y-auto min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
         <table>
           <thead>
             <tr>
@@ -205,10 +251,12 @@ const EmployeesTable = ({ setItemEdit }) => {
                       )}
                     </td>
                     <td>{item.employees_number}</td>
-                    <td>{item.employees_name}</td>
+                    <td>
+                      {item.employees_fname} {item.employees_lname}
+                    </td>
                     <td>{item.employees_work_email}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
-                      {item.department_is_active ? (
+                      {item.employees_is_active ? (
                         <>
                           <button
                             className="tooltip-action-table"
@@ -255,8 +303,34 @@ const EmployeesTable = ({ setItemEdit }) => {
           />
         </div>
       </div>
-    </>
-  )
-}
 
-export default EmployeesTable
+      {store.isArchive && (
+        <ModalArchive
+          setIsArchive={setIsArchive}
+          queryKey={"employees"}
+          mysqlEndpoint={`/v2/employees/active/${id}`}
+          item={isData}
+          archive={isArchiving}
+        />
+      )}
+      {store.isDelete && (
+        <ModalDelete
+          setIsDelete={setIsDelete}
+          queryKey={"employees"}
+          mysqlEndpoint={`/v2/employees/${id}`}
+          item={isData}
+        />
+      )}
+      {store.isRestore && (
+        <ModalRestore
+          setIsRestore={setIsRestore}
+          queryKey={"employees"}
+          mysqlEndpoint={`/v2/employees/active/${id}`}
+          item={isData}
+        />
+      )}
+    </>
+  );
+};
+
+export default EmployeesTable;

@@ -40,3 +40,10 @@ RewriteRule ^department/([0-9]+)$ controllers/settings/department/department.php
 RewriteRule ^department/active/([0-9]+)$ controllers/settings/department/active.php?departmentid=$1 [L]
 RewriteRule ^department/page/([0-9]+)$ controllers/settings/department/page.php?start=$1 [L]
 RewriteRule ^department/search$ controllers/settings/department/search.php [L]
+
+# SETTINGS EMPLOYEES
+RewriteRule ^employees$ controllers/employees/employees.php [L]
+RewriteRule ^employees/([0-9]+)$ controllers/employees/employees.php?employeesid=$1 [L]
+RewriteRule ^employees/active/([0-9]+)$ controllers/employees/active.php?employeesid=$1 [L]
+RewriteRule ^employees/page/([0-9]+)$ controllers/employees/page.php?start=$1 [L]
+RewriteRule ^employees/search$ controllers/employees/search.php [L]

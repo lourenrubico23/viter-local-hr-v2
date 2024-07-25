@@ -17,12 +17,14 @@ class Role
 
     public $tblUserRole;
     public $tblUserSystem;
+    public $tblUserOther;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblUserRole = "hris_user_role";
         $this->tblUserSystem = "hris_user_system";
+        $this->tblUserOther = "hris_user_other";
     }
 
     public function readAll()
@@ -161,7 +163,7 @@ class Role
     public function checkAssociationRoleName()
     {
         try {
-            $sql = "select user_system_role_id from {$this->tblUserSystem} ";
+            $sql = "select sys.user_system_role_id from {$this->tblUserSystem} ";
             $sql .= "where user_system_role_id = :user_system_role_id ";
             $query = $this->connection->prepare($sql);
             $query->execute([

@@ -2,13 +2,14 @@ import Header from "@/components/partials/Header";
 import React from "react";
 import Navigation from "../Navigation";
 import { StoreContext } from "@/store/StoreContext";
-import { setIsSettingsOpen } from "@/store/StoreAction";
+import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
 import { FaPlus } from "react-icons/fa6";
 import EmployeesTable from "./EmployeesTable";
 import Footer from "@/components/partials/Footer";
 import ModalAddEmployees from "./ModalAddEmployees";
 import ModalSuccess from "@/components/partials/ModalSuccess";
 import ModalError from "@/components/partials/ModalError";
+import useQueryData from "@/components/custom-hooks/useQueryData";
 
 const Employees = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -19,6 +20,16 @@ const Employees = () => {
     setItemEdit(null);
   };
 
+  const {
+    isLoading: departmentIsLoading,
+    isFetching: departmentIsFetching,
+    error: departmentError,
+    data: departmentData,
+  } = useQueryData(
+    `/v2/department`, // endpoint
+    "get", // method
+    "department" // key
+  );
   return (
     <>
       <Header />
@@ -37,12 +48,14 @@ const Employees = () => {
           </button>
         </div>
         <div className="pb-4">
-          <EmployeesTable setItemEdit={setItemEdit} />
+          <EmployeesTable setItemEdit={setItemEdit} departmentData={departmentData} />
         </div>
         <Footer />
       </div>
 
-      {store.isAdd && <ModalAddEmployees itemEdit={itemEdit} />}
+      {store.isAdd && (
+        <ModalAddEmployees itemEdit={itemEdit} departmentData={departmentData} />
+      )}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>

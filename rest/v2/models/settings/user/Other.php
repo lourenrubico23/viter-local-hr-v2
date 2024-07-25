@@ -206,7 +206,6 @@ class Other
         try {
             $sql = "select * from {$this->tblUserRole} ";
             $sql .= "where user_role_name = :user_role_name ";
-            $sql .= "and user_role_name = :user_role_name ";
             $sql .= "order by user_role_is_active desc, ";
             $sql .= "user_role_aid asc ";
             $query = $this->connection->query($sql);

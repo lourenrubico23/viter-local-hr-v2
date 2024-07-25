@@ -35,7 +35,7 @@ const DepartmentTable = ({ setItemEdit }) => {
   const [page, setPage] = React.useState(1);
   const search = React.useRef({ value: "" });
   const { ref, inView } = useInView();
-  
+
   const [isFilter, setIsFilter] = React.useState(false);
   const [isStatus, setIsStatus] = React.useState("all");
 
