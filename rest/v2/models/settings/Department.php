@@ -26,8 +26,7 @@ class Department
     {
         try {
             $sql = "select * from {$this->tblDepartment} ";
-            $sql .= "order by department_is_active desc, ";
-            $sql .= "department_aid asc ";
+            $sql .= "order by department_is_active desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -41,8 +40,7 @@ class Department
             $sql = "select * ";
             $sql .= "from ";
             $sql .= "{$this->tblDepartment} ";
-            $sql .= "order by department_is_active desc, "; //para nasa baba ng table ang mga inactive or archived
-            $sql .= "department_aid asc ";
+            $sql .= "order by department_is_active desc "; //para nasa baba ng table ang mga inactive or archived
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -167,13 +165,13 @@ class Department
         return $query;
     }
 
-    public function filterByStatus()
+    public function filterByStatus() // this is for status only
     {
         try {
             $sql = "select * ";
             $sql .= "from {$this->tblDepartment} ";
             $sql .= "where department_is_active = :department_is_active ";
-            $sql .= "order by department_name asc ";
+            $sql .= "order by department_is_active desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "department_is_active" => $this->department_is_active,
@@ -184,20 +182,36 @@ class Department
         return $query;
     }
 
-    public function filterByStatusAndSearch()
+    public function filterByStatusAndSearch() // for search only
     {
         try {
             $sql = "select * ";
             $sql .= "from {$this->tblDepartment} ";
             $sql .= "where department_is_active = :department_is_active ";
-            $sql .= "and (department_name like :department_name ";
-            $sql .= ") ";
-            $sql .= "order by department_is_active desc, ";
-            $sql .= "department_name asc ";
+            $sql .= "and department_name like :department_name ";
+            $sql .= "order by department_is_active desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "department_name" => "%{$this->department_search}%",
                 "department_is_active" => $this->department_is_active,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function searchAndDepartment() //both status and search
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from ";
+            $sql .= "{$this->tblDepartment} ";
+            $sql .= "where department_is_active = department_is_active ";
+            $sql .= "and department_name like :department_name ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "department_name" => "%{$this->department_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

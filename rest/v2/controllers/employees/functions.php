@@ -41,10 +41,4 @@ function checkSearchAndDepartment($object)
     return $query;
 }
 
-// filter and search 
-function checkFilterSearchAndStatus($object)
-{
-    $query = $object->filterSearchAndStatus();
-    checkQuery($query, "Empty records. (filter by status)");
-    return $query;
-}
+

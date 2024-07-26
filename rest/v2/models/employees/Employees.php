@@ -44,7 +44,7 @@ class Employees
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblDepartment} as dept ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
-            $sql .= "order by emp.employees_fname asc ";
+            $sql .= "order by emp.employees_is_active desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -60,7 +60,7 @@ class Employees
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblDepartment} as dept ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
-            $sql .= "order by emp.employees_fname asc "; //para nasa baba ng table ang mga inactive or archived
+            $sql .= "order by emp.employees_is_active desc "; //para nasa baba ng table ang mga inactive or archived
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -102,7 +102,7 @@ class Employees
             $sql .= "{$this->tblDepartment} as dept ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
             $sql .= "and emp.employees_fname like :employees_fname ";
-            $sql .= "order by emp.employees_fname asc ";
+            $sql .= "order by emp.employees_is_active desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "employees_fname" => "%{$this->employees_search}%",
@@ -194,12 +194,12 @@ class Employees
             $sql = "update {$this->tblEmployees} set ";
             $sql .= "employees_is_active = :employees_is_active, ";
             $sql .= "employees_datetime = :employees_datetime ";
-            $sql .= "where employees_aid  = :employees_aid  ";
+            $sql .= "where employees_aid = :employees_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "employees_is_active" => $this->employees_is_active,
                 "employees_datetime" => $this->employees_datetime,
-                "employees_aid " => $this->employees_aid,
+                "employees_aid" => $this->employees_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -232,7 +232,7 @@ class Employees
             $sql .= "{$this->tblDepartment} as dept ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
             $sql .= "and emp.employees_is_active = :employees_is_active ";
-            $sql .= "order by emp.employees_fname asc ";
+            $sql .= "order by emp.employees_is_active desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "employees_is_active" => $this->employees_is_active,
@@ -254,8 +254,7 @@ class Employees
             $sql .= "and employees_is_active = :employees_is_active ";
             $sql .= "and emp.employees_department_id = :employees_department_id ";
             $sql .= "and employees_fname like :employees_fname ";
-            $sql .= "order by employees_is_active desc, ";
-            $sql .= "employees_fname asc ";
+            $sql .= "order by employees_is_active desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "employees_fname" => "%{$this->employees_search}%",
@@ -277,7 +276,7 @@ class Employees
             $sql .= "{$this->tblDepartment} as dept ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
             $sql .= "and emp.employees_department_id = :employees_department_id ";
-            $sql .= "order by emp.employees_fname asc ";
+            $sql .= "order by emp.employees_is_active desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "employees_department_id" => $this->employees_department_id,
@@ -298,7 +297,7 @@ class Employees
             $sql .= "where emp.employees_department_id = dept.department_aid ";
             $sql .= "and emp.employees_department_id = :employees_department_id ";
             $sql .= "and employees_is_active = :employees_is_active ";
-            $sql .= "order by emp.employees_fname asc ";
+            $sql .= "order by emp.employees_is_active desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "employees_department_id" => $this->employees_department_id,
@@ -318,26 +317,6 @@ class Employees
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblDepartment} as dept ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
-            $sql .= "and emp.employees_fname like :employees_fname ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "employees_fname" => "%{$this->employees_search}%",
-
-            ]);
-        } catch (PDOException $ex) {
-            $query = false;
-        }
-        return $query;
-    }
-
-    public function filterSearchAndStatus()
-    {
-        try {
-            $sql = "select * ";
-            $sql .= "from ";
-            $sql .= "{$this->tblEmployees} as emp, ";
-            $sql .= "{$this->tblDepartment} as dept ";
-            $sql .= "where emp.employees_is_active = dept.department_is_active ";
             $sql .= "and emp.employees_fname like :employees_fname ";
             $query = $this->connection->prepare($sql);
             $query->execute([

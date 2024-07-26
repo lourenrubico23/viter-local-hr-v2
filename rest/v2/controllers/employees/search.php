@@ -41,12 +41,12 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             http_response_code(200);
             getQueriedData($query);
         }
-        if ( $employees->employees_is_active != "" && $employees->employees_search != "") {
+        if ($employees->employees_is_active != "" && $employees->employees_search != "") {
             $query = checkSearchAndDepartment($employees);
             http_response_code(200);
             getQueriedData($query);
         }
-        // search by department id and status active
+        // search by both department id and status active
         if (
             $employees->employees_department_id != ""
             && $employees->employees_is_active != ""

@@ -61,7 +61,7 @@ const DepartmentTable = ({ setItemEdit }) => {
           searchValue: search.current.value,
           id: "",
           isFilter,
-          department_is_active: isStatus,
+          department_is_active: isStatus === "all" ? "" : isStatus,
         } // search value
       ),
     getNextPageParam: (lastPage) => {

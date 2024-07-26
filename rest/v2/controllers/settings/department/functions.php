@@ -15,3 +15,11 @@ function checkFilterByStatusAndSearch($object)
     checkQuery($query, "Empty records. (filter by status)");
     return $query;
 }
+
+// Filter by status
+function checkSearchAndDepartment($object)
+{
+    $query = $object->searchAndDepartment();
+    checkQuery($query, "Empty records. (filter by status)");
+    return $query;
+}

@@ -46,7 +46,6 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
   const activeDepartment = departmentData?.data.filter(
     (item) => item.department_is_active === 1
   );
- 
 
   const {
     data: result,
@@ -112,6 +111,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
     setPage(1);
     console.log(department);
   };
+
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));

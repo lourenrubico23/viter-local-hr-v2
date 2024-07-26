@@ -23,19 +23,21 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
     // only if filtering
     if ($data["isFilter"]) {
-
-        // only if search with filter
+        $department->department_is_active = checkIndex($data, "department_is_active");
+        // only if search with filter / for status only
         if ($department->department_search != "") {
-
-            $department->department_is_active = checkIndex($data, "department_is_active");
-            $query = checkFilterByStatus($department);
+            $query = checkFilterByStatusAndSearch($department);
             http_response_code(200);
             getQueriedData($query);
         }
-
-        // if filter only
-        $department->department_is_active = checkIndex($data, "department_is_active");
-        $query = checkFilterByStatusAndSearch($department);
+        // for status and search
+        if ($department->department_is_active != "" && $department->department_search != "") {
+            $query = checkSearchAndDepartment($department);
+            http_response_code(200);
+            getQueriedData($query);
+        }
+        // if search only
+        $query = checkFilterByStatus($department);
         http_response_code(200);
         getQueriedData($query);
     }
