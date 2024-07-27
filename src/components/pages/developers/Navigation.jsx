@@ -69,7 +69,7 @@ const Navigation = ({ menu, submenu }) => {
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
                     menu === "overview"
-                      ? "bg-primary text-white"
+                      ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
@@ -85,7 +85,7 @@ const Navigation = ({ menu, submenu }) => {
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
                     menu === "time"
-                      ? "bg-primary text-white"
+                      ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
@@ -101,7 +101,7 @@ const Navigation = ({ menu, submenu }) => {
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
                     menu === "leave"
-                      ? "bg-primary text-white"
+                      ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
@@ -133,7 +133,7 @@ const Navigation = ({ menu, submenu }) => {
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
                     menu === "employees"
-                      ? "bg-primary text-white"
+                      ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
@@ -149,7 +149,7 @@ const Navigation = ({ menu, submenu }) => {
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
                     menu === "client"
-                      ? "bg-primary text-white"
+                      ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
@@ -165,7 +165,7 @@ const Navigation = ({ menu, submenu }) => {
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
                     menu === "announcement"
-                      ? "bg-primary text-white"
+                      ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
@@ -181,7 +181,7 @@ const Navigation = ({ menu, submenu }) => {
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
                     menu === "announcement"
-                      ? "bg-primary text-white"
+                      ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
@@ -197,7 +197,7 @@ const Navigation = ({ menu, submenu }) => {
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
                     menu === "work"
-                      ? "bg-primary text-white"
+                      ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
@@ -252,9 +252,9 @@ const Navigation = ({ menu, submenu }) => {
                   <ul className="submenu ml-12 my-1 text-[12px]">
                     <Link className="!p-0" to={`${devNavUrl}/settings/users`}>
                       <li
-                        className={`pl-2 mb-1 my-px hover:text-accent border-l-2 border-transparent ${
+                        className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
                           submenu === "users"
-                            ? "!border-accent text-white"
+                            ? "!border-accent text-accent"
                             : "hover:border-white !text-white"
                         }`}
                       >
@@ -267,9 +267,9 @@ const Navigation = ({ menu, submenu }) => {
                       to={`${devNavUrl}/settings/overview`}
                     >
                       <li
-                        className={`pl-2 mb-1 my-px hover:text-accent border-l-2 border-transparent ${
+                        className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
                           submenu === "overview"
-                            ? "!border-accent text-white"
+                            ? "!border-accent text-accent"
                             : "hover:border-white !text-white"
                         }`}
                       >
@@ -282,9 +282,9 @@ const Navigation = ({ menu, submenu }) => {
                       to={`${devNavUrl}/settings/department`}
                     >
                       <li
-                        className={`pl-2 mb-1 my-px hover:text-accent border-l-2 border-transparent ${
+                        className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
                           submenu === "department"
-                            ? "!border-accent text-white"
+                            ? "!border-accent text-accent"
                             : "hover:border-white !text-white"
                         }`}
                       >
@@ -297,9 +297,9 @@ const Navigation = ({ menu, submenu }) => {
                       to={`${devNavUrl}/settings/notification`}
                     >
                       <li
-                        className={`pl-2 mb-1 my-px hover:text-accent border-l-2 border-transparent ${
+                        className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
                           submenu === "notification"
-                            ? "!border-accent text-white"
+                            ? "!border-accent text-accent"
                             : "hover:border-white !text-white"
                         }`}
                       >
