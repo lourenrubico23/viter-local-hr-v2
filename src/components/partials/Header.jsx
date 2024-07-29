@@ -15,7 +15,7 @@ const Header = () => {
   const ref = React.useRef();
 
   const clickOutsideRef = (e) => {
-    if (!ref.current.contains(e.target)) {
+    if (!ref.current?.contains(e.target)) {
       setIsOpen(false);
     }
   };

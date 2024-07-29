@@ -30,6 +30,7 @@ const Employees = () => {
     "get", // method
     "department" // key
   );
+
   return (
     <>
       <Header />

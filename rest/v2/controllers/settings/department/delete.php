@@ -11,7 +11,7 @@ if (array_key_exists("departmentid", $_GET)) {
   // get data
   $department->department_aid = $_GET['departmentid'];
   checkId($department->department_aid);
-  
+  isAssociatedEmployeesDepartmentName($department);
 
   $query = checkDelete($department);
 

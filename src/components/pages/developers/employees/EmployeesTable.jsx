@@ -112,7 +112,6 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
     console.log(department);
   };
 
-
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
     setIsData(item.employees_fname);
@@ -135,6 +134,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
     setIsId(item.employees_aid);
   };
 
+  // used for loading of pages without clicking the Load more button
   React.useEffect(() => {
     if (inView) {
       setPage((prev) => prev + 1);
@@ -184,8 +184,10 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
             <span>
               <FaUserGroup className="text-gray-500" />
             </span>
-            {result?.pages[0].data.length}
-            {/* to count the number of results o laman ng table */}
+            {store.isSearch || isFilter
+              ? result?.pages[0].count
+              : result?.pages[0].total}
+            {/* result?.pages[0].count - for search ,  result?.pages[0].total - for total of data in a page*/}
           </div>
         </div>
 
@@ -222,6 +224,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
             {isLoading && !isFetchingNextPage && status !== "pending" && (
               <TableSpinner />
             )}
+
             {(status === "pending" || result?.pages[0].data.length === 0) && (
               <tr className="text-center">
                 <td colSpan="100%" className="p-10">
@@ -240,7 +243,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
 
             {result?.pages.map((page, key) => (
               <React.Fragment key={key}>
-                {page.data.map((item, key) => (
+                {page.data?.map((item, key) => (
                   <tr key={key}>
                     <td className="pl-2">{counter++}</td>
                     <td>
@@ -291,17 +294,15 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
             ))}
           </tbody>
         </table>
-        <div className="text-center mt-5">
-          <Loadmore
-            fetchNextPage={fetchNextPage}
-            isFetchingNextPage={isFetchingNextPage}
-            hasNextPage={hasNextPage}
-            result={result?.pages[0]}
-            setPage={setPage}
-            page={page}
-            refView={ref}
-          />
-        </div>
+        <Loadmore
+          fetchNextPage={fetchNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          hasNextPage={hasNextPage}
+          result={result?.pages[0]}
+          setPage={setPage}
+          page={page}
+          refView={ref}
+        />
       </div>
 
       {store.isArchive && (

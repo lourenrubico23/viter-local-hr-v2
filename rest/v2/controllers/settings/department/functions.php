@@ -1,6 +1,6 @@
 <?php
 
-// Read all
+// filter by status
 function checkFilterByStatus($object)
 {
     $query = $object->filterByStatus();
@@ -8,7 +8,7 @@ function checkFilterByStatus($object)
     return $query;
 }
 
-// Read all
+// filter by status and search
 function checkFilterByStatusAndSearch($object)
 {
     $query = $object->filterByStatusAndSearch();
@@ -16,10 +16,10 @@ function checkFilterByStatusAndSearch($object)
     return $query;
 }
 
-// Filter by status
-function checkSearchAndDepartment($object)
+// association with employees department name
+function isAssociatedEmployeesDepartmentName($object)
 {
-    $query = $object->searchAndDepartment();
-    checkQuery($query, "Empty records. (filter by status)");
-    return $query;
+    $query = $object->checkAssociationEmployeesDepartmentName();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }

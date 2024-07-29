@@ -1,8 +1,7 @@
 import React from "react";
 import ButtonSpinner from "./ButtonSpinner";
 
-
-const Loadmore = ({
+const LoadMore = ({
   fetchNextPage,
   isFetchingNextPage,
   hasNextPage,
@@ -48,4 +47,4 @@ const Loadmore = ({
   }
 };
 
-export default Loadmore;
+export default LoadMore;

@@ -73,7 +73,10 @@ const Navigation = ({ menu, submenu }) => {
                       : "hover:bg-secondary/40"
                   }`}
                 >
-                  <Link className="px-4 py-0.5 w-full">
+                  <Link
+                    to={`${devNavUrl}/overview`}
+                    className="px-4 py-0.5 w-full"
+                  >
                     <div className="nav">
                       <BsFillGrid1X2Fill className="text-sm" />
                       <span className="ml-2.5">OVERVIEW</span>
@@ -89,7 +92,7 @@ const Navigation = ({ menu, submenu }) => {
                       : "hover:bg-secondary/40"
                   }`}
                 >
-                  <Link className="px-4 py-0.5 w-full">
+                  <Link to={`${devNavUrl}/time`} className="px-4 py-0.5 w-full">
                     <div className="nav">
                       <MdTimer className="text-base" />
                       <span className="ml-2.5">TIME</span>
@@ -105,7 +108,10 @@ const Navigation = ({ menu, submenu }) => {
                       : "hover:bg-secondary/40"
                   }`}
                 >
-                  <Link className="px-4 py-0.5 w-full">
+                  <Link
+                    to={`${devNavUrl}/leave`}
+                    className="px-4 py-0.5 w-full"
+                  >
                     <div className="nav">
                       <BsFillCalendarEventFill className="text-sm" />
                       <span className="ml-2.5">LEAVE</span>
@@ -117,11 +123,14 @@ const Navigation = ({ menu, submenu }) => {
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
                     menu === "overtime"
-                      ? "bg-primary text-white"
+                      ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
-                  <Link className="px-4 py-0.5 w-full">
+                  <Link
+                    to={`${devNavUrl}/overtime`}
+                    className="px-4 py-0.5 w-full"
+                  >
                     <div className="nav">
                       <MdWorkHistory className="text-sm" />
                       <span className="ml-2.5">OVERTIME</span>
@@ -137,7 +146,10 @@ const Navigation = ({ menu, submenu }) => {
                       : "hover:bg-secondary/40"
                   }`}
                 >
-                  <Link to={`${devNavUrl}/employees`} className="px-4 py-0.5 w-full">
+                  <Link
+                    to={`${devNavUrl}/employees`}
+                    className="px-4 py-0.5 w-full"
+                  >
                     <div className="nav">
                       <HiUserGroup className="text-sm" />
                       <span className="ml-2.5">EMPLOYEES</span>
@@ -153,7 +165,10 @@ const Navigation = ({ menu, submenu }) => {
                       : "hover:bg-secondary/40"
                   }`}
                 >
-                  <Link className="px-4 py-0.5 w-full">
+                  <Link
+                    to={`${devNavUrl}/client`}
+                    className="px-4 py-0.5 w-full"
+                  >
                     <div className="nav">
                       <FaBuildingUser className="text-sm" />
                       <span className="ml-2.5">CLIENT</span>
@@ -169,7 +184,10 @@ const Navigation = ({ menu, submenu }) => {
                       : "hover:bg-secondary/40"
                   }`}
                 >
-                  <Link className="px-4 py-0.5 w-full">
+                  <Link
+                    to={`${devNavUrl}/announcement`}
+                    className="px-4 py-0.5 w-full"
+                  >
                     <div className="nav">
                       <HiSpeakerphone className="text-sm" />
                       <span className="ml-2.5">ANNOUNCEMENT</span>
@@ -180,12 +198,15 @@ const Navigation = ({ menu, submenu }) => {
                 {/* Calendar */}
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
-                    menu === "announcement"
+                    menu === "calendar"
                       ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
-                  <Link className="px-4 py-0.5 w-full">
+                  <Link
+                    to={`${devNavUrl}/calendar`}
+                    className="px-4 py-0.5 w-full"
+                  >
                     <div className="nav">
                       <FaCalendarDays className="text-sm" />
                       <span className="ml-2.5">CALENDAR RD & L</span>
@@ -196,12 +217,15 @@ const Navigation = ({ menu, submenu }) => {
                 {/* Work Schedule */}
                 <li
                   className={`flex items-center justify-between text-white my-1.5 ${
-                    menu === "work"
+                    menu === "workSched"
                       ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
                   }`}
                 >
-                  <Link className="px-4 py-0.5 w-full">
+                  <Link
+                    to={`${devNavUrl}/workSched`}
+                    className="px-4 py-0.5 w-full"
+                  >
                     <div className="nav">
                       <FaBuildingUser className="text-sm" />
                       <span className="ml-2.5">WORK SCHEDULE</span>
@@ -211,7 +235,7 @@ const Navigation = ({ menu, submenu }) => {
 
                 {/* Payroll */}
                 <li
-                  className={`pr-3 pl-4 py-0.5 w-full flex items-center justify-between ${
+                  className={`pr-3 pl-4 py-0.5 my-1.5 w-full flex items-center justify-between ${
                     menu === "payroll"
                       ? "bg-secondary text-white"
                       : "hover:bg-secondary/40"
@@ -222,9 +246,8 @@ const Navigation = ({ menu, submenu }) => {
                     <span className="ml-2.5">PAYROLL</span>
                   </div>
                   <GoChevronDown
-                    className={`duration-200 text-[15px] ${
-                      store.isSettingsOpen && "-rotate-180 duration-200 "
-                    }`}
+                    className={`duration-200 text-[15px] 
+                      `}
                   />
                 </li>
 
@@ -259,21 +282,6 @@ const Navigation = ({ menu, submenu }) => {
                         }`}
                       >
                         User
-                      </li>
-                    </Link>
-
-                    <Link
-                      className="!p-0"
-                      to={`${devNavUrl}/settings/overview`}
-                    >
-                      <li
-                        className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
-                          submenu === "overview"
-                            ? "!border-accent text-accent"
-                            : "hover:border-white !text-white"
-                        }`}
-                      >
-                        Overview
                       </li>
                     </Link>
 
@@ -317,7 +325,11 @@ const Navigation = ({ menu, submenu }) => {
             }`}
             onClick={handleShow}
           >
-            <FaIndent className={` text-sm ${store.isShow && "rotate-180"}`} />
+            <FaIndent
+              className={` text-sm hover:text-secondary ${
+                store.isShow && "rotate-180"
+              }`}
+            />
           </div>
         </div>
       </div>

@@ -11,7 +11,7 @@ if (array_key_exists("employeesid", $_GET)) {
   // get data
   $employees->employees_aid = $_GET['employeesid'];
   checkId($employees->employees_aid);
-  
+
 
   $query = checkDelete($employees);
 

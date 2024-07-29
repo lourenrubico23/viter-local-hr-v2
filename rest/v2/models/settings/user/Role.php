@@ -160,14 +160,29 @@ class Role
         return $query;
     }
 
-    public function checkAssociationRoleName()
+    public function checkAssociationSystemRoleName()
     {
         try {
-            $sql = "select sys.user_system_role_id from {$this->tblUserSystem} ";
+            $sql = "select user_system_role_id from {$this->tblUserSystem} ";
             $sql .= "where user_system_role_id = :user_system_role_id ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_system_role_id" => $this->user_role_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function checkAssociationOtherRoleName()
+    {
+        try {
+            $sql = "select user_other_role_id from {$this->tblUserOther} ";
+            $sql .= "where user_other_role_id = :user_other_role_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_other_role_id" => $this->user_role_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

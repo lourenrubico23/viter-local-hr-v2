@@ -109,16 +109,14 @@ const ModalAddOther = ({ itemEdit, role }) => {
                       name="user_other_role_id"
                       disabled={mutation.isPending}
                     >
+                      <option hidden></option>
                       {activeRole.length === 0 ? (
                         <option>No Data</option>
                       ) : (
-                        activeRole.map((item, key) => (
-                          <>
-                            <option hidden></option>
-                            <option value={item.user_role_aid} key={key}>
-                              {item.user_role_name}
-                            </option>
-                          </>
+                        activeRole?.map((item, key) => (
+                          <option value={item.user_role_aid} key={key}>
+                            {item.user_role_name}
+                          </option>
                         ))
                       )}
                     </InputSelect>
@@ -158,7 +156,11 @@ const ModalAddOther = ({ itemEdit, role }) => {
                     >
                       {mutation.isPending ? <ButtonSpinner /> : "Add"}
                     </button>
-                    <button className="btn-modal-cancel" type="button" onClick={handleClose}>
+                    <button
+                      className="btn-modal-cancel"
+                      type="button"
+                      onClick={handleClose}
+                    >
                       Cancel
                     </button>
                   </div>

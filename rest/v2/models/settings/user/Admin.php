@@ -63,11 +63,13 @@ class Admin
         try {
             $sql = "select * ";
             $sql .= "from {$this->tblUserAdmin} ";
-            $sql .= "where user_admin_fname like :user_admin_fname ";
+            $sql .= "where user_admin_fname = user_admin_fname ";
+            $sql .= "and (user_admin_fname like :user_admin_fname ";
+            $sql .= "or user_admin_lname like :user_admin_lname) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_admin_fname" => "%{$this->user_admin_search}%",
-
+                "user_admin_lname" => "%{$this->user_admin_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

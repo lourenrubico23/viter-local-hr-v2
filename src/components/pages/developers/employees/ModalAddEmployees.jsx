@@ -15,7 +15,7 @@ import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
 
-const ModalAddEmployees = ({ itemEdit, department }) => {
+const ModalAddEmployees = ({ itemEdit, departmentData }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
 
@@ -27,7 +27,7 @@ const ModalAddEmployees = ({ itemEdit, department }) => {
   };
 
   //activeDepartment will be an array containing only the elements from department.data where department_is_active is 1.
-  const activeDepartment = department?.data.filter(
+  const activeDepartment = departmentData?.data.filter(
     (department) => department.department_is_active === 1
   );
 
@@ -43,7 +43,7 @@ const ModalAddEmployees = ({ itemEdit, department }) => {
         values
       ),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["other"] });
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
       if (!data.success) {
         dispatch(setError(true));
         dispatch(setMessage(data.error));
@@ -167,16 +167,14 @@ const ModalAddEmployees = ({ itemEdit, department }) => {
                       name="employees_department_id"
                       disabled={mutation.isPending}
                     >
-                      {activeDepartment.length === 0 ? (
+                      <option hidden></option>
+                      {activeDepartment?.length === 0 ? (
                         <option>No Data</option>
                       ) : (
-                        activeDepartment.map((item, key) => (
-                          <>
-                            <option hidden></option>
-                            <option value={item.department_aid} key={key}>
-                              {item.department_name}
-                            </option>
-                          </>
+                        activeDepartment?.map((item, key) => (
+                          <option value={item.department_aid} key={key}>
+                            {item.department_name}
+                          </option>
                         ))
                       )}
                     </InputSelect>

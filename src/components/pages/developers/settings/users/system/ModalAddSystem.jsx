@@ -157,7 +157,11 @@ const ModalAddSystem = ({ itemEdit, role }) => {
                     >
                       {mutation.isPending ? <ButtonSpinner /> : "Save"}
                     </button>
-                    <button className="btn-modal-cancel" type="button" onClick={handleClose}>
+                    <button
+                      className="btn-modal-cancel"
+                      type="button"
+                      onClick={handleClose}
+                    >
                       Cancel
                     </button>
                   </div>

@@ -76,7 +76,7 @@ class System
             $sql .= "{$this->tblUserSystem} as sys, ";
             $sql .= "{$this->tblUserRole} as role ";
             $sql .= "where sys.user_system_role_id = role.user_role_aid ";
-            $sql .= "where sys.user_system_aid = :user_system_aid ";
+            $sql .= "and sys.user_system_aid = :user_system_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_system_aid" => $this->user_system_aid,
@@ -92,11 +92,13 @@ class System
         try {
             $sql = "select * ";
             $sql .= "from {$this->tblUserSystem} ";
-            $sql .= "where user_system_fname like :user_system_fname ";
+            $sql .= "where user_system_fname = user_system_fname ";
+            $sql .= "and (user_system_fname like :user_system_fname ";
+            $sql .= "or user_system_lname like :user_system_lname) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_system_fname" => "%{$this->user_system_search}%",
-
+                "user_system_lname" => "%{$this->user_system_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

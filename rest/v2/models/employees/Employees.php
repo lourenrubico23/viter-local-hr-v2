@@ -101,12 +101,13 @@ class Employees
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblDepartment} as dept ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
-            $sql .= "and emp.employees_fname like :employees_fname ";
+            $sql .= "and (emp.employees_fname like :employees_fname ";
+            $sql .= "or emp.employees_lname like :employees_lname) ";
             $sql .= "order by emp.employees_is_active desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "employees_fname" => "%{$this->employees_search}%",
-
+                "employees_lname" => "%{$this->employees_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -177,10 +178,10 @@ class Employees
     {
         try {
             $sql = "delete from {$this->tblEmployees} ";
-            $sql .= "where employees_aid  = :employees_aid  ";
+            $sql .= "where employees_aid = :employees_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "employees_aid " => $this->employees_aid,
+                "employees_aid" => $this->employees_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -328,4 +329,25 @@ class Employees
         }
         return $query;
     }
+
+    // public function searchLastName()
+    // {
+    //     try {
+    //         $sql = "select * ";
+    //         $sql .= "from ";
+    //         $sql .= "{$this->tblEmployees} as emp, ";
+    //         $sql .= "{$this->tblDepartment} as dept ";
+    //         $sql .= "where emp.employees_department_id = dept.department_aid ";
+    //         $sql .= "and emp.employees_lname like :employees_lname ";
+    //         $sql .= "order by emp.employees_is_active desc ";
+    //         $query = $this->connection->prepare($sql);
+    //         $query->execute([
+    //             "employees_lname" => "%{$this->employees_search}%",
+
+    //         ]);
+    //     } catch (PDOException $ex) {
+    //         $query = false;
+    //     }
+    //     return $query;
+    // }
 }

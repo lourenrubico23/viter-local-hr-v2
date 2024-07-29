@@ -11,7 +11,8 @@ if (array_key_exists("roleid", $_GET)) {
   // get data
   $role->user_role_aid = $_GET['roleid'];
   checkId($role->user_role_aid);
-  isAssociatedRoleName($role);
+  isAssociatedSystemRoleName($role);
+  isAssociatedOtherRoleName($role);
 
   $query = checkDelete($role);
 

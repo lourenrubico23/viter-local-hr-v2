@@ -8,9 +8,7 @@ const NoData = () => {
         <span className="text-4xl text-gray-400">
           <FaFolderOpen />
         </span>
-        <span className="font-bold text-gray-300 text-sm">
-          No Data Found
-        </span>
+        <span className="font-bold text-gray-300 text-sm">No Data</span>
       </div>
     </>
   );

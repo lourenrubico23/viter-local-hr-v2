@@ -94,11 +94,12 @@ class Other
             $sql .= "{$this->tblUserOther} as other, ";
             $sql .= "{$this->tblUserRole} as role ";
             $sql .= "where other.user_other_role_id = role.user_role_aid ";
-            $sql .= "and other.user_other_fname like :user_other_fname ";
+            $sql .= "and (other.user_other_fname like :user_other_fname ";
+            $sql .= "or other.user_other_lname like :user_other_lname) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_other_fname" => "%{$this->user_other_search}%",
-
+                "user_other_lname" => "%{$this->user_other_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

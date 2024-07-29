@@ -30,12 +30,12 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             http_response_code(200);
             getQueriedData($query);
         }
-        // for status and search
-        if ($department->department_is_active != "" && $department->department_search != "") {
-            $query = checkSearchAndDepartment($department);
-            http_response_code(200);
-            getQueriedData($query);
-        }
+        // // for status and search
+        // if ($department->department_is_active != "" && $department->department_search != "") {
+        //     $query = checkSearchAndDepartment($department);
+        //     http_response_code(200);
+        //     getQueriedData($query);
+        // }
         // if search only
         $query = checkFilterByStatus($department);
         http_response_code(200);

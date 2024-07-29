@@ -37,7 +37,7 @@ const DepartmentTable = ({ setItemEdit }) => {
   const { ref, inView } = useInView();
 
   const [isFilter, setIsFilter] = React.useState(false);
-  const [isStatus, setIsStatus] = React.useState("all");
+  const [statusData, setStatusData] = React.useState("all");
 
   let counter = 1;
 
@@ -51,7 +51,7 @@ const DepartmentTable = ({ setItemEdit }) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ["department", onSearch, store.isSearch, isFilter, isStatus],
+    queryKey: ["department", onSearch, store.isSearch, isFilter, statusData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
         `/v2/department/search`, // search endpoint
@@ -61,7 +61,7 @@ const DepartmentTable = ({ setItemEdit }) => {
           searchValue: search.current.value,
           id: "",
           isFilter,
-          department_is_active: isStatus === "all" ? "" : isStatus,
+          department_is_active: statusData === "all" ? "" : statusData,
         } // search value
       ),
     getNextPageParam: (lastPage) => {
@@ -74,7 +74,7 @@ const DepartmentTable = ({ setItemEdit }) => {
   });
 
   const handleChangeStatus = (e) => {
-    setIsStatus(e.target.value);
+    setStatusData(e.target.value);
     setIsFilter(false);
     dispatch(setIsSearch(false));
     search.current.value = "";
@@ -82,7 +82,7 @@ const DepartmentTable = ({ setItemEdit }) => {
       setIsFilter(true);
     }
     setPage(1);
-    console.log(isStatus);
+    console.log(statusData);
   };
 
   const handleEdit = (item) => {
@@ -126,7 +126,7 @@ const DepartmentTable = ({ setItemEdit }) => {
             <label className="z-10">Status</label>
             <select
               name="status"
-              value={isStatus}
+              value={statusData}
               onChange={(e) => handleChangeStatus(e)}
               disabled={isFetching || status === "pending"}
             >
@@ -139,8 +139,10 @@ const DepartmentTable = ({ setItemEdit }) => {
             <span>
               <FaUserGroup className="text-gray-500" />
             </span>
-            {result?.pages[0].data.length}
-            {/* to count the number of results o laman ng table */}
+            {store.isSearch || isFilter
+              ? result?.pages[0].count
+              : result?.pages[0].total}
+            {/* result?.pages[0].count - for search ,  result?.pages[0].total - for total of data in a page*/}
           </div>
         </div>
 
@@ -193,7 +195,7 @@ const DepartmentTable = ({ setItemEdit }) => {
 
             {result?.pages.map((page, key) => (
               <React.Fragment key={key}>
-                {page.data.map((item, key) => (
+                {page.data?.map((item, key) => (
                   <tr key={key}>
                     <td className="pl-2">{counter++}</td>
                     <td>

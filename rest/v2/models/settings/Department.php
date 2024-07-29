@@ -15,11 +15,13 @@ class Department
     public $department_search;
 
     public $tblDepartment;
+    public $tblEmployees;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblDepartment = "hris_department";
+        $this->tblEmployees = "hris_employees";
     }
 
     public function readAll()
@@ -201,17 +203,14 @@ class Department
         return $query;
     }
 
-    public function searchAndDepartment() //both status and search
+    public function checkAssociationEmployeesDepartmentName()
     {
         try {
-            $sql = "select * ";
-            $sql .= "from ";
-            $sql .= "{$this->tblDepartment} ";
-            $sql .= "where department_is_active = department_is_active ";
-            $sql .= "and department_name like :department_name ";
+            $sql = "select employees_department_id from {$this->tblEmployees} ";
+            $sql .= "where employees_department_id = :employees_department_id ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "department_name" => "%{$this->department_search}%",
+                "employees_department_id" => $this->department_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;
