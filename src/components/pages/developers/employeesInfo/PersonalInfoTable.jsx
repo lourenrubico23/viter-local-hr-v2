@@ -8,21 +8,10 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import { FaPencilAlt } from "react-icons/fa";
 
-const PersonalInfoTable = ({ setItemEdit, id }) => {
+const PersonalInfoTable = ({ setItemEdit, isLoading, isFetching, status, employees }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
-  const {
-    isLoading,
-    isFetching,
-    error,
-    status,
-    data: employees,
-  } = useQueryData(
-    `/v2/employees/${id}`, // endpoint
-    "get", // method
-    "employees" // key
-  );
-
+ 
   const handleAdd = (item) => {
     dispatch(setIsAdd(true));
     setItemEdit(item);
@@ -46,7 +35,7 @@ const PersonalInfoTable = ({ setItemEdit, id }) => {
         <h2>BASIC INFORMATION</h2>
         <button
           className="flex items-center gap-1 text-primary"
-          onClick={() => handleAdd(employees.data[0])}
+          onClick={() => handleAdd(item)}
         >
           <FaPencilAlt />
           Update

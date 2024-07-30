@@ -12,16 +12,15 @@ import Status from "@/components/partials/Status";
 import TableLoading from "@/components/partials/TableLoading";
 import TableSpinner from "@/components/partials/TableSpinner";
 import {
-  setIsAdd,
   setIsArchive,
   setIsDelete,
   setIsRestore,
-  setIsSearch,
+  setIsSearch
 } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
-import { FaArchive, FaEdit } from "react-icons/fa";
+import { FaArchive } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
@@ -137,9 +136,6 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
     setIsId(item.employees_aid);
   };
 
-  const handleClick = () => {
-    dispatch(setIsAdd(devNavUrl))
-  }
 
   // used for loading of pages without clicking the Load more button
   React.useEffect(() => {
@@ -251,24 +247,24 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
             {result?.pages.map((page, key) => (
               <React.Fragment key={key}>
                 {page.data?.map((item, key) => (
+                  
                   <tr key={key}>
-                    <Link
-                      to={`${devNavUrl}/employees/info?id=${item.employees_aid}`}
-                    >
-                      <td className="pl-2">{counter++}</td>
-                    </Link>
-                    <td>
+                    
+                      <td className="pl-2" onClick={() => { window.location.href = `${devNavUrl}/employees/info?id=${item.employees_aid}`;}}>{counter++}</td>
+                     
+                      
+                    <td onClick={() => { window.location.href = `${devNavUrl}/employees/info?id=${item.employees_aid}`;}}>
                       {item.employees_is_active === 1 ? (
                         <Status text="Active" />
                       ) : (
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.employees_number}</td>
-                    <td>
+                    <td onClick={() => { window.location.href = `${devNavUrl}/employees/info?id=${item.employees_aid}`;}}>{item.employees_number}</td>
+                    <td onClick={() => { window.location.href = `${devNavUrl}/employees/info?id=${item.employees_aid}`;}}>
                       {item.employees_fname} {item.employees_lname}
                     </td>
-                    <td>{item.employees_work_email}</td>
+                    <td onClick={() => { window.location.href = `${devNavUrl}/employees/info?id=${item.employees_aid}`;}}>{item.employees_work_email}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
                       {item.employees_is_active ? (
                         <>
@@ -299,6 +295,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
                         </>
                       )}
                     </td>
+                  
                   </tr>
                 ))}
               </React.Fragment>

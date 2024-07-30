@@ -7,7 +7,7 @@ import Employees from "@/components/pages/developers/employees/Employees";
 import Leave from "@/components/pages/developers/leave/Leave";
 import Overtime from "@/components/pages/developers/overtime/Overtime";
 import Overview from "@/components/pages/developers/overview/Overview";
-import PersonalInfo from "@/components/pages/developers/personalInfo/PersonalInfo";
+import PersonalInfo from "@/components/pages/developers/employeesInfo/PersonalInfo";
 import Department from "@/components/pages/developers/settings/department/Department";
 import Notification from "@/components/pages/developers/settings/notification/Notification";
 import FbsAdmin from "@/components/pages/developers/settings/users/fbsAdmin/FbsAdmin";

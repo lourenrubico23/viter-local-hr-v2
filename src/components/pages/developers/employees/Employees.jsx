@@ -10,6 +10,7 @@ import ModalAddEmployees from "./ModalAddEmployees";
 import ModalSuccess from "@/components/partials/ModalSuccess";
 import ModalError from "@/components/partials/ModalError";
 import useQueryData from "@/components/custom-hooks/useQueryData";
+import PersonalInfo from "../employeesInfo/PersonalInfo";
 
 const Employees = () => {
   const { store, dispatch } = React.useContext(StoreContext);
