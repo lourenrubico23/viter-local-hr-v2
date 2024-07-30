@@ -81,7 +81,7 @@ const RoleTable = ({ setItemEdit }) => {
   return (
     <>
       {isFetching && !isLoading && <FetchingSpinner />}
-      <div className="shadow-md rounded-md overflow-y-auto mt-3 min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
+      <div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
         <table className="relative">
           {isLoading && <TableSpinner />}
           <thead>

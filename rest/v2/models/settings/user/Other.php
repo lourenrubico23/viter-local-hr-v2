@@ -36,7 +36,8 @@ class Other
             $sql .= "{$this->tblUserRole} as role ";
             $sql .= "where other.user_other_role_id = role.user_role_aid ";
             $sql .= "order by other.user_other_is_active desc, ";
-            $sql .= "other.user_other_aid asc ";
+            $sql .= "other.user_other_fname asc, ";
+            $sql .= "other.user_other_lname asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -52,8 +53,9 @@ class Other
             $sql .= "{$this->tblUserOther} as other, ";
             $sql .= "{$this->tblUserRole} as role ";
             $sql .= "where other.user_other_role_id = role.user_role_aid ";
-            $sql .= "order by other.user_other_is_active desc, "; //para nasa baba ng table ang mga inactive or archived
-            $sql .= "other.user_other_aid asc ";
+            $sql .= "order by other.user_other_is_active desc, ";
+            $sql .= "other.user_other_fname asc, ";
+            $sql .= "other.user_other_lname asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -94,12 +96,19 @@ class Other
             $sql .= "{$this->tblUserOther} as other, ";
             $sql .= "{$this->tblUserRole} as role ";
             $sql .= "where other.user_other_role_id = role.user_role_aid ";
-            $sql .= "and (other.user_other_fname like :user_other_fname ";
-            $sql .= "or other.user_other_lname like :user_other_lname) ";
+            $sql .= "and (concat(other.user_other_fname, ' ',other.user_other_lname) like :full_name ";
+            $sql .= "or other.user_other_fname like :user_other_fname ";
+            $sql .= "or other.user_other_lname like :user_other_lname ";
+            $sql .= "or other.user_other_email like :user_other_email) ";
+            $sql .= "order by other.user_other_is_active desc, ";
+            $sql .= "other.user_other_fname asc, ";
+            $sql .= "other.user_other_lname asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
+                "full_name" => "%{$this->user_other_search}%",
                 "user_other_fname" => "%{$this->user_other_search}%",
                 "user_other_lname" => "%{$this->user_other_search}%",
+                "user_other_email" => "%{$this->user_other_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -207,8 +216,9 @@ class Other
         try {
             $sql = "select * from {$this->tblUserRole} ";
             $sql .= "where user_role_name = :user_role_name ";
-            $sql .= "order by user_role_is_active desc, ";
-            $sql .= "user_role_aid asc ";
+            $sql .= "order by other.user_other_is_active desc, ";
+            $sql .= "other.user_other_fname asc, ";
+            $sql .= "other.user_other_lname asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;

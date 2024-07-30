@@ -79,7 +79,9 @@ const ModalAddSystem = ({ itemEdit, role }) => {
   const yupSchema = Yup.object({
     user_system_fname: Yup.string().required("Required"),
     user_system_lname: Yup.string().required("Required"),
-    user_system_email: Yup.string().required("Required"),
+    user_system_email: Yup.string()
+      .required("Required")
+      .email("Invalid Email."),
   });
 
   return (

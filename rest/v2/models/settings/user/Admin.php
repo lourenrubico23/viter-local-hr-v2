@@ -29,7 +29,8 @@ class Admin
         try {
             $sql = "select * from {$this->tblUserAdmin} ";
             $sql .= "order by user_admin_is_active desc, ";
-            $sql .= "user_admin_aid asc ";
+            $sql .= "user_admin_fname asc, ";
+            $sql .= "user_admin_lname asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -43,8 +44,9 @@ class Admin
             $sql = "select * ";
             $sql .= "from ";
             $sql .= "{$this->tblUserAdmin} ";
-            $sql .= "order by user_admin_is_active desc, "; //para nasa baba ng table ang mga inactive or archived
-            $sql .= "user_admin_aid asc ";
+            $sql .= "order by user_admin_is_active desc, ";
+            $sql .= "user_admin_fname asc, ";
+            $sql .= "user_admin_lname asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -64,12 +66,19 @@ class Admin
             $sql = "select * ";
             $sql .= "from {$this->tblUserAdmin} ";
             $sql .= "where user_admin_fname = user_admin_fname ";
-            $sql .= "and (user_admin_fname like :user_admin_fname ";
-            $sql .= "or user_admin_lname like :user_admin_lname) ";
+            $sql .= "and (concat(user_admin_fname, ' ',user_admin_lname) like :full_name ";
+            $sql .= "or user_admin_fname like :user_admin_fname ";
+            $sql .= "or user_admin_lname like :user_admin_lname ";
+            $sql .= "or user_admin_email like :user_admin_email) ";
+            $sql .= "order by user_admin_is_active desc, ";
+            $sql .= "user_admin_fname asc, ";
+            $sql .= "user_admin_lname asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
+                "full_name" => "%{$this->user_admin_search}%",
                 "user_admin_fname" => "%{$this->user_admin_search}%",
                 "user_admin_lname" => "%{$this->user_admin_search}%",
+                "user_admin_email" => "%{$this->user_admin_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

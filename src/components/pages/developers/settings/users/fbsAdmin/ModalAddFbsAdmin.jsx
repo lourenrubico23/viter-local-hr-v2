@@ -67,7 +67,7 @@ const ModalAddFbsAdmin = ({ itemEdit }) => {
   const yupSchema = Yup.object({
     user_admin_fname: Yup.string().required("Required"),
     user_admin_lname: Yup.string().required("Required"),
-    user_admin_email: Yup.string().required("Required"),
+    user_admin_email: Yup.string().required("Required").email("Invalid Email."),
   });
 
   return (

@@ -75,7 +75,7 @@ const ModalAddOther = ({ itemEdit, role }) => {
   const yupSchema = Yup.object({
     user_other_fname: Yup.string().required("Required"),
     user_other_lname: Yup.string().required("Required"),
-    user_other_email: Yup.string().required("Required"),
+    user_other_email: Yup.string().required("Required").email("Invalid Email."),
     user_other_role_id: Yup.string().required("Required"),
   });
   return (

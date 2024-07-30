@@ -11,6 +11,7 @@ const BreadCrumbs = ({ param = "" }) => {
   const link = "";
   let currentLink = "";
 
+  console.log(param);
   const handleClick = () => {
     // dispatch(setIsSearch(false));
   };
@@ -40,23 +41,21 @@ const BreadCrumbs = ({ param = "" }) => {
                 ? ""
                 : `${devNavUrl}${link}${currentLink}${param}`
             }
-            className="mr-2 font-medium hover:text-accent capitalize text-[10px]"
+            className="mr-2 font-medium capitalize text-[10px]"
           >
             {crumb.replaceAll("-", " ")}
           </Link>
         </li>
       );
     });
+
   return (
     <>
       <div className="flex items-center gap-5 breadcrumbs pl-2.5">
         {crumbs.length === 1 ? (
           ""
         ) : (
-          <button
-            type="button"
-            onClick={() => handleBack()}
-          >
+          <button type="button" onClick={() => handleBack()}>
             <FaArrowLeft className="w-4 h-4 lg:h-4 lg:w-4" />
           </button>
         )}

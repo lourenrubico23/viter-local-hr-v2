@@ -13,6 +13,9 @@ export default {
         alert: "rgb(var(--alert-color) / <alpha-value>)",
       },
     },
+    animation: {
+      shake: "shake .2s ease-in-out",
+    },
   },
   plugins: [],
 };

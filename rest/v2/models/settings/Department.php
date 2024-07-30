@@ -28,7 +28,8 @@ class Department
     {
         try {
             $sql = "select * from {$this->tblDepartment} ";
-            $sql .= "order by department_is_active desc ";
+            $sql .= "order by department_is_active desc, ";
+            $sql .= "department_name asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -42,7 +43,8 @@ class Department
             $sql = "select * ";
             $sql .= "from ";
             $sql .= "{$this->tblDepartment} ";
-            $sql .= "order by department_is_active desc "; //para nasa baba ng table ang mga inactive or archived
+            $sql .= "order by department_is_active desc, ";
+            $sql .= "department_name asc "; //para nasa baba ng table ang mga inactive or archived
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -173,7 +175,8 @@ class Department
             $sql = "select * ";
             $sql .= "from {$this->tblDepartment} ";
             $sql .= "where department_is_active = :department_is_active ";
-            $sql .= "order by department_is_active desc ";
+            $sql .= "order by department_is_active desc, ";
+            $sql .= "department_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "department_is_active" => $this->department_is_active,
@@ -191,7 +194,8 @@ class Department
             $sql .= "from {$this->tblDepartment} ";
             $sql .= "where department_is_active = :department_is_active ";
             $sql .= "and department_name like :department_name ";
-            $sql .= "order by department_is_active desc ";
+            $sql .= "order by department_is_active desc, ";
+            $sql .= "department_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "department_name" => "%{$this->department_search}%",

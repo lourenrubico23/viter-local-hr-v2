@@ -36,7 +36,7 @@ const Header = () => {
                   <FBSLogo />
                 </a>
               </div>
-              <h1 className="ml-12">HRIS and Payroll</h1>
+              <h1 className="hidden lg:block ml-12">HRIS and Payroll</h1>
             </div>
             <div
               className={`p-px rounded-full border-2 hover:border-primary/50 border-transparent cursor-pointer ${

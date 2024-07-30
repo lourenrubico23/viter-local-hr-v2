@@ -36,7 +36,8 @@ class System
             $sql .= "{$this->tblUserRole} as role ";
             $sql .= "where sys.user_system_role_id = role.user_role_aid ";
             $sql .= "order by sys.user_system_is_active desc, ";
-            $sql .= "sys.user_system_aid asc ";
+            $sql .= "user_system_fname asc, ";
+            $sql .= "user_system_lname asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -54,7 +55,8 @@ class System
             // $sql .= "{$this->tblUserRole} as role ";
             // $sql .= "where sys.user_system_role_id = role.user_role_aid ";
             $sql .= "order by user_system_is_active desc, "; //para nasa baba ng table ang mga inactive or archived
-            $sql .= "user_system_aid asc ";
+            $sql .= "user_system_fname asc, ";
+            $sql .= "user_system_lname asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -93,12 +95,19 @@ class System
             $sql = "select * ";
             $sql .= "from {$this->tblUserSystem} ";
             $sql .= "where user_system_fname = user_system_fname ";
-            $sql .= "and (user_system_fname like :user_system_fname ";
-            $sql .= "or user_system_lname like :user_system_lname) ";
+            $sql .= "and (concat(user_system_fname, ' ',user_system_lname) like :full_name ";
+            $sql .= "or user_system_fname like :user_system_fname ";
+            $sql .= "or user_system_lname like :user_system_lname ";
+            $sql .= "or user_system_email like :user_system_email) ";
+            $sql .= "order by user_system_is_active desc, ";
+            $sql .= "user_system_fname asc, ";
+            $sql .= "user_system_lname asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
+                "full_name" => "%{$this->user_system_search}%",
                 "user_system_fname" => "%{$this->user_system_search}%",
                 "user_system_lname" => "%{$this->user_system_search}%",
+                "user_system_email" => "%{$this->user_system_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

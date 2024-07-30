@@ -38,7 +38,7 @@ const Employees = () => {
         <Navigation menu="employees" />
         <div className="py-3 ml-2 flex justify-between">
           <div className="text-base ml-2">
-            <h2>Employee</h2>
+            <h2>Employees</h2>
           </div>
           <button
             className="flex items-center gap-1 text-primary"

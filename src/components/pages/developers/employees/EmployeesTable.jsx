@@ -1,3 +1,4 @@
+import { devNavUrl } from "@/components/helpers/functions-general";
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
 import FetchingSpinner from "@/components/partials/FetchingSpinner";
 import Loadmore from "@/components/partials/LoadMore";
@@ -24,6 +25,7 @@ import { FaArchive, FaEdit } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
+import { Link } from "react-router-dom";
 
 const EmployeesTable = ({ setItemEdit, departmentData }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -103,6 +105,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
   const handleChangeDepartment = (e) => {
     setDepartment(e.target.value);
     setIsFilter(false);
+
     dispatch(setIsSearch(false));
     search.current.value = "";
     if (e.target.value !== "all") {
@@ -134,6 +137,10 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
     setIsId(item.employees_aid);
   };
 
+  const handleClick = () => {
+    dispatch(setIsAdd(devNavUrl))
+  }
+
   // used for loading of pages without clicking the Load more button
   React.useEffect(() => {
     if (inView) {
@@ -144,8 +151,8 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
 
   return (
     <>
-      <div className="flex items-center gap-3 w-full">
-        <div className="flex items-center gap-3 w-full">
+      <div className="lg:flex items-center gap-3 w-full">
+        <div className="flex items-center gap-3 w-full my-3">
           <div className="relative flex flex-col gap-2 w-[120px]">
             <label className="z-10">Status</label>
             <select
@@ -208,7 +215,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
         <FetchingSpinner />
       )}
 
-      <div className="shadow-md rounded-md overflow-y-auto min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
+      <div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
         <table>
           <thead>
             <tr>
@@ -245,7 +252,11 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
               <React.Fragment key={key}>
                 {page.data?.map((item, key) => (
                   <tr key={key}>
-                    <td className="pl-2">{counter++}</td>
+                    <Link
+                      to={`${devNavUrl}/employees/info?id=${item.employees_aid}`}
+                    >
+                      <td className="pl-2">{counter++}</td>
+                    </Link>
                     <td>
                       {item.employees_is_active === 1 ? (
                         <Status text="Active" />

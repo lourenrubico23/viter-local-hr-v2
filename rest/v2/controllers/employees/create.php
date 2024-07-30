@@ -25,9 +25,22 @@ $employees->employees_number = checkIndex($data, "employees_number");
 $employees->employees_created = date("Y-m-d H:i:s");
 $employees->employees_datetime = date("Y-m-d H:i:s");
 
+
+// for employees info
+$employees->employees_is_active = 1;
+$employees->employees_info_street = "";
+$employees->employees_info_city = "";
+$employees->employees_info_province = "";
+$employees->employees_info_country = "";
+$employees->employees_info_postal_code = "";
+$employees->employees_info_telephone_number = "";
+$employees->employees_info_created = date("Y-m-d H:i:s");
+$employees->employees_info_datetime = date("Y-m-d H:i:s");
+
 //checks newly added data if it already exists
 isNameExist($employees, $employees->employees_fname);
 
 $query = checkCreate($employees);
+checkCreateEmployeeInfo($employees);
 
 returnSuccess($employees, "employees", $query);

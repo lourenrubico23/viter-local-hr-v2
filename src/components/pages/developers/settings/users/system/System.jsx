@@ -42,7 +42,7 @@ const System = () => {
       <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-2"}`}>
         <Navigation menu="settings" submenu="users" />
         <div className="py-3 ml-2 flex justify-between">
-          <BreadCrumbs />
+          <BreadCrumbs param={location.search}/>
           <button
             className="flex items-center gap-1 text-primary"
             onClick={handleAdd}

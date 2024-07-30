@@ -84,12 +84,16 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
     employees_lname: Yup.string().required("Required"),
     employees_gender: Yup.string().required("Required"),
     employees_department_id: Yup.string().required("Required"),
-    employees_personal_email: Yup.string().required("Required"),
+    employees_personal_email: Yup.string()
+      .required("Required")
+      .email("Invalid Email."),
     employees_birth_date: Yup.string().required("Required"),
     employees_marital_status: Yup.string().required("Required"),
     employees_date_employed: Yup.string().required("Required"),
     employees_mobile_number: Yup.string().required("Required"),
-    employees_work_email: Yup.string().required("Required"),
+    employees_work_email: Yup.string()
+      .required("Required")
+      .email("Invalid Email."),
     employees_number: Yup.string().required("Required"),
   });
 
@@ -182,7 +186,7 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
                   <div className="input-wrapper">
                     <InputText
                       label="*Personal Email"
-                      type="text"
+                      type="email"
                       name="employees_personal_email"
                       disabled={mutation.isPending}
                     />

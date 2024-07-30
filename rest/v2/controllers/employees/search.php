@@ -36,13 +36,15 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             http_response_code(200);
             getQueriedData($query);
         }
+        // department and search
         if ($employees->employees_department_id != "" && $employees->employees_search != "") {
             $query = checkSearchAndDepartment($employees);
             http_response_code(200);
             getQueriedData($query);
         }
+        // status and search
         if ($employees->employees_is_active != "" && $employees->employees_search != "") {
-            $query = checkSearchAndDepartment($employees);
+            $query = checkSearchAndStatus($employees);
             http_response_code(200);
             getQueriedData($query);
         }
