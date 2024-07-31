@@ -15,7 +15,7 @@ import {
   setIsArchive,
   setIsDelete,
   setIsRestore,
-  setIsSearch
+  setIsSearch,
 } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -24,7 +24,7 @@ import { FaArchive } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const EmployeesTable = ({ setItemEdit, departmentData }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -40,6 +40,8 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
   const [isFilter, setIsFilter] = React.useState(false);
   const [statusData, setStatusData] = React.useState("all");
   const [department, setDepartment] = React.useState("all");
+
+  const navigate = useNavigate();
 
   let counter = 1;
 
@@ -136,6 +138,9 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
     setIsId(item.employees_aid);
   };
 
+  const handleGoToPage = (item) => {
+    navigate(`${devNavUrl}/employees/info?id=${item.employees_aid}`);
+  };
 
   // used for loading of pages without clicking the Load more button
   React.useEffect(() => {
@@ -247,24 +252,27 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
             {result?.pages.map((page, key) => (
               <React.Fragment key={key}>
                 {page.data?.map((item, key) => (
-                  
-                  <tr key={key}>
-                    
-                      <td className="pl-2" onClick={() => { window.location.href = `${devNavUrl}/employees/info?id=${item.employees_aid}`;}}>{counter++}</td>
-                     
-                      
-                    <td onClick={() => { window.location.href = `${devNavUrl}/employees/info?id=${item.employees_aid}`;}}>
+                  <tr key={key} className="cursor-pointer">
+                    <td className="pl-2" onClick={() => handleGoToPage(item)}>
+                      {counter++}
+                    </td>
+
+                    <td onClick={() => handleGoToPage(item)}>
                       {item.employees_is_active === 1 ? (
                         <Status text="Active" />
                       ) : (
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td onClick={() => { window.location.href = `${devNavUrl}/employees/info?id=${item.employees_aid}`;}}>{item.employees_number}</td>
-                    <td onClick={() => { window.location.href = `${devNavUrl}/employees/info?id=${item.employees_aid}`;}}>
+                    <td onClick={() => handleGoToPage(item)}>
+                      {item.employees_number}
+                    </td>
+                    <td onClick={() => handleGoToPage(item)}>
                       {item.employees_fname} {item.employees_lname}
                     </td>
-                    <td onClick={() => { window.location.href = `${devNavUrl}/employees/info?id=${item.employees_aid}`;}}>{item.employees_work_email}</td>
+                    <td onClick={() => handleGoToPage(item)}>
+                      {item.employees_work_email}
+                    </td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
                       {item.employees_is_active ? (
                         <>
@@ -295,7 +303,6 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
                         </>
                       )}
                     </td>
-                  
                   </tr>
                 ))}
               </React.Fragment>

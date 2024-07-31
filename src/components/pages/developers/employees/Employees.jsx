@@ -10,7 +10,7 @@ import ModalAddEmployees from "./ModalAddEmployees";
 import ModalSuccess from "@/components/partials/ModalSuccess";
 import ModalError from "@/components/partials/ModalError";
 import useQueryData from "@/components/custom-hooks/useQueryData";
-import PersonalInfo from "../employeesInfo/PersonalInfo";
+import PersonalInfo from "../employees-info/PersonalInfo";
 
 const Employees = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -50,13 +50,19 @@ const Employees = () => {
           </button>
         </div>
         <div className="pb-4">
-          <EmployeesTable setItemEdit={setItemEdit} departmentData={departmentData} />
+          <EmployeesTable
+            setItemEdit={setItemEdit}
+            departmentData={departmentData}
+          />
         </div>
         <Footer />
       </div>
 
       {store.isAdd && (
-        <ModalAddEmployees itemEdit={itemEdit} departmentData={departmentData} />
+        <ModalAddEmployees
+          itemEdit={itemEdit}
+          departmentData={departmentData}
+        />
       )}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}

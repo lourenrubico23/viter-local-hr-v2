@@ -7,7 +7,7 @@ import Employees from "@/components/pages/developers/employees/Employees";
 import Leave from "@/components/pages/developers/leave/Leave";
 import Overtime from "@/components/pages/developers/overtime/Overtime";
 import Overview from "@/components/pages/developers/overview/Overview";
-import PersonalInfo from "@/components/pages/developers/employeesInfo/PersonalInfo";
+import PersonalInfo from "@/components/pages/developers/employees-info/PersonalInfo";
 import Department from "@/components/pages/developers/settings/department/Department";
 import Notification from "@/components/pages/developers/settings/notification/Notification";
 import FbsAdmin from "@/components/pages/developers/settings/users/fbsAdmin/FbsAdmin";
@@ -17,7 +17,6 @@ import System from "@/components/pages/developers/settings/users/system/System";
 import User from "@/components/pages/developers/settings/users/User";
 import Time from "@/components/pages/developers/time/Time";
 import WorkSched from "@/components/pages/developers/workSched/WorkSched";
-
 
 export const routesDeveloper = [
   {
@@ -70,23 +69,23 @@ export const routesDeveloper = [
   },
   {
     path: `${devNavUrl}/settings/users/system`,
-    element: <System/>,
+    element: <System />,
   },
   {
     path: `${devNavUrl}/settings/users/admin`,
-    element: <FbsAdmin/>,
+    element: <FbsAdmin />,
   },
   {
     path: `${devNavUrl}/settings/users/other`,
-    element: <Other/>,
+    element: <Other />,
   },
   {
     path: `${devNavUrl}/settings/users/role`,
-    element: <Role/>,
+    element: <Role />,
   },
   {
     path: `${devNavUrl}/settings/overview`,
-    element: <Overview/>,
+    element: <Overview />,
   },
   {
     path: `${devNavUrl}/account`,

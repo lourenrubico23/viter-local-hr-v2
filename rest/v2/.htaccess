@@ -48,5 +48,7 @@ RewriteRule ^employees/active/([0-9]+)$ controllers/employees/active.php?employe
 RewriteRule ^employees/page/([0-9]+)$ controllers/employees/page.php?start=$1 [L]
 RewriteRule ^employees/search$ controllers/employees/search.php [L]
 
-RewriteRule ^employeesInfo$ controllers/employeesInfo/employeesInfo.php [L]
-RewriteRule ^employeesInfo/([0-9]+)$ controllers/employeesInfo/employeesInfo.php?employeesInfoid=$1 [L]
+# SETTINGS EMPLOYEES INFO
+RewriteRule ^employeesInfo$ controllers/employees-info/employeesInfo.php [L]
+RewriteRule ^employeesInfo/([0-9]+)$ controllers/employees-info/employeesInfo.php?employeesInfoid=$1 [L]
+RewriteRule ^employeesInfo/family-info/([0-9]+)$ controllers/employees-info/update-family.php?employeesInfoid=$1 [L]

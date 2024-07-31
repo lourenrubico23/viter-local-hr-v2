@@ -5,7 +5,7 @@ require '../../core/header.php';
 require '../../core/functions.php';
 require 'functions.php';
 // use needed classes
-require '../../models/employeesInfo/Employees_info.php';
+require '../../models/employees-info/EmployeesInfo.php';
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -14,6 +14,12 @@ $data = json_decode($body, true);
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
   checkApiKey();
 
+  // GET
+  if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $result = require 'read.php';
+    sendResponse($result);
+    exit;
+  }
 
   // PUT
   if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
@@ -21,7 +27,6 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     sendResponse($result);
     exit;
   }
-  
 }
 
 http_response_code(200);

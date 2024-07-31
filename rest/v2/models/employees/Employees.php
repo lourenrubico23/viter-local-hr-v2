@@ -19,16 +19,6 @@ class Employees
     public $employees_created;
     public $employees_datetime;
 
-    public $employees_info_aid;
-    public $employees_info_is_active;
-    public $employees_info_street;
-    public $employees_info_city;
-    public $employees_info_province;
-    public $employees_info_country;
-    public $employees_info_postal_code;
-    public $employees_info_telephone_number;
-    public $employees_info_created;
-    public $employees_info_datetime;
 
     public $connection;
     public $lastInsertedId;
@@ -39,14 +29,12 @@ class Employees
 
     public $tblEmployees;
     public $tblDepartment;
-    public $tblEmployeesInfo;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblEmployees = "hris_employees";
         $this->tblDepartment = "hris_department";
-        $this->tblEmployeesInfo = "hris_employees_info";
     }
 
     public function readAll()
@@ -98,9 +86,7 @@ class Employees
             $sql .= "from ";
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblDepartment} as dept ";
-            $sql .= "{$this->tblEmployeesInfo} as info ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
-            $sql .= "and emp.employees_aid = info.employees_info_employees_id ";
             $sql .= "and emp.employees_aid = :employees_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
@@ -417,44 +403,5 @@ class Employees
         return $query;
     }
 
-    public function createEmployeesInfo()
-    {
-        try {
-            $sql = "insert into {$this->tblEmployeesInfo}";
-            $sql .= "(employees_info_is_active, ";
-            $sql .= "employees_info_street, ";
-            $sql .= "employees_info_city, ";
-            $sql .= "employees_info_province, ";
-            $sql .= "employees_info_country, ";
-            $sql .= "employees_info_postal_code, ";
-            $sql .= "employees_info_telephone_number, ";
-            $sql .= "employees_info_created, ";
-            $sql .= "employees_info_datetime ) values ( ";
-            $sql .= ":employees_info_is_active, ";
-            $sql .= ":employees_info_street, ";
-            $sql .= ":employees_info_city, ";
-            $sql .= ":employees_info_province, ";
-            $sql .= ":employees_info_country, ";
-            $sql .= ":employees_info_postal_code, ";
-            $sql .= ":employees_info_telephone_number, ";
-            $sql .= ":employees_info_created, ";
-            $sql .= ":employees_info_datetime )";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "employees_info_is_active" => $this->employees_info_is_active,
-                "employees_info_street" => $this->employees_info_street,
-                "employees_info_city" => $this->employees_info_city,
-                "employees_info_province" => $this->employees_info_province,
-                "employees_info_country" => $this->employees_info_country,
-                "employees_info_postal_code" => $this->employees_info_postal_code,
-                "employees_info_telephone_number" => $this->employees_info_telephone_number,
-                "employees_info_created" => $this->employees_info_created,
-                "employees_info_datetime" => $this->employees_info_datetime,
-            ]);
-            $this->lastInsertedId = $this->connection->lastInsertId();
-        } catch (PDOException $ex) {
-            $query = false;
-        }
-        return $query;
-    }
+    
 }
