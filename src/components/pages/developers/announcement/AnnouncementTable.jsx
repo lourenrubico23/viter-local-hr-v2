@@ -1,4 +1,3 @@
-import { devNavUrl } from "@/components/helpers/functions-general";
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
 import FetchingSpinner from "@/components/partials/FetchingSpinner";
 import LoadMore from "@/components/partials/LoadMore";
@@ -12,6 +11,7 @@ import Status from "@/components/partials/Status";
 import TableLoading from "@/components/partials/TableLoading";
 import TableSpinner from "@/components/partials/TableSpinner";
 import {
+  setIsAdd,
   setIsArchive,
   setIsDelete,
   setIsRestore,
@@ -20,13 +20,12 @@ import {
 import { StoreContext } from "@/store/StoreContext";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
-import { FaArchive } from "react-icons/fa";
-import { FaUserGroup } from "react-icons/fa6";
+import { FaArchive, FaEdit } from "react-icons/fa";
+import { FaList } from "react-icons/fa6";
 import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
-import { useNavigate } from "react-router-dom";
 
-const EmployeesTable = ({ setItemEdit, departmentData }) => {
+const AnnouncementTable = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
@@ -39,16 +38,8 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
 
   const [isFilter, setIsFilter] = React.useState(false);
   const [statusData, setStatusData] = React.useState("all");
-  const [department, setDepartment] = React.useState("all");
-
-  const navigate = useNavigate();
 
   let counter = 1;
-
-  //activeDepartment will be an array containing only the elements from department.data where department_is_active is 1.
-  const activeDepartment = departmentData?.data.filter(
-    (item) => item.department_is_active === 1
-  );
 
   const {
     data: result,
@@ -60,25 +51,17 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: [
-      "employees",
-      onSearch,
-      store.isSearch,
-      isFilter,
-      statusData,
-      department,
-    ],
+    queryKey: ["announcement", onSearch, store.isSearch, isFilter, statusData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/v2/employees/search`, // search endpoint
-        `/v2/employees/page/${pageParam}`, // list endpoint
+        `/v2/announcement/search`, // search endpoint
+        `/v2/announcement/page/${pageParam}`, // list endpoint
         store.isSearch || isFilter, // search boolean
         {
           searchValue: search.current.value,
           id: "",
           isFilter,
-          employees_is_active: statusData === "all" ? "" : statusData,
-          employees_department_id: department === "all" ? "" : department,
+          announcement_is_active: statusData === "all" ? "" : statusData,
         } // search value
       ),
     getNextPageParam: (lastPage) => {
@@ -93,7 +76,6 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
   const handleChangeStatus = (e) => {
     setStatusData(e.target.value);
     setIsFilter(false);
-    setDepartment("all");
     dispatch(setIsSearch(false));
     search.current.value = "";
     if (e.target.value !== "all") {
@@ -103,42 +85,31 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
     console.log(statusData);
   };
 
-  const handleChangeDepartment = (e) => {
-    setDepartment(e.target.value);
-    setIsFilter(false);
-    dispatch(setIsSearch(false));
-    search.current.value = "";
-    if (e.target.value !== "all") {
-      setIsFilter(true);
-    }
-    setPage(1);
-    console.log(department);
+  const handleEdit = (item) => {
+    dispatch(setIsAdd(true));
+    setItemEdit(item);
   };
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.employees_fname);
-    setIsId(item.employees_aid);
+    setIsData(item.announcement_title);
+    setIsId(item.announcement_aid);
     setIsArchiving(true);
     setIsRestore(false);
   };
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.employees_fname);
-    setIsId(item.employees_aid);
+    setIsData(item.announcement_title);
+    setIsId(item.announcement_aid);
     setIsArchiving(false);
     setIsRestore(true);
   };
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.employees_fname);
-    setIsId(item.employees_aid);
-  };
-
-  const handleGoToPage = (item) => {
-    navigate(`${devNavUrl}/employees/info?id=${item.employees_aid}`);
+    setIsData(item.announcement_title);
+    setIsId(item.announcement_aid);
   };
 
   // used for loading of pages without clicking the Load more button
@@ -167,29 +138,9 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
             </select>
           </div>
 
-          <div className="relative flex flex-col gap-2 w-[17rem]">
-            <label className="z-10">Department</label>
-            <select
-              name="department"
-              value={department}
-              onChange={(e) => handleChangeDepartment(e)}
-              disabled={isFetching || status === "pending"}
-            >
-              <option value="all">All</option>
-              {activeDepartment?.length === 0 ? (
-                <option>No Data</option>
-              ) : (
-                activeDepartment?.map((item, key) => (
-                  <option value={item.department_aid} key={key}>
-                    {item.department_name}
-                  </option>
-                ))
-              )}
-            </select>
-          </div>
           <div className="flex items-center gap-2">
             <span>
-              <FaUserGroup className="text-gray-500" />
+              <FaList className="text-gray-500" />
             </span>
             {store.isSearch || isFilter
               ? result?.pages[0].count
@@ -221,9 +172,10 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
             <tr>
               <th className="pl-2 w-[1rem]">#</th>
               <th className="w-[1rem]">Status</th>
-              <th>Employee Number</th>
-              <th>Employee Name</th>
-              <th>Work Email</th>
+              <th className="w-[2rem]">Code</th>
+              <th>Date</th>
+              <th>Title</th>
+              <th>Description</th>
               <th className="text-right">Actions</th>
             </tr>
           </thead>
@@ -251,30 +203,39 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
             {result?.pages.map((page, key) => (
               <React.Fragment key={key}>
                 {page.data?.map((item, key) => (
-                  <tr key={key} className="cursor-pointer">
-                    <td className="pl-2" onClick={() => handleGoToPage(item)}>
-                      {counter++}
-                    </td>
+                  <tr key={key}>
+                    <td className="pl-2">{counter++}</td>
 
-                    <td onClick={() => handleGoToPage(item)}>
-                      {item.employees_is_active === 1 ? (
+                    <td>
+                      {item.announcement_is_active === 1 ? (
                         <Status text="Active" />
                       ) : (
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td onClick={() => handleGoToPage(item)}>
-                      {item.employees_number}
+                    <td>{item.announcement_subscriber}</td>
+                    <td>
+                      {new Date(item.announcement_date).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
                     </td>
-                    <td onClick={() => handleGoToPage(item)}>
-                      {item.employees_fname} {item.employees_lname}
-                    </td>
-                    <td onClick={() => handleGoToPage(item)}>
-                      {item.employees_work_email}
-                    </td>
+                    <td>{item.announcement_title}</td>
+                    <td>{item.announcement_description}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
-                      {item.employees_is_active ? (
+                      {item.announcement_is_active ? (
                         <>
+                          <button
+                            className="tooltip-action-table"
+                            data-tooltip="Edit"
+                            onClick={() => handleEdit(item)}
+                          >
+                            <FaEdit className="text-gray-600" />
+                          </button>
                           <button
                             className="tooltip-action-table"
                             data-tooltip="Archive"
@@ -322,8 +283,8 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
       {store.isArchive && (
         <ModalArchive
           setIsArchive={setIsArchive}
-          queryKey={"employees"}
-          mysqlEndpoint={`/v2/employees/active/${id}`}
+          queryKey={"announcement"}
+          mysqlEndpoint={`/v2/announcement/active/${id}`}
           item={isData}
           archive={isArchiving}
         />
@@ -331,16 +292,16 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
       {store.isDelete && (
         <ModalDelete
           setIsDelete={setIsDelete}
-          queryKey={"employees"}
-          mysqlEndpoint={`/v2/employees/${id}`}
+          queryKey={"announcement"}
+          mysqlEndpoint={`/v2/announcement/${id}`}
           item={isData}
         />
       )}
       {store.isRestore && (
         <ModalRestore
           setIsRestore={setIsRestore}
-          queryKey={"employees"}
-          mysqlEndpoint={`/v2/employees/active/${id}`}
+          queryKey={"announcement"}
+          mysqlEndpoint={`/v2/announcement/active/${id}`}
           item={isData}
         />
       )}
@@ -348,4 +309,4 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
   );
 };
 
-export default EmployeesTable;
+export default AnnouncementTable;

@@ -17,6 +17,9 @@ import System from "@/components/pages/developers/settings/users/system/System";
 import User from "@/components/pages/developers/settings/users/User";
 import Time from "@/components/pages/developers/time/Time";
 import WorkSched from "@/components/pages/developers/workSched/WorkSched";
+import Job from "@/components/pages/developers/settings/job/Job";
+import JobLevel from "@/components/pages/developers/settings/job/job-level/JobLevel";
+
 
 export const routesDeveloper = [
   {
@@ -38,6 +41,10 @@ export const routesDeveloper = [
   {
     path: `${devNavUrl}/employees`,
     element: <Employees />,
+  },
+  {
+    path: `${devNavUrl}/employees/info`,
+    element: <PersonalInfo />,
   },
   {
     path: `${devNavUrl}/client`,
@@ -84,15 +91,16 @@ export const routesDeveloper = [
     element: <Role />,
   },
   {
-    path: `${devNavUrl}/settings/overview`,
-    element: <Overview />,
+    path: `${devNavUrl}/settings/job`,
+    element: <Job />,
+  },
+  {
+    path: `${devNavUrl}/settings/job/level`,
+    element: <JobLevel/>,
   },
   {
     path: `${devNavUrl}/account`,
     element: <Account />,
   },
-  {
-    path: `${devNavUrl}/employees/info`,
-    element: <PersonalInfo />,
-  },
+  
 ];

@@ -40,12 +40,12 @@ const ModalUpdateFamilyInfo = ({ itemEdit, setEditShow }) => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["employeesInfo"] });
       if (!data.success) {
+        // message modals
         dispatch(setError(true));
         dispatch(setMessage(data.error));
         dispatch(setSuccess(false));
       } else {
-        console.log("Success");
-        dispatch(setIsAdd(false));
+        setEditShow(false); // close the update modal when save
         dispatch(setSuccess(true));
         dispatch(setMessage(`Successfully ${itemEdit ? "Updated" : "Added"}.`));
       }
@@ -60,6 +60,7 @@ const ModalUpdateFamilyInfo = ({ itemEdit, setEditShow }) => {
     employees_aid: itemEdit ? itemEdit.employees_aid : "",
     employees_mother_maiden: itemEdit ? itemEdit.employees_mother_maiden : "",
     employees_mother_fname: itemEdit ? itemEdit.employees_mother_fname : "",
+    employees_mother_mname: itemEdit ? itemEdit.employees_mother_mname : "",
     employees_father_lname: itemEdit ? itemEdit.employees_father_lname : "",
     employees_father_fname: itemEdit ? itemEdit.employees_father_fname : "",
     employees_father_mname: itemEdit ? itemEdit.employees_father_mname : "",
@@ -82,6 +83,7 @@ const ModalUpdateFamilyInfo = ({ itemEdit, setEditShow }) => {
   const yupSchema = Yup.object({
     employees_mother_maiden: Yup.string().required("Required"),
     employees_mother_fname: Yup.string().required("Required"),
+    employees_mother_mname: Yup.string().required("Required"),
     employees_father_lname: Yup.string().required("Required"),
     employees_father_fname: Yup.string().required("Required"),
     employees_father_mname: Yup.string().required("Required"),
@@ -130,6 +132,14 @@ const ModalUpdateFamilyInfo = ({ itemEdit, setEditShow }) => {
                       label="*Mother's First Name"
                       type="text"
                       name="employees_mother_fname"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="input-wrapper">
+                    <InputText
+                      label="*Mother's Middle Name"
+                      type="text"
+                      name="employees_mother_mname"
                       disabled={mutation.isPending}
                     />
                   </div>

@@ -36,7 +36,7 @@ const ModalUpdatePersonalInfo = ({ itemEdit }) => {
       queryData(
         itemEdit
           ? `/v2/employeesInfo/${itemEdit.employees_aid}` // update
-          : `/v2/employeesInfo`, // create
+          : null, // create
         itemEdit ? "put" : "post",
         values
       ),
@@ -95,7 +95,7 @@ const ModalUpdatePersonalInfo = ({ itemEdit }) => {
     employees_postal_code: Yup.string().required("Required"),
     employees_mobile_number: Yup.string().required("Required"),
     employees_telephone_number: Yup.string().required("Required"),
-    employees_personal_email: Yup.string().required("Required"),
+    employees_personal_email: Yup.string().required("Required").email("Invalid Email."),
     
   });
   return (

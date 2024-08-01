@@ -27,6 +27,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $employeesInfo->employees_aid = $_GET['employeesInfoid'];
     $employeesInfo->employees_mother_maiden = checkIndex($data, "employees_mother_maiden");
     $employeesInfo->employees_mother_fname = checkIndex($data, "employees_mother_fname");
+    $employeesInfo->employees_mother_mname = checkIndex($data, "employees_mother_mname");
     $employeesInfo->employees_father_lname = checkIndex($data, "employees_father_lname");
     $employeesInfo->employees_father_fname = checkIndex($data, "employees_father_fname");
     $employeesInfo->employees_father_mname = checkIndex($data, "employees_father_mname");

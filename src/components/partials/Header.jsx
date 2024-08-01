@@ -12,6 +12,7 @@ const Header = () => {
     setIsOpen(!isOpen);
   };
 
+  // to close the modal when clicking outside
   const ref = React.useRef();
 
   const clickOutsideRef = (e) => {

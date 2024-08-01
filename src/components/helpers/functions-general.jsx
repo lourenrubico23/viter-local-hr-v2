@@ -26,6 +26,7 @@ export const GetFocus = (id) => {
   }, []);
 };
 
+// get the id of specific data
 export const getUrlParam = (id) => {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);

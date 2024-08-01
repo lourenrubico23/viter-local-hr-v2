@@ -24,6 +24,7 @@ class EmployeesInfo
   public $employees_telephone_number;
   public $employees_mother_maiden;
   public $employees_mother_fname;
+  public $employees_mother_mname;
   public $employees_father_lname;
   public $employees_father_fname;
   public $employees_father_mname;
@@ -134,6 +135,7 @@ class EmployeesInfo
       $sql = "update {$this->tblEmployees} set ";
       $sql .= "employees_mother_maiden = :employees_mother_maiden, ";
       $sql .= "employees_mother_fname = :employees_mother_fname, ";
+      $sql .= "employees_mother_mname = :employees_mother_mname, ";
       $sql .= "employees_father_lname = :employees_father_lname, ";
       $sql .= "employees_father_fname = :employees_father_fname, ";
       $sql .= "employees_father_mname = :employees_father_mname, ";
@@ -149,6 +151,7 @@ class EmployeesInfo
       $query->execute([
         "employees_mother_maiden" => $this->employees_mother_maiden,
         "employees_mother_fname" => $this->employees_mother_fname,
+        "employees_mother_mname" => $this->employees_mother_mname,
         "employees_father_lname" => $this->employees_father_lname,
         "employees_father_fname" => $this->employees_father_fname,
         "employees_father_mname" => $this->employees_father_mname,

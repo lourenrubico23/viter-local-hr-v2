@@ -1,16 +1,17 @@
-import Header from "@/components/partials/Header";
-import React from "react";
-import Navigation from "../Navigation";
-import { StoreContext } from "@/store/StoreContext";
+import BreadCrumbs from "@/components/partials/BreadCrumbs";
 import Footer from "@/components/partials/Footer";
-import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
-import { FaPlus } from "react-icons/fa6";
-import AnnouncementTable from "./AnnouncementTable";
-import ModalAddAnnouncement from "./ModalAddAnnouncement";
-import ModalSuccess from "@/components/partials/ModalSuccess";
+import Header from "@/components/partials/Header";
 import ModalError from "@/components/partials/ModalError";
+import ModalSuccess from "@/components/partials/ModalSuccess";
+import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import React from "react";
+import { FaPlus } from "react-icons/fa6";
+import Navigation from "../../../Navigation";
+import JobLevelTable from "./JobLevelTable";
+import ModalAddJobLevel from "./ModalAddJobLevel";
 
-const Announcement = () => {
+const JobLevel = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
 
@@ -18,15 +19,18 @@ const Announcement = () => {
     dispatch(setIsAdd(true));
     setItemEdit(null);
   };
+
+  React.useEffect(() => {
+    dispatch(setIsSettingsOpen(true));
+  }, []);
+
   return (
     <>
       <Header />
       <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-2"}`}>
-        <Navigation menu="announcement" />
+        <Navigation menu="settings" submenu="job" />
         <div className="py-3 ml-2 flex justify-between">
-          <div className="text-base ml-2">
-            <h2>Announcement</h2>
-          </div>
+          <BreadCrumbs param={location.search} />
           <button
             className="flex items-center gap-1 text-primary"
             onClick={handleAdd}
@@ -35,17 +39,20 @@ const Announcement = () => {
             Add
           </button>
         </div>
+        <div className="text-base">
+          <h2>Job Level</h2>
+        </div>
         <div className="pb-4">
-          <AnnouncementTable setItemEdit={setItemEdit}/>
+          <JobLevelTable setItemEdit={setItemEdit} />
         </div>
         <Footer />
       </div>
 
-      {store.isAdd && <ModalAddAnnouncement itemEdit={itemEdit}/>}
+      {store.isAdd && <ModalAddJobLevel itemEdit={itemEdit} />}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>
   );
 };
 
-export default Announcement;
+export default JobLevel;

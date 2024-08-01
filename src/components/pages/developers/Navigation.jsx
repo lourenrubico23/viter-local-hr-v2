@@ -314,6 +314,21 @@ const Navigation = ({ menu, submenu }) => {
                         Notification
                       </li>
                     </Link>
+
+                    <Link
+                      className="!p-0"
+                      to={`${devNavUrl}/settings/job`}
+                    >
+                      <li
+                        className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
+                          submenu === "job"
+                            ? "!border-accent text-accent"
+                            : "hover:border-white !text-white"
+                        }`}
+                      >
+                        Job
+                      </li>
+                    </Link>
                   </ul>
                 )}
               </ul>

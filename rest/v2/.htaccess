@@ -52,3 +52,10 @@ RewriteRule ^employees/search$ controllers/employees/search.php [L]
 RewriteRule ^employeesInfo$ controllers/employees-info/employeesInfo.php [L]
 RewriteRule ^employeesInfo/([0-9]+)$ controllers/employees-info/employeesInfo.php?employeesInfoid=$1 [L]
 RewriteRule ^employeesInfo/family-info/([0-9]+)$ controllers/employees-info/update-family.php?employeesInfoid=$1 [L]
+
+# SETTINGS ANNOUNCEMENT
+RewriteRule ^announcement$ controllers/announcement/announcement.php [L]
+RewriteRule ^announcement/([0-9]+)$ controllers/announcement/announcement.php?announcementid=$1 [L]
+RewriteRule ^announcement/active/([0-9]+)$ controllers/announcement/active.php?announcementid=$1 [L]
+RewriteRule ^announcement/page/([0-9]+)$ controllers/announcement/page.php?start=$1 [L]
+RewriteRule ^announcement/search$ controllers/announcement/search.php [L]

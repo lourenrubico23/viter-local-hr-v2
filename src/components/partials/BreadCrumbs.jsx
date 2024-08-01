@@ -29,7 +29,7 @@ const BreadCrumbs = ({ param = "" }) => {
       currentLink += `/${crumb}`;
       return (
         <li
-          className={`text-primary after:mr-2 flex items-center after:content-['>'] last:after:hidden last:text-dark last:pointer-events-none opacity-0 lg:opacity-100 ${
+          className={`text-primary after:mr-2 flex-col items-center after:content-['>'] last:after:hidden last:text-dark last:pointer-events-none hidden lg:block ${
             crumb === "settings" && "pointer-events-none"
           } `}
           key={key}
