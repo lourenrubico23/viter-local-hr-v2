@@ -25,7 +25,7 @@ import { FaUserGroup } from "react-icons/fa6";
 import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
 
-const JobLevelTable = ({setItemEdit}) => {
+const LeaveTypeTable = ({setItemEdit}) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
@@ -51,17 +51,17 @@ const JobLevelTable = ({setItemEdit}) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ["job_level", onSearch, store.isSearch, isFilter, statusData],
+    queryKey: ["leave_type", onSearch, store.isSearch, isFilter, statusData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/v2/job_level/search`, // search endpoint
-        `/v2/job_level/page/${pageParam}`, // list endpoint
+        `/v2/leave_type/search`, // search endpoint
+        `/v2/leave_type/page/${pageParam}`, // list endpoint
         store.isSearch || isFilter, // search boolean
         {
           searchValue: search.current.value,
           id: "",
           isFilter,
-          job_level_is_active: statusData === "all" ? "" : statusData,
+          leave_type_is_active: statusData === "all" ? "" : statusData,
         } // search value
       ),
     getNextPageParam: (lastPage) => {
@@ -92,24 +92,24 @@ const JobLevelTable = ({setItemEdit}) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.job_level_level);
-    setIsId(item.job_level_aid);
+    setIsData(item.leave_type_type);
+    setIsId(item.leave_type_aid);
     setIsArchiving(true);
     setIsRestore(false);
   };
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.job_level_level);
-    setIsId(item.job_level_aid);
+    setIsData(item.leave_type_type);
+    setIsId(item.leave_type_aid);
     setIsArchiving(false);
     setIsRestore(true);
   };
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.job_level_level);
-    setIsId(item.job_level_aid);
+    setIsData(item.leave_type_type);
+    setIsId(item.leave_type_aid);
   };
 
   // used for loading of pages without clicking the Load more button
@@ -173,7 +173,7 @@ const JobLevelTable = ({setItemEdit}) => {
               <th className="pl-2 w-[1rem]">#</th>
               <th className="w-[1rem]">Status</th>
               <th className="w-[2rem]">Code</th>
-              <th>Job Level</th>
+              <th>Leave Type</th>
               <th className="text-right">Actions</th>
             </tr>
           </thead>
@@ -204,16 +204,16 @@ const JobLevelTable = ({setItemEdit}) => {
                   <tr key={key}>
                     <td className="pl-2">{counter++}</td>
                     <td>
-                      {item.job_level_is_active === 1 ? (
+                      {item.leave_type_is_active === 1 ? (
                         <Status text="Active" />
                       ) : (
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.job_level_subscriber}</td>
-                    <td className='uppercase'>{item.job_level_level}</td>
+                    <td>{item.leave_type_subscriber}</td>
+                    <td className="uppercase">{item.leave_type_type}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
-                      {item.job_level_is_active ? (
+                      {item.leave_type_is_active ? (
                         <>
                           <button
                             className="tooltip-action-table"
@@ -269,8 +269,8 @@ const JobLevelTable = ({setItemEdit}) => {
       {store.isArchive && (
         <ModalArchive
           setIsArchive={setIsArchive}
-          queryKey={"job_level"}
-          mysqlEndpoint={`/v2/job_level/active/${id}`}
+          queryKey={"leave_type"}
+          mysqlEndpoint={`/v2/leave_type/active/${id}`}
           item={isData}
           archive={isArchiving}
         />
@@ -278,16 +278,16 @@ const JobLevelTable = ({setItemEdit}) => {
       {store.isDelete && (
         <ModalDelete
           setIsDelete={setIsDelete}
-          queryKey={"job_level"}
-          mysqlEndpoint={`/v2/job_level/${id}`}
+          queryKey={"leave_type"}
+          mysqlEndpoint={`/v2/leave_type/${id}`}
           item={isData}
         />
       )}
       {store.isRestore && (
         <ModalRestore
           setIsRestore={setIsRestore}
-          queryKey={"job_level"}
-          mysqlEndpoint={`/v2/job_level/active/${id}`}
+          queryKey={"leave_type"}
+          mysqlEndpoint={`/v2/leave_type/active/${id}`}
           item={isData}
         />
       )}
@@ -295,4 +295,4 @@ const JobLevelTable = ({setItemEdit}) => {
   );
 };
 
-export default JobLevelTable;
+export default LeaveTypeTable;

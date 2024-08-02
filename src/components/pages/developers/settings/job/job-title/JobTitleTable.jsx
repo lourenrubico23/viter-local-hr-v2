@@ -25,7 +25,7 @@ import { FaUserGroup } from "react-icons/fa6";
 import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
 
-const JobLevelTable = ({setItemEdit}) => {
+const JobTitleTable = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
@@ -51,17 +51,17 @@ const JobLevelTable = ({setItemEdit}) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ["job_level", onSearch, store.isSearch, isFilter, statusData],
+    queryKey: ["job_title", onSearch, store.isSearch, isFilter, statusData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/v2/job_level/search`, // search endpoint
-        `/v2/job_level/page/${pageParam}`, // list endpoint
+        `/v2/job_title/search`, // search endpoint
+        `/v2/job_title/page/${pageParam}`, // list endpoint
         store.isSearch || isFilter, // search boolean
         {
           searchValue: search.current.value,
           id: "",
           isFilter,
-          job_level_is_active: statusData === "all" ? "" : statusData,
+          job_title_is_active: statusData === "all" ? "" : statusData,
         } // search value
       ),
     getNextPageParam: (lastPage) => {
@@ -92,24 +92,24 @@ const JobLevelTable = ({setItemEdit}) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.job_level_level);
-    setIsId(item.job_level_aid);
+    setIsData(item.job_title_title);
+    setIsId(item.job_title_aid);
     setIsArchiving(true);
     setIsRestore(false);
   };
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.job_level_level);
-    setIsId(item.job_level_aid);
+    setIsData(item.job_title_title);
+    setIsId(item.job_title_aid);
     setIsArchiving(false);
     setIsRestore(true);
   };
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.job_level_level);
-    setIsId(item.job_level_aid);
+    setIsData(item.job_title_title);
+    setIsId(item.job_title_aid);
   };
 
   // used for loading of pages without clicking the Load more button
@@ -174,6 +174,7 @@ const JobLevelTable = ({setItemEdit}) => {
               <th className="w-[1rem]">Status</th>
               <th className="w-[2rem]">Code</th>
               <th>Job Level</th>
+              <th>Job Title</th>
               <th className="text-right">Actions</th>
             </tr>
           </thead>
@@ -204,16 +205,17 @@ const JobLevelTable = ({setItemEdit}) => {
                   <tr key={key}>
                     <td className="pl-2">{counter++}</td>
                     <td>
-                      {item.job_level_is_active === 1 ? (
+                      {item.job_title_is_active === 1 ? (
                         <Status text="Active" />
                       ) : (
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.job_level_subscriber}</td>
-                    <td className='uppercase'>{item.job_level_level}</td>
+                    <td>{item.job_title_subscriber}</td>
+                    <td className="uppercase">{item.job_level_level}</td>
+                    <td className="uppercase">{item.job_title_title}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
-                      {item.job_level_is_active ? (
+                      {item.job_title_is_active ? (
                         <>
                           <button
                             className="tooltip-action-table"
@@ -269,8 +271,8 @@ const JobLevelTable = ({setItemEdit}) => {
       {store.isArchive && (
         <ModalArchive
           setIsArchive={setIsArchive}
-          queryKey={"job_level"}
-          mysqlEndpoint={`/v2/job_level/active/${id}`}
+          queryKey={"job_title"}
+          mysqlEndpoint={`/v2/job_title/active/${id}`}
           item={isData}
           archive={isArchiving}
         />
@@ -278,16 +280,16 @@ const JobLevelTable = ({setItemEdit}) => {
       {store.isDelete && (
         <ModalDelete
           setIsDelete={setIsDelete}
-          queryKey={"job_level"}
-          mysqlEndpoint={`/v2/job_level/${id}`}
+          queryKey={"job_title"}
+          mysqlEndpoint={`/v2/job_title/${id}`}
           item={isData}
         />
       )}
       {store.isRestore && (
         <ModalRestore
           setIsRestore={setIsRestore}
-          queryKey={"job_level"}
-          mysqlEndpoint={`/v2/job_level/active/${id}`}
+          queryKey={"job_title"}
+          mysqlEndpoint={`/v2/job_title/active/${id}`}
           item={isData}
         />
       )}
@@ -295,4 +297,4 @@ const JobLevelTable = ({setItemEdit}) => {
   );
 };
 
-export default JobLevelTable;
+export default JobTitleTable;

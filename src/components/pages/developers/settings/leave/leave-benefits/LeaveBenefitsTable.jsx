@@ -1,32 +1,26 @@
-import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
-import FetchingSpinner from "@/components/partials/FetchingSpinner";
-import LoadMore from "@/components/partials/LoadMore";
-import ModalArchive from "@/components/partials/ModalArchive";
-import ModalDelete from "@/components/partials/ModalDelete";
-import ModalRestore from "@/components/partials/ModalRestore";
-import NoData from "@/components/partials/NoData";
-import SearchBar from "@/components/partials/SearchBar";
-import ServerError from "@/components/partials/ServerError";
-import Status from "@/components/partials/Status";
-import TableLoading from "@/components/partials/TableLoading";
-import TableSpinner from "@/components/partials/TableSpinner";
-import {
-  setIsAdd,
-  setIsArchive,
-  setIsDelete,
-  setIsRestore,
-  setIsSearch,
-} from "@/store/StoreAction";
-import { StoreContext } from "@/store/StoreContext";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import React from "react";
-import { FaArchive, FaEdit } from "react-icons/fa";
-import { FaUserGroup } from "react-icons/fa6";
-import { MdDelete, MdRestore } from "react-icons/md";
-import { useInView } from "react-intersection-observer";
+import { queryDataInfinite } from '@/components/helpers/queryDataInfinite';
+import FetchingSpinner from '@/components/partials/FetchingSpinner';
+import LoadMore from '@/components/partials/LoadMore';
+import ModalArchive from '@/components/partials/ModalArchive';
+import ModalDelete from '@/components/partials/ModalDelete';
+import ModalRestore from '@/components/partials/ModalRestore';
+import NoData from '@/components/partials/NoData';
+import SearchBar from '@/components/partials/SearchBar';
+import ServerError from '@/components/partials/ServerError';
+import Status from '@/components/partials/Status';
+import TableLoading from '@/components/partials/TableLoading';
+import TableSpinner from '@/components/partials/TableSpinner';
+import { setIsAdd, setIsArchive, setIsDelete, setIsRestore, setIsSearch } from '@/store/StoreAction';
+import { StoreContext } from '@/store/StoreContext';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import React from 'react'
+import { FaArchive, FaEdit } from 'react-icons/fa';
+import { FaUserGroup } from 'react-icons/fa6';
+import { MdDelete, MdRestore } from 'react-icons/md';
+import { useInView } from 'react-intersection-observer';
 
-const JobLevelTable = ({setItemEdit}) => {
-  const { store, dispatch } = React.useContext(StoreContext);
+const LeaveBenefitsTable = ({setItemEdit}) => {
+    const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
   const [isData, setIsData] = React.useState("");
@@ -51,17 +45,17 @@ const JobLevelTable = ({setItemEdit}) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ["job_level", onSearch, store.isSearch, isFilter, statusData],
+    queryKey: ["leave_benefits", onSearch, store.isSearch, isFilter, statusData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/v2/job_level/search`, // search endpoint
-        `/v2/job_level/page/${pageParam}`, // list endpoint
+        `/v2/leave_benefits/search`, // search endpoint
+        `/v2/leave_benefits/page/${pageParam}`, // list endpoint
         store.isSearch || isFilter, // search boolean
         {
           searchValue: search.current.value,
           id: "",
           isFilter,
-          job_level_is_active: statusData === "all" ? "" : statusData,
+          leave_benefits_is_active: statusData === "all" ? "" : statusData,
         } // search value
       ),
     getNextPageParam: (lastPage) => {
@@ -92,24 +86,24 @@ const JobLevelTable = ({setItemEdit}) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.job_level_level);
-    setIsId(item.job_level_aid);
+    setIsData(item.leave_benefits_subscriber);
+    setIsId(item.leave_benefits_aid);
     setIsArchiving(true);
     setIsRestore(false);
   };
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.job_level_level);
-    setIsId(item.job_level_aid);
+    setIsData(item.leave_benefits_subscriber);
+    setIsId(item.leave_benefits_aid);
     setIsArchiving(false);
     setIsRestore(true);
   };
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.job_level_level);
-    setIsId(item.job_level_aid);
+    setIsData(item.leave_benefits_subscriber);
+    setIsId(item.leave_benefits_aid);
   };
 
   // used for loading of pages without clicking the Load more button
@@ -122,7 +116,7 @@ const JobLevelTable = ({setItemEdit}) => {
 
   return (
     <>
-      <div className="lg:flex items-center gap-3 w-full">
+    <div className="lg:flex items-center gap-3 w-full">
         <div className="flex items-center gap-3 w-full my-3">
           <div className="relative flex flex-col gap-2 w-[120px]">
             <label className="z-10">Status</label>
@@ -166,14 +160,17 @@ const JobLevelTable = ({setItemEdit}) => {
         <FetchingSpinner />
       )}
 
-      <div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
+<div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
         <table>
           <thead>
             <tr>
               <th className="pl-2 w-[1rem]">#</th>
               <th className="w-[1rem]">Status</th>
-              <th className="w-[2rem]">Code</th>
+              <th>Code</th>
               <th>Job Level</th>
+              <th>Job Title</th>
+              <th>Leave Type</th>
+              <th>Days</th>
               <th className="text-right">Actions</th>
             </tr>
           </thead>
@@ -204,16 +201,19 @@ const JobLevelTable = ({setItemEdit}) => {
                   <tr key={key}>
                     <td className="pl-2">{counter++}</td>
                     <td>
-                      {item.job_level_is_active === 1 ? (
+                      {item.leave_benefits_is_active === 1 ? (
                         <Status text="Active" />
                       ) : (
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.job_level_subscriber}</td>
-                    <td className='uppercase'>{item.job_level_level}</td>
+                    <td>{item.leave_benefits_subscriber}</td>
+                    <td className="uppercase">{item.job_level_level}</td>
+                    <td className="uppercase">{item.job_title_title}</td>
+                    <td className="uppercase">{item.leave_type_type}</td>
+                    <td className="uppercase">{item.leave_benefits_days}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
-                      {item.job_level_is_active ? (
+                      {item.leave_benefits_is_active ? (
                         <>
                           <button
                             className="tooltip-action-table"
@@ -269,8 +269,8 @@ const JobLevelTable = ({setItemEdit}) => {
       {store.isArchive && (
         <ModalArchive
           setIsArchive={setIsArchive}
-          queryKey={"job_level"}
-          mysqlEndpoint={`/v2/job_level/active/${id}`}
+          queryKey={"leave_benefits"}
+          mysqlEndpoint={`/v2/leave_benefits/active/${id}`}
           item={isData}
           archive={isArchiving}
         />
@@ -278,21 +278,21 @@ const JobLevelTable = ({setItemEdit}) => {
       {store.isDelete && (
         <ModalDelete
           setIsDelete={setIsDelete}
-          queryKey={"job_level"}
-          mysqlEndpoint={`/v2/job_level/${id}`}
+          queryKey={"leave_benefits"}
+          mysqlEndpoint={`/v2/leave_benefits/${id}`}
           item={isData}
         />
       )}
       {store.isRestore && (
         <ModalRestore
           setIsRestore={setIsRestore}
-          queryKey={"job_level"}
-          mysqlEndpoint={`/v2/job_level/active/${id}`}
+          queryKey={"leave_benefits"}
+          mysqlEndpoint={`/v2/leave_benefits/active/${id}`}
           item={isData}
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default JobLevelTable;
+export default LeaveBenefitsTable

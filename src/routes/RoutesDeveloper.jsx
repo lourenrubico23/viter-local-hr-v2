@@ -4,7 +4,6 @@ import Announcement from "@/components/pages/developers/announcement/Announcemen
 import Calendar from "@/components/pages/developers/calendar/Calendar";
 import Client from "@/components/pages/developers/client/Client";
 import Employees from "@/components/pages/developers/employees/Employees";
-import Leave from "@/components/pages/developers/leave/Leave";
 import Overtime from "@/components/pages/developers/overtime/Overtime";
 import Overview from "@/components/pages/developers/overview/Overview";
 import PersonalInfo from "@/components/pages/developers/employees-info/PersonalInfo";
@@ -19,6 +18,10 @@ import Time from "@/components/pages/developers/time/Time";
 import WorkSched from "@/components/pages/developers/workSched/WorkSched";
 import Job from "@/components/pages/developers/settings/job/Job";
 import JobLevel from "@/components/pages/developers/settings/job/job-level/JobLevel";
+import JobTitle from "@/components/pages/developers/settings/job/job-title/JobTitle";
+import Leave from "@/components/pages/developers/settings/leave/Leave";
+import LeaveType from "@/components/pages/developers/settings/leave/leave-type/LeaveType";
+import LeaveBenefits from "@/components/pages/developers/settings/leave/leave-benefits/LeaveBenefits";
 
 
 export const routesDeveloper = [
@@ -98,6 +101,23 @@ export const routesDeveloper = [
     path: `${devNavUrl}/settings/job/level`,
     element: <JobLevel/>,
   },
+  {
+    path: `${devNavUrl}/settings/job/title`,
+    element: <JobTitle/>,
+  },
+  {
+    path: `${devNavUrl}/settings/leave`,
+    element: <Leave />,
+  },
+  {
+    path: `${devNavUrl}/settings/leave/type`,
+    element: <LeaveType />,
+  },
+  {
+    path: `${devNavUrl}/settings/leave/benefits`,
+    element: <LeaveBenefits />,
+  },
+
   {
     path: `${devNavUrl}/account`,
     element: <Account />,

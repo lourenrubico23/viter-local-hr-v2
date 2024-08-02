@@ -13,9 +13,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
-import * as Yup from "yup";
+import * as Yup from 'yup'
 
-const ModalAddJobLevel = ({ itemEdit }) => {
+const ModalAddLeaveType = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
 
@@ -32,13 +32,13 @@ const ModalAddJobLevel = ({ itemEdit }) => {
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `/v2/job_level/${itemEdit.job_level_aid}` // update
-          : `/v2/job_level`, // create
+          ? `/v2/leave_type/${itemEdit.leave_type_aid}` // update
+          : `/v2/leave_type`, // create
         itemEdit ? "put" : "post",
         values
       ),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["job_level"] });
+      queryClient.invalidateQueries({ queryKey: ["leave_type"] });
       if (!data.success) {
         dispatch(setError(true));
         dispatch(setMessage(data.error));
@@ -57,16 +57,16 @@ const ModalAddJobLevel = ({ itemEdit }) => {
   }, []);
 
   const initVal = {
-    job_level_aid: itemEdit ? itemEdit.job_level_aid : "",
-    job_level_subscriber: itemEdit ? itemEdit.job_level_subscriber : "",
-    job_level_level: itemEdit ? itemEdit.job_level_level : "",
+    leave_type_aid: itemEdit ? itemEdit.leave_type_aid : "",
+    leave_type_subscriber: itemEdit ? itemEdit.leave_type_subscriber : "",
+    leave_type_type: itemEdit ? itemEdit.leave_type_type : "",
 
-    job_level_level_old: itemEdit ? itemEdit.job_level_level : "",
+    leave_type_type_old: itemEdit ? itemEdit.leave_type_type : "",
   };
 
   const yupSchema = Yup.object({
-    job_level_subscriber: Yup.string().required("Required"),
-    job_level_level: Yup.string().required("Required"),
+    leave_type_subscriber: Yup.string().required("Required"),
+    leave_type_type: Yup.string().required("Required"),
   });
 
   return (
@@ -75,7 +75,7 @@ const ModalAddJobLevel = ({ itemEdit }) => {
       handleClose={handleClose}
     >
       <div className="modal-title">
-        <h2>{itemEdit ? "Update" : "Add"} Job Entry Level</h2>
+        <h2>{itemEdit ? "Update" : "Add"} Leave Type</h2>
         <button onClick={handleClose}>
           <GrFormClose className="text-[25px]" />
         </button>
@@ -97,15 +97,15 @@ const ModalAddJobLevel = ({ itemEdit }) => {
                     <InputText
                       label="*Subscriber"
                       type="text"
-                      name="job_level_subscriber"
+                      name="leave_type_subscriber"
                       disabled={mutation.isPending}
                     />
                   </div>
                   <div className="input-wrapper">
                     <InputText
-                      label="*Entry Level Name"
+                      label="*Type Name"
                       type="text"
-                      name="job_level_level"
+                      name="leave_type_type"
                       disabled={mutation.isPending}
                     />
                   </div>
@@ -138,4 +138,4 @@ const ModalAddJobLevel = ({ itemEdit }) => {
   );
 };
 
-export default ModalAddJobLevel;
+export default ModalAddLeaveType;
