@@ -1,10 +1,7 @@
-import {
-  InputSelect,
-  InputText
-} from "@/components/helpers/FormInputs";
+import { InputSelect, InputText } from "@/components/helpers/FormInputs";
 import { queryData } from "@/components/helpers/queryData";
-import ButtonSpinner from "@/components/partials/ButtonSpinner";
-import ModalWrapper from "@/components/partials/ModalWrapper";
+import ButtonSpinner from "@/components/partials/spinner/ButtonSpinner";
+import ModalWrapper from "@/components/partials/modals/ModalWrapper";
 import {
   setError,
   setIsAdd,
@@ -77,7 +74,6 @@ const ModalUpdatePersonalInfo = ({ itemEdit }) => {
       ? itemEdit.employees_telephone_number
       : "",
     employees_personal_email: itemEdit ? itemEdit.employees_personal_email : "",
-    
 
     employees_fname_old: itemEdit ? itemEdit.employees_fname : "",
   };
@@ -95,8 +91,9 @@ const ModalUpdatePersonalInfo = ({ itemEdit }) => {
     employees_postal_code: Yup.string().required("Required"),
     employees_mobile_number: Yup.string().required("Required"),
     employees_telephone_number: Yup.string().required("Required"),
-    employees_personal_email: Yup.string().required("Required").email("Invalid Email."),
-    
+    employees_personal_email: Yup.string()
+      .required("Required")
+      .email("Invalid Email."),
   });
   return (
     <ModalWrapper

@@ -7,8 +7,8 @@ import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
 import { FaPlus } from "react-icons/fa6";
 import AnnouncementTable from "./AnnouncementTable";
 import ModalAddAnnouncement from "./ModalAddAnnouncement";
-import ModalSuccess from "@/components/partials/ModalSuccess";
-import ModalError from "@/components/partials/ModalError";
+import ModalSuccess from "@/components/partials/modals/ModalSuccess";
+import ModalError from "@/components/partials/modals/ModalError";
 
 const Announcement = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -36,12 +36,12 @@ const Announcement = () => {
           </button>
         </div>
         <div className="pb-4">
-          <AnnouncementTable setItemEdit={setItemEdit}/>
+          <AnnouncementTable setItemEdit={setItemEdit} />
         </div>
         <Footer />
       </div>
 
-      {store.isAdd && <ModalAddAnnouncement itemEdit={itemEdit}/>}
+      {store.isAdd && <ModalAddAnnouncement itemEdit={itemEdit} />}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>

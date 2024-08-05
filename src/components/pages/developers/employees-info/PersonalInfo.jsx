@@ -1,8 +1,8 @@
 import BreadCrumbs from "@/components/partials/BreadCrumbs";
 import Footer from "@/components/partials/Footer";
 import Header from "@/components/partials/Header";
-import ModalError from "@/components/partials/ModalError";
-import ModalSuccess from "@/components/partials/ModalSuccess";
+import ModalError from "@/components/partials/modals/ModalError";
+import ModalSuccess from "@/components/partials/modals/ModalSuccess";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import Navigation from "../Navigation";
@@ -23,12 +23,17 @@ const PersonalInfo = () => {
         <div className="py-3 ml-2 flex justify-between ">
           <BreadCrumbs />
         </div>
-        <PersonalInfoTable setItemEdit={setItemEdit} setEditShow={setEditShow} />
+        <PersonalInfoTable
+          setItemEdit={setItemEdit}
+          setEditShow={setEditShow}
+        />
         <Footer />
       </div>
 
       {store.isAdd && <ModalUpdatePersonalInfo itemEdit={itemEdit} />}
-      {isEditShow && <ModalUpdateFamilyInfo itemEdit={itemEdit} setEditShow={setEditShow}/>}
+      {isEditShow && (
+        <ModalUpdateFamilyInfo itemEdit={itemEdit} setEditShow={setEditShow} />
+      )}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>

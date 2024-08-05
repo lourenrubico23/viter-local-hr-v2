@@ -1,7 +1,7 @@
 import { InputSelect, InputText } from "@/components/helpers/FormInputs";
 import { queryData } from "@/components/helpers/queryData";
-import ButtonSpinner from "@/components/partials/ButtonSpinner";
-import ModalWrapper from "@/components/partials/ModalWrapper";
+import ButtonSpinner from "@/components/partials/spinner/ButtonSpinner";
+import ModalWrapper from "@/components/partials/modals/ModalWrapper";
 import {
   setError,
   setIsAdd,

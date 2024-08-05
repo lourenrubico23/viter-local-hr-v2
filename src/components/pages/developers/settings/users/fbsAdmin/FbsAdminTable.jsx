@@ -1,9 +1,9 @@
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
-import FetchingSpinner from "@/components/partials/FetchingSpinner";
+import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
 import Loadmore from "@/components/partials/LoadMore";
-import ModalArchive from "@/components/partials/ModalArchive";
-import ModalDelete from "@/components/partials/ModalDelete";
-import ModalRestore from "@/components/partials/ModalRestore";
+import ModalArchive from "@/components/partials/modals/ModalArchive";
+import ModalDelete from "@/components/partials/modals/ModalDelete";
+import ModalRestore from "@/components/partials/modals/ModalRestore";
 import NoData from "@/components/partials/NoData";
 import SearchBar from "@/components/partials/SearchBar";
 import ServerError from "@/components/partials/ServerError";
@@ -108,10 +108,11 @@ const FbsAdminTable = ({ setItemEdit }) => {
         setOnSearch={setOnSearch}
         onSearch={onSearch}
       />
-      {isFetching && !isFetchingNextPage && status !== "loading" && (
-        <FetchingSpinner />
-      )}
-      <div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
+
+      <div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0 relative">
+        {isFetching && !isFetchingNextPage && status !== "loading" && (
+          <FetchingSpinner />
+        )}
         <table>
           <thead>
             <tr>

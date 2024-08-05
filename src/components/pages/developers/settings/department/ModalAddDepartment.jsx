@@ -1,7 +1,7 @@
 import { InputText } from "@/components/helpers/FormInputs";
 import { queryData } from "@/components/helpers/queryData";
-import ButtonSpinner from "@/components/partials/ButtonSpinner";
-import ModalWrapper from "@/components/partials/ModalWrapper";
+import ButtonSpinner from "@/components/partials/spinner/ButtonSpinner";
+import ModalWrapper from "@/components/partials/modals/ModalWrapper";
 import {
   setError,
   setIsAdd,
@@ -72,7 +72,7 @@ const ModalAddDepartment = ({ itemEdit }) => {
       className={`transition-all ease-linear transform duration-200 ${animate}`}
       handleClose={handleClose}
     >
-         <div className="modal-title">
+      <div className="modal-title">
         <h2>{itemEdit ? "Edit" : "Add"} Department</h2>
         <button onClick={handleClose}>
           <GrFormClose className="text-[25px]" />
@@ -110,7 +110,11 @@ const ModalAddDepartment = ({ itemEdit }) => {
                     >
                       {mutation.isPending ? <ButtonSpinner /> : "Save"}
                     </button>
-                    <button className="btn-modal-cancel" type="button" onClick={handleClose}>
+                    <button
+                      className="btn-modal-cancel"
+                      type="button"
+                      onClick={handleClose}
+                    >
                       Cancel
                     </button>
                   </div>

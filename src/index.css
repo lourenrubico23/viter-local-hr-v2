@@ -208,7 +208,7 @@
     @apply scale-100 opacity-100;
   }
   .toggle-menu {
-    @apply duration-200 cursor-pointer hover:bg-dark/5 left-0.5 h-fit py-3 px-2 absolute top-0.5 text-xl z-50 !bg-white;
+    @apply duration-200 cursor-pointer hover:bg-dark/5 left-0.5 h-fit p-3 absolute top-0.5 text-xl z-50 !bg-white;
   }
   span.error-show {
     @apply text-[11px] absolute right-1 -bottom-5 text-red-500 italic z-40;
@@ -220,5 +220,23 @@
   }
   label.error-show {
     @apply text-red-500;
+  }
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  ::-webkit-scrollbar:vertical {
+    @apply w-2.5;
+  }
+  ::-webkit-scrollbar:horizontal {
+    @apply h-2.5 bg-gray-100;
+  }
+  ::-webkit-scrollbar-track-piece {
+    @apply bg-gray-100;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 border-8 cursor-pointer;
   }
 }

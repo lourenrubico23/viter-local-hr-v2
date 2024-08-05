@@ -1,10 +1,10 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import { getUrlParam } from "@/components/helpers/functions-general";
-import FetchingSpinner from "@/components/partials/FetchingSpinner";
+import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
 import NoData from "@/components/partials/NoData";
 import ServerError from "@/components/partials/ServerError";
 import TableLoading from "@/components/partials/TableLoading";
-import TableSpinner from "@/components/partials/TableSpinner";
+import TableSpinner from "@/components/partials/spinner/TableSpinner";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
@@ -37,7 +37,7 @@ const PersonalInfoTable = ({ setItemEdit, setEditShow }) => {
   };
 
   return (
-    <div className="pt-2 lg:pt-4 lg:w-[600px] pb-16">
+    <div className="pt-2 lg:pt-4 lg:w-[600px] pb-16 relative">
       {isFetching && status !== "loading" && <FetchingSpinner />}
 
       <div className="relative">

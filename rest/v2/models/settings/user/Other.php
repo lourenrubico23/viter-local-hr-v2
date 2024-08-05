@@ -99,6 +99,7 @@ class Other
             $sql .= "and (concat(other.user_other_fname, ' ',other.user_other_lname) like :full_name ";
             $sql .= "or other.user_other_fname like :user_other_fname ";
             $sql .= "or other.user_other_lname like :user_other_lname ";
+            $sql .= "or role.user_role_name like :user_role_name ";
             $sql .= "or other.user_other_email like :user_other_email) ";
             $sql .= "order by other.user_other_is_active desc, ";
             $sql .= "other.user_other_fname asc, ";
@@ -108,6 +109,7 @@ class Other
                 "full_name" => "%{$this->user_other_search}%",
                 "user_other_fname" => "%{$this->user_other_search}%",
                 "user_other_lname" => "%{$this->user_other_search}%",
+                "user_role_name" => "%{$this->user_other_search}%",
                 "user_other_email" => "%{$this->user_other_search}%",
             ]);
         } catch (PDOException $ex) {

@@ -1,5 +1,5 @@
 import React from "react";
-import ButtonSpinner from "./ButtonSpinner";
+import ButtonSpinner from "./spinner/ButtonSpinner";
 
 const LoadMore = ({
   fetchNextPage,

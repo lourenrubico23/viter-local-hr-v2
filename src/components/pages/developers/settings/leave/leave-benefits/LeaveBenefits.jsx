@@ -1,19 +1,19 @@
-import useQueryData from '@/components/custom-hooks/useQueryData';
-import Header from '@/components/partials/Header';
-import { setIsAdd, setIsSettingsOpen } from '@/store/StoreAction';
-import { StoreContext } from '@/store/StoreContext';
-import React from 'react'
-import Navigation from '../../../Navigation';
-import BreadCrumbs from '@/components/partials/BreadCrumbs';
-import { FaPlus } from 'react-icons/fa6';
-import LeaveBenefitsTable from './LeaveBenefitsTable';
-import ModalAddLeaveBenefits from './ModalAddLeaveBenefits';
-import Footer from '@/components/partials/Footer';
-import ModalSuccess from '@/components/partials/ModalSuccess';
-import ModalError from '@/components/partials/ModalError';
+import useQueryData from "@/components/custom-hooks/useQueryData";
+import Header from "@/components/partials/Header";
+import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import React from "react";
+import Navigation from "../../../Navigation";
+import BreadCrumbs from "@/components/partials/BreadCrumbs";
+import { FaPlus } from "react-icons/fa6";
+import LeaveBenefitsTable from "./LeaveBenefitsTable";
+import ModalAddLeaveBenefits from "./ModalAddLeaveBenefits";
+import Footer from "@/components/partials/Footer";
+import ModalSuccess from "@/components/partials/modals/ModalSuccess";
+import ModalError from "@/components/partials/modals/ModalError";
 
 const LeaveBenefits = () => {
-    const { store, dispatch } = React.useContext(StoreContext);
+  const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
 
   const handleAdd = () => {
@@ -82,11 +82,18 @@ const LeaveBenefits = () => {
         <Footer />
       </div>
 
-      {store.isAdd && <ModalAddLeaveBenefits itemEdit={itemEdit} job_level={job_level} leave_type={leave_type} job_title={job_title} />}
+      {store.isAdd && (
+        <ModalAddLeaveBenefits
+          itemEdit={itemEdit}
+          job_level={job_level}
+          leave_type={leave_type}
+          job_title={job_title}
+        />
+      )}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>
-  )
-}
+  );
+};
 
-export default LeaveBenefits
+export default LeaveBenefits;

@@ -73,6 +73,7 @@ RewriteRule ^job_title/([0-9]+)$ controllers/settings/job/job-title/jobTitle.php
 RewriteRule ^job_title/active/([0-9]+)$ controllers/settings/job/job-title/active.php?job_titleid=$1 [L]
 RewriteRule ^job_title/page/([0-9]+)$ controllers/settings/job/job-title/page.php?start=$1 [L]
 RewriteRule ^job_title/search$ controllers/settings/job/job-title/search.php [L]
+RewriteRule ^job_title/search-job-level$ controllers/settings/job/job-title/search-job-level.php [L]
 
 # SETTINGS LEAVE TYPE
 RewriteRule ^leave_type$ controllers/settings/leave/leave-type/leaveType.php [L]

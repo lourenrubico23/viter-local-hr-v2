@@ -1,26 +1,32 @@
-import { queryDataInfinite } from '@/components/helpers/queryDataInfinite';
-import FetchingSpinner from '@/components/partials/FetchingSpinner';
-import LoadMore from '@/components/partials/LoadMore';
-import ModalArchive from '@/components/partials/ModalArchive';
-import ModalDelete from '@/components/partials/ModalDelete';
-import ModalRestore from '@/components/partials/ModalRestore';
-import NoData from '@/components/partials/NoData';
-import SearchBar from '@/components/partials/SearchBar';
-import ServerError from '@/components/partials/ServerError';
-import Status from '@/components/partials/Status';
-import TableLoading from '@/components/partials/TableLoading';
-import TableSpinner from '@/components/partials/TableSpinner';
-import { setIsAdd, setIsArchive, setIsDelete, setIsRestore, setIsSearch } from '@/store/StoreAction';
-import { StoreContext } from '@/store/StoreContext';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import React from 'react'
-import { FaArchive, FaEdit } from 'react-icons/fa';
-import { FaUserGroup } from 'react-icons/fa6';
-import { MdDelete, MdRestore } from 'react-icons/md';
-import { useInView } from 'react-intersection-observer';
+import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
+import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
+import LoadMore from "@/components/partials/LoadMore";
+import ModalArchive from "@/components/partials/modals/ModalArchive";
+import ModalDelete from "@/components/partials/modals/ModalDelete";
+import ModalRestore from "@/components/partials/modals/ModalRestore";
+import NoData from "@/components/partials/NoData";
+import SearchBar from "@/components/partials/SearchBar";
+import ServerError from "@/components/partials/ServerError";
+import Status from "@/components/partials/Status";
+import TableLoading from "@/components/partials/TableLoading";
+import TableSpinner from "@/components/partials/spinner/TableSpinner";
+import {
+  setIsAdd,
+  setIsArchive,
+  setIsDelete,
+  setIsRestore,
+  setIsSearch,
+} from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React from "react";
+import { FaArchive, FaEdit } from "react-icons/fa";
+import { FaUserGroup } from "react-icons/fa6";
+import { MdDelete, MdRestore } from "react-icons/md";
+import { useInView } from "react-intersection-observer";
 
-const LeaveBenefitsTable = ({setItemEdit}) => {
-    const { store, dispatch } = React.useContext(StoreContext);
+const LeaveBenefitsTable = ({ setItemEdit }) => {
+  const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
   const [isData, setIsData] = React.useState("");
@@ -45,7 +51,13 @@ const LeaveBenefitsTable = ({setItemEdit}) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ["leave_benefits", onSearch, store.isSearch, isFilter, statusData],
+    queryKey: [
+      "leave_benefits",
+      onSearch,
+      store.isSearch,
+      isFilter,
+      statusData,
+    ],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
         `/v2/leave_benefits/search`, // search endpoint
@@ -116,7 +128,7 @@ const LeaveBenefitsTable = ({setItemEdit}) => {
 
   return (
     <>
-    <div className="lg:flex items-center gap-3 w-full">
+      <div className="lg:flex items-center gap-3 w-full">
         <div className="flex items-center gap-3 w-full my-3">
           <div className="relative flex flex-col gap-2 w-[120px]">
             <label className="z-10">Status</label>
@@ -156,11 +168,10 @@ const LeaveBenefitsTable = ({setItemEdit}) => {
         </div>
       </div>
 
-      {isFetching && !isFetchingNextPage && status !== "loading" && (
-        <FetchingSpinner />
-      )}
-
-<div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0">
+      <div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0 relative">
+        {isFetching && !isFetchingNextPage && status !== "loading" && (
+          <FetchingSpinner />
+        )}
         <table>
           <thead>
             <tr>
@@ -292,7 +303,7 @@ const LeaveBenefitsTable = ({setItemEdit}) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default LeaveBenefitsTable
+export default LeaveBenefitsTable;

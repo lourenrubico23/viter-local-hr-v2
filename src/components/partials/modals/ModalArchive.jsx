@@ -1,17 +1,17 @@
-import { setError, setMessage, setSuccess } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import { queryData } from "../helpers/queryData";
-import { FaTrashRestore } from "react-icons/fa";
+import { setError, setMessage, setSuccess } from "@/store/StoreAction";
+import { FaArchive } from "react-icons/fa";
 import { GrFormClose } from "react-icons/gr";
-import ButtonSpinner from "./ButtonSpinner";
+import { queryData } from "@/components/helpers/queryData";
+import ButtonSpinner from "../spinner/ButtonSpinner";
 
-const ModalRestore = ({ setIsRestore, mysqlEndpoint, queryKey, item }) => {
+const ModalArchive = ({ setIsArchive, mysqlEndpoint, queryKey, item }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   const handleClose = () => {
-    dispatch(setIsRestore(false));
+    dispatch(setIsArchive(false));
   };
 
   const queryClient = useQueryClient();
@@ -29,20 +29,20 @@ const ModalRestore = ({ setIsRestore, mysqlEndpoint, queryKey, item }) => {
         dispatch(setMessage(data.error));
         dispatch(setSuccess(false));
       } else {
-        dispatch(setIsRestore(false));
+        dispatch(setIsArchive(false));
         console.log("Naysuu!");
         dispatch(setSuccess(true));
-        dispatch(setMessage("Successfully Restored!"));
+        dispatch(setMessage("Successfully Archived!"));
       }
     },
   });
 
   const handleYes = async () => {
+    // mutate data
     mutation.mutate({
-      isActive: 1,
+      isActive: 0,
     });
   };
-
   return (
     <div className=" fixed top-0 left-0 h-screen w-full flex justify-center items-center z-[999]">
       <div
@@ -53,14 +53,16 @@ const ModalRestore = ({ setIsRestore, mysqlEndpoint, queryKey, item }) => {
         <div className="flex items-center justify-between p-4 pb-2 ">
           <div></div>
           <h2 className="translate-y-2">
-            <FaTrashRestore size={30} className="" />
+            <FaArchive className="text-[30px]" />
           </h2>
           <button onClick={handleClose}>
-            <GrFormClose size={25} />
+            <GrFormClose className="text-[35px]" />
           </button>
         </div>
         <div className="p-5 text-center">
-          <h3 className="text-sm pb-2">Are you sure you want to restore {item}?</h3>
+          <h3 className="text-sm pb-2">
+            Are you sure you want to archive {item}?
+          </h3>
           <div className="flex justify-center mt-5 gap-2">
             <button
               className="inline-block rounded-md w-full px-5 py-2 bg-primary text-white"
@@ -82,4 +84,4 @@ const ModalRestore = ({ setIsRestore, mysqlEndpoint, queryKey, item }) => {
   );
 };
 
-export default ModalRestore;
+export default ModalArchive;

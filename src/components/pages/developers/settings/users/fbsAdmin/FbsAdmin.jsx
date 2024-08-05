@@ -1,18 +1,15 @@
 import BreadCrumbs from "@/components/partials/BreadCrumbs";
 import Footer from "@/components/partials/Footer";
 import Header from "@/components/partials/Header";
-import {
-  setIsAdd,
-  setIsSettingsOpen
-} from "@/store/StoreAction";
+import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import { FaPlus } from "react-icons/fa6";
 import Navigation from "../../../Navigation";
 import FbsAdminTable from "./FbsAdminTable";
 import ModalAddFbsAdmin from "./ModalAddFbsAdmin";
-import ModalSuccess from "@/components/partials/ModalSuccess";
-import ModalError from "@/components/partials/ModalError";
+import ModalSuccess from "@/components/partials/modals/ModalSuccess";
+import ModalError from "@/components/partials/modals/ModalError";
 
 const FbsAdmin = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -46,11 +43,13 @@ const FbsAdmin = () => {
           <h2>Users FBS Admin</h2>
         </div>
         <div className="pb-4">
-          <FbsAdminTable setItemEdit={setItemEdit}/>
+          <FbsAdminTable setItemEdit={setItemEdit} />
         </div>
         <Footer />
       </div>
-      {store.isAdd && <ModalAddFbsAdmin  itemEdit={itemEdit} setItemEdit={setItemEdit} />}
+      {store.isAdd && (
+        <ModalAddFbsAdmin itemEdit={itemEdit} setItemEdit={setItemEdit} />
+      )}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>

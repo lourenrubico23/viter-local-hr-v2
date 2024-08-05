@@ -8,8 +8,8 @@ import { FaPlus } from "react-icons/fa6";
 import JobTitleTable from "./JobTitleTable";
 import Footer from "@/components/partials/Footer";
 import ModalAddJobTitle from "./ModalAddJobTitle";
-import ModalSuccess from "@/components/partials/ModalSuccess";
-import ModalError from "@/components/partials/ModalError";
+import ModalSuccess from "@/components/partials/modals/ModalSuccess";
+import ModalError from "@/components/partials/modals/ModalError";
 import useQueryData from "@/components/custom-hooks/useQueryData";
 
 const JobTitle = () => {
@@ -60,7 +60,9 @@ const JobTitle = () => {
         <Footer />
       </div>
 
-      {store.isAdd && <ModalAddJobTitle itemEdit={itemEdit} job_level={job_level} />}
+      {store.isAdd && (
+        <ModalAddJobTitle itemEdit={itemEdit} job_level={job_level} />
+      )}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>

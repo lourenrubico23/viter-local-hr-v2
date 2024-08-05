@@ -1,7 +1,7 @@
 import { InputSelect, InputText } from "@/components/helpers/FormInputs";
 import { queryData } from "@/components/helpers/queryData";
-import ButtonSpinner from "@/components/partials/ButtonSpinner";
-import ModalWrapper from "@/components/partials/ModalWrapper";
+import ModalWrapper from "@/components/partials/modals/ModalWrapper";
+import ButtonSpinner from "@/components/partials/spinner/ButtonSpinner";
 import {
   setError,
   setIsAdd,
@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
-import * as Yup from 'yup'
+import * as Yup from "yup";
 
 const ModalAddLeaveBenefits = ({
   itemEdit,
@@ -142,15 +142,15 @@ const ModalAddLeaveBenefits = ({
                     >
                       <option hidden></option>
                       <optgroup label="Select Job Level">
-                      {activeJobLevel.length === 0 ? (
-                        <option>No Data</option>
-                      ) : (
-                        activeJobLevel?.map((item, key) => (
-                          <option value={item.job_level_aid} key={key}>
-                            {item.job_level_level}
-                          </option>
-                        ))
-                      )}
+                        {activeJobLevel.length === 0 ? (
+                          <option>No Data</option>
+                        ) : (
+                          activeJobLevel?.map((item, key) => (
+                            <option value={item.job_level_aid} key={key}>
+                              {item.job_level_level}
+                            </option>
+                          ))
+                        )}
                       </optgroup>
                     </InputSelect>
                   </div>
@@ -163,15 +163,15 @@ const ModalAddLeaveBenefits = ({
                     >
                       <option hidden></option>
                       <optgroup label="Select Job Title">
-                      {activeJobTitle.length === 0 ? (
-                        <option>No Data</option>
-                      ) : (
-                        activeJobTitle?.map((item, key) => (
-                          <option value={item.job_title_aid} key={key}>
-                            {item.job_title_title}
-                          </option>
-                        ))
-                      )}
+                        {activeJobTitle.length === 0 ? (
+                          <option>No Data</option>
+                        ) : (
+                          activeJobTitle?.map((item, key) => (
+                            <option value={item.job_title_aid} key={key}>
+                              {item.job_title_title}
+                            </option>
+                          ))
+                        )}
                       </optgroup>
                     </InputSelect>
                   </div>
@@ -184,15 +184,15 @@ const ModalAddLeaveBenefits = ({
                     >
                       <option hidden></option>
                       <optgroup label="Select Leave Type">
-                      {activeLeaveType.length === 0 ? (
-                        <option>No Data</option>
-                      ) : (
-                        activeLeaveType?.map((item, key) => (
-                          <option value={item.leave_type_aid} key={key}>
-                            {item.leave_type_type}
-                          </option>
-                        ))
-                      )}
+                        {activeLeaveType.length === 0 ? (
+                          <option>No Data</option>
+                        ) : (
+                          activeLeaveType?.map((item, key) => (
+                            <option value={item.leave_type_aid} key={key}>
+                              {item.leave_type_type}
+                            </option>
+                          ))
+                        )}
                       </optgroup>
                     </InputSelect>
                   </div>

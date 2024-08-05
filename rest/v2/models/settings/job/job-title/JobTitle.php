@@ -256,4 +256,23 @@ class JobTitle
         }
         return $query;
     }
+
+    public function searchJobLevel()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblJobLevel} ";
+            $sql .= "where job_level_level = job_level_level ";
+            $sql .= "and job_level_level like :job_level_level ";
+            $sql .= "order by job_level_is_active desc, ";
+            $sql .= "job_level_level asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "job_level_level" => "%{$this->job_title_search}%",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
 }

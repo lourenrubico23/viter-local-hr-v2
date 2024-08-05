@@ -5,8 +5,8 @@ import SystemTable from "@/components/pages/developers/settings/users/system/Sys
 import BreadCrumbs from "@/components/partials/BreadCrumbs";
 import Footer from "@/components/partials/Footer";
 import Header from "@/components/partials/Header";
-import ModalError from "@/components/partials/ModalError";
-import ModalSuccess from "@/components/partials/ModalSuccess";
+import ModalError from "@/components/partials/modals/ModalError";
+import ModalSuccess from "@/components/partials/modals/ModalSuccess";
 import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
@@ -42,7 +42,7 @@ const System = () => {
       <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-2"}`}>
         <Navigation menu="settings" submenu="users" />
         <div className="py-3 ml-2 flex justify-between">
-          <BreadCrumbs param={location.search}/>
+          <BreadCrumbs param={location.search} />
           <button
             className="flex items-center gap-1 text-primary"
             onClick={handleAdd}

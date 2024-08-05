@@ -1,7 +1,7 @@
 import { InputText } from "@/components/helpers/FormInputs";
 import { queryData } from "@/components/helpers/queryData";
-import ButtonSpinner from "@/components/partials/ButtonSpinner";
-import ModalWrapper from "@/components/partials/ModalWrapper";
+import ButtonSpinner from "@/components/partials/spinner/ButtonSpinner";
+import ModalWrapper from "@/components/partials/modals/ModalWrapper";
 import {
   setError,
   setIsAdd,
@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
-import * as Yup from 'yup'
+import * as Yup from "yup";
 
 const ModalAddLeaveType = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);

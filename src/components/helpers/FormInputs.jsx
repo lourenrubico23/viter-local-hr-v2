@@ -1,10 +1,10 @@
 import { useField } from "formik";
 
-// INPUT 
+// INPUT
 export const InputText = ({
   label = "",
   required = true,
-  className = "text-[12px] outline-none  focus:border-[#9f1659] " ,
+  className = "text-[12px] outline-none  focus:border-[#9f1659] ",
   onChange = null,
   refVal = null,
   ...props
@@ -71,78 +71,31 @@ export const InputSelect = ({ label, onChange = null, ...props }) => {
   );
 };
 
-//FORM AREA
-export const InputArea = ({
-  label = "",
+export const InputTextArea = ({
+  label,
   required = true,
-  className = "text-[12px]",
-  onChange = null,
-  refVal = null,
+  className = "",
   ...props
 }) => {
   const [field, meta] = useField(props);
+
   return (
     <>
-      {label !== "" && (
-        <label
-          htmlFor={props.id || props.name}
-          className={meta.touched && meta.error ? `error-show` : ""}
-        >
-          {label}
-        </label>
-      )}
-      <input
-        {...field}
-        {...props}
+      <label htmlFor={props.id || props.name}>
+        {required && <span className="text-alert">*</span>}
+        {label}
+      </label>
+      <textarea
         className={
           meta.touched && meta.error ? `error-show ${className}` : className
         }
-        onChange={(e) => {
-          onChange !== null && onChange(e);
-          field.onChange(e);
-        }}
+        {...field}
+        {...props}
         autoComplete="off"
-        ref={refVal}
-      />
-
+      ></textarea>
       {meta.touched && meta.error ? (
         <span className="error-show">{meta.error}</span>
       ) : null}
     </>
   );
 };
-export const InputTextArea = ({
-  label,
-  onChange = null,
-  className = "text-[12px] outline-none  focus:border-[#9f1659] ",
-  ...props
-}) => {
-  const [field, meta] = useField(props);
-
-  return (
-    <>
-      <label
-        htmlFor={props.id || props.name}
-        className={meta.touched && meta.error ? "error-msg" : ""}
-      >
-        {label}
-      </label>
-      <textarea
-        className={
-          meta.touched && meta.error ? `error-msg ${className}` : className
-        }
-        {...field}
-        {...props}
-        autoComplete="off"
-        onChange={(e) => {
-          onChange !== null && onChange(e);
-          field.onChange(e);
-        }}
-      ></textarea>
-      {meta.touched && meta.error ? (
-        <small className="error-show">{meta.error}</small>
-      ) : null}
-    </>
-  );
-};    
-

@@ -8,8 +8,8 @@ import React from "react";
 import { FaPlus } from "react-icons/fa6";
 import ModalAddOther from "./ModalAddOther";
 import OtherTable from "./OtherTable";
-import ModalSuccess from "@/components/partials/ModalSuccess";
-import ModalError from "@/components/partials/ModalError";
+import ModalSuccess from "@/components/partials/modals/ModalSuccess";
+import ModalError from "@/components/partials/modals/ModalError";
 import useQueryData from "@/components/custom-hooks/useQueryData";
 
 const Other = () => {

@@ -1,15 +1,15 @@
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
-import FetchingSpinner from "@/components/partials/FetchingSpinner";
+import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
 import Loadmore from "@/components/partials/LoadMore";
-import ModalArchive from "@/components/partials/ModalArchive";
-import ModalDelete from "@/components/partials/ModalDelete";
-import ModalRestore from "@/components/partials/ModalRestore";
+import ModalArchive from "@/components/partials/modals/ModalArchive";
+import ModalDelete from "@/components/partials/modals/ModalDelete";
+import ModalRestore from "@/components/partials/modals/ModalRestore";
 import NoData from "@/components/partials/NoData";
 import SearchBar from "@/components/partials/SearchBar";
 import ServerError from "@/components/partials/ServerError";
 import Status from "@/components/partials/Status";
 import TableLoading from "@/components/partials/TableLoading";
-import TableSpinner from "@/components/partials/TableSpinner";
+import TableSpinner from "@/components/partials/spinner/TableSpinner";
 import {
   setIsAdd,
   setIsArchive,

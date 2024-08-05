@@ -1,8 +1,8 @@
 import BreadCrumbs from "@/components/partials/BreadCrumbs";
 import Footer from "@/components/partials/Footer";
 import Header from "@/components/partials/Header";
-import ModalError from "@/components/partials/ModalError";
-import ModalSuccess from "@/components/partials/ModalSuccess";
+import ModalError from "@/components/partials/modals/ModalError";
+import ModalSuccess from "@/components/partials/modals/ModalSuccess";
 import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";

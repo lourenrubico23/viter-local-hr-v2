@@ -8,8 +8,8 @@ import DepartmentTable from "./DepartmentTable";
 import Footer from "@/components/partials/Footer";
 import ModalAddDepartment from "./ModalAddDepartment";
 import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
-import ModalSuccess from "@/components/partials/ModalSuccess";
-import ModalError from "@/components/partials/ModalError";
+import ModalSuccess from "@/components/partials/modals/ModalSuccess";
+import ModalError from "@/components/partials/modals/ModalError";
 
 const Department = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -47,7 +47,7 @@ const Department = () => {
         <Footer />
       </div>
 
-      {store.isAdd && <ModalAddDepartment itemEdit={itemEdit}/>}
+      {store.isAdd && <ModalAddDepartment itemEdit={itemEdit} />}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>

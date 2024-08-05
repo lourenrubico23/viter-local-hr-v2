@@ -7,8 +7,8 @@ import { FaPlus } from "react-icons/fa6";
 import EmployeesTable from "./EmployeesTable";
 import Footer from "@/components/partials/Footer";
 import ModalAddEmployees from "./ModalAddEmployees";
-import ModalSuccess from "@/components/partials/ModalSuccess";
-import ModalError from "@/components/partials/ModalError";
+import ModalSuccess from "@/components/partials/modals/ModalSuccess";
+import ModalError from "@/components/partials/modals/ModalError";
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import PersonalInfo from "../employees-info/PersonalInfo";
 
