@@ -26,10 +26,15 @@ const ModalAddJobTitle = ({ itemEdit, job_level }) => {
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [loading, setLoading] = React.useState(false);
   const [onFocusJobLevel, setOnFocusJobLevel] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [jobLevelValue, setJobLevelValue] = React.useState("");
-  const [jobLevel, setJobLevel] = React.useState("");
-  const [jobLevelid, setJobLevelid] = React.useState("");
+  const [jobLevelValue, setJobLevelValue] = React.useState(
+    itemEdit ? itemEdit.job_level_level : ""
+  ); // to get the data from table when update
+  const [jobLevel, setJobLevel] = React.useState(
+    itemEdit ? itemEdit.job_level_level : ""
+  );
+  const [jobLevelid, setJobLevelid] = React.useState(
+    itemEdit ? itemEdit.job_title_job_level_id : ""
+  );
 
   const {
     isFetching: jobLevelDataIsFetching,
@@ -83,7 +88,7 @@ const ModalAddJobTitle = ({ itemEdit, job_level }) => {
       }
       setJobLevel(val);
       setLoading(false);
-    }, 500);
+    }, 500); // debounce seconds to fetch
   };
 
   // to close the modal when clicking outside
@@ -171,8 +176,15 @@ const ModalAddJobTitle = ({ itemEdit, job_level }) => {
             initialValues={initVal}
             validationSchema={yupSchema}
             onSubmit={async (values) => {
-              console.log(values);
-              mutation.mutate(values);
+              // to set error message when the input of job level doesnt have input or laman
+              if (jobLevelid === "" || !jobLevelid) {
+                dispatch(setError(true));
+                dispatch(setMessage("Job Entry Level is Required."));
+                return;
+              }
+              // to get all of the data including job_title_job_level_id
+              const data = { ...values, job_title_job_level_id: jobLevelid };
+              mutation.mutate(data);
             }}
           >
             {(props) => {

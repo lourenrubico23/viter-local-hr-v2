@@ -232,7 +232,7 @@ class JobTitle
         return $query;
     }
 
-    public function filterByStatusAndSearch() // for search only
+    public function filterByStatusAndSearch() // for filter with search
     {
         try {
             $sql = "select * ";
@@ -257,14 +257,14 @@ class JobTitle
         return $query;
     }
 
-    public function searchJobLevel()
+    public function searchJobLevel()// for Job level debounce
     {
         try {
             $sql = "select * ";
             $sql .= "from {$this->tblJobLevel} ";
-            $sql .= "where job_level_level = job_level_level ";
-            $sql .= "and job_level_level like :job_level_level ";
-            $sql .= "order by job_level_is_active desc, ";
+            $sql .= "where job_level_level like :job_level_level ";
+            $sql .= "and job_level_is_active = 1 ";
+            $sql .= "order by ";
             $sql .= "job_level_level asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([

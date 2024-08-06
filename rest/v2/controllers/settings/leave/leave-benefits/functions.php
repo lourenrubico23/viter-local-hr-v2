@@ -12,6 +12,14 @@ function checkFilterByStatus($object)
 function checkFilterByStatusAndSearch($object)
 {
     $query = $object->filterByStatusAndSearch();
-    checkQuery($query, "Empty records. (filter by status)");
+    checkQuery($query, "Empty records. (filter by status and search)");
+    return $query;
+}
+
+// filter by filter Job Title
+function checkFilterJobTitle($object)
+{
+    $query = $object->filterJobTitle();
+    checkQuery($query, "Empty records. (filter by job title)");
     return $query;
 }

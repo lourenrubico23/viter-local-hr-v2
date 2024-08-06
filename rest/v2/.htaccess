@@ -88,3 +88,4 @@ RewriteRule ^leave_benefits/([0-9]+)$ controllers/settings/leave/leave-benefits/
 RewriteRule ^leave_benefits/active/([0-9]+)$ controllers/settings/leave/leave-benefits/active.php?leave_benefitsid=$1 [L]
 RewriteRule ^leave_benefits/page/([0-9]+)$ controllers/settings/leave/leave-benefits/page.php?start=$1 [L]
 RewriteRule ^leave_benefits/search$ controllers/settings/leave/leave-benefits/search.php [L]
+RewriteRule ^leave_benefits/filter-job-title$ controllers/settings/leave/leave-benefits/filter-job-title.php [L]

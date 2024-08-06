@@ -12,7 +12,7 @@ checkPayload($data);
 $job_title->job_title_is_active = 1;
 $job_title->job_title_title = checkIndex($data, "job_title_title");
 $job_title->job_title_subscriber = checkIndex($data, "job_title_subscriber");
-$job_title->job_title_job_level_id = checkIndex($data, "job_title_job_level_id");
+$job_title->job_title_job_level_id = $data["job_title_job_level_id"];
 $job_title->job_title_created = date("Y-m-d H:i:s");
 $job_title->job_title_datetime = date("Y-m-d H:i:s");
 

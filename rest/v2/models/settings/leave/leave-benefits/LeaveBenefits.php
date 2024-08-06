@@ -12,6 +12,8 @@ class LeaveBenefits
     public $leave_benefits_created;
     public $leave_benefits_datetime;
 
+    public $job_title_job_level_id;
+
     public $connection;
     public $lastInsertedId;
     public $leave_benefits_start;
@@ -309,6 +311,26 @@ class LeaveBenefits
                 "leave_benefits_job_title_id" => "%{$this->leave_benefits_search}%",
                 "leave_benefits_leave_type_id" => "%{$this->leave_benefits_search}%",
                 "leave_benefits_days" => "%{$this->leave_benefits_search}%",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function filterJobTitle() //for job title filter debounce when job level is selected, the active in job title is get
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from ";
+            $sql .= "{$this->tblJobTitle} ";
+            $sql .= "where job_title_job_level_id = :job_title_job_level_id ";
+            $sql .= "and job_title_is_active = 1 ";
+            $sql .= "order by ";
+            $sql .= "job_title_title asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "job_title_job_level_id" => $this->job_title_job_level_id
             ]);
         } catch (PDOException $ex) {
             $query = false;
