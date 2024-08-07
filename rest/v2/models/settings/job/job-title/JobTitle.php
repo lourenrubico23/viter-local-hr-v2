@@ -66,24 +66,6 @@ class JobTitle
         return $query;
     }
 
-    public function readById()
-    {
-        try {
-            $sql = "select * ";
-            $sql .= "from ";
-            $sql .= "{$this->tblJobTitle} as title, ";
-            $sql .= "{$this->tblJobLevel} as level ";
-            $sql .= "where title.job_title_job_level_id = level.job_level_aid ";
-            $sql .= "and title.job_title_aid = :job_level_aid ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "job_title_aid" => $this->job_title_aid,
-            ]);
-        } catch (PDOException $ex) {
-            $query = false;
-        }
-        return $query;
-    }
 
     public function search()
     {
@@ -218,18 +200,23 @@ class JobTitle
     {
         try {
             $sql = "select * ";
-            $sql .= "from {$this->tblJobTitle} ";
-            $sql .= "where job_title_is_active = :job_title_is_active ";
-            $sql .= "order by job_title_is_active desc, ";
-            $sql .= "job_title_job_level_id asc ";
+            $sql = "from ";
+            $sql .= "{$this->tblJobTitle} as title, ";
+            $sql .= "{$this->tblJobLevel} as level ";
+            $sql .= "where title.job_title_job_level_id = level.job_level_aid ";
+            $sql .= "and (title.job_title_job_level_id = :job_title_job_level_id ";
+            $sql .= "or title.job_title_is_active = :job_title_is_active) ";
+            $sql .= "order by title.job_title_is_active desc, ";
+            $sql .= "title.job_title_job_level_id asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "job_title_is_active" => $this->job_title_is_active,
+                "job_title_job_level_id" => $this->job_title_job_level_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;
         }
-        return $query;
+        return $query; 
     }
 
     public function filterByStatusAndSearch() // for filter with search
@@ -257,7 +244,7 @@ class JobTitle
         return $query;
     }
 
-    public function searchJobLevel()// for Job level debounce
+    public function searchJobLevel() // for Job level debounce
     {
         try {
             $sql = "select * ";
