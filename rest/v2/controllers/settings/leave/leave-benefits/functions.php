@@ -23,3 +23,23 @@ function checkFilterJobTitle($object)
     checkQuery($query, "Empty records. (filter by job title)");
     return $query;
 }
+
+// compare name
+function compareIdName(
+    $object,
+    $jobLevelIdOld,
+    $jobLevelId,
+    $jobTitleIdOld,
+    $jobTitleId,
+    $leaveTypeIdOld,
+    $leaveTypeId,
+    $name
+) {
+    if (
+        strtolower($jobLevelIdOld) !=  strtolower($jobLevelId) ||
+        strtolower($jobTitleIdOld) !=  strtolower($jobTitleId) ||
+        strtolower($leaveTypeIdOld) !=  strtolower($leaveTypeId)
+    ) {
+        isNameExist($object, $name);
+    }
+}

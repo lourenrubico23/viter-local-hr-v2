@@ -213,7 +213,7 @@ class Other
     }
 
 
-    public function readAllRole()
+    public function readAllRole() // read all role except developer role
     {
         try {
             $sql = "select * from {$this->tblUserRole} ";

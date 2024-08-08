@@ -51,6 +51,7 @@ class JobTitle
             $sql .= "{$this->tblJobTitle} as title, ";
             $sql .= "{$this->tblJobLevel} as level ";
             $sql .= "where title.job_title_job_level_id = level.job_level_aid ";
+            $sql .= "and title.job_title_job_level_id = job_title_job_level_id ";
             $sql .= "order by title.job_title_is_active desc, ";
             $sql .= "title.job_title_job_level_id asc ";
             $sql .= "limit :start, ";
@@ -200,7 +201,7 @@ class JobTitle
     {
         try {
             $sql = "select * ";
-            $sql = "from ";
+            $sql .= "from ";
             $sql .= "{$this->tblJobTitle} as title, ";
             $sql .= "{$this->tblJobLevel} as level ";
             $sql .= "where title.job_title_job_level_id = level.job_level_aid ";
@@ -216,27 +217,27 @@ class JobTitle
         } catch (PDOException $ex) {
             $query = false;
         }
-        return $query; 
+        return $query;
     }
 
     public function filterByStatusAndSearch() // for filter with search
     {
         try {
             $sql = "select * ";
+            $sql .= "from ";
             $sql .= "{$this->tblJobTitle} as title, ";
             $sql .= "{$this->tblJobLevel} as level ";
             $sql .= "where title.job_title_job_level_id = level.job_level_aid ";
             $sql .= "and (title.job_title_subscriber like :job_title_subscriber ";
-            $sql .= "or title.job_title_job_level_id like :job_title_job_level_id ";
+            $sql .= "or level.job_level_level like :job_level_level ";
             $sql .= "or title.job_title_title like :job_title_title) ";
             $sql .= "order by title.job_title_is_active desc, ";
             $sql .= "title.job_title_job_level_id asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "job_title_title" => "%{$this->job_title_search}%",
                 "job_title_subscriber" => "%{$this->job_title_search}%",
-                "job_title_job_level_id" => "%{$this->job_title_search}%",
-                "job_title_is_active" => $this->job_title_is_active,
+                "job_level_level" => "%{$this->job_title_search}%",
+                "job_title_title" => "%{$this->job_title_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

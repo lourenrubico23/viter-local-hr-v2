@@ -41,6 +41,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
   const [statusData, setStatusData] = React.useState("all");
   const [department, setDepartment] = React.useState("all");
 
+  // to navigate to personal info page
   const navigate = useNavigate();
 
   let counter = 1;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2024 at 08:09 AM
+-- Generation Time: Aug 08, 2024 at 09:52 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -148,7 +148,7 @@ CREATE TABLE `hris_job_job_level` (
 --
 
 INSERT INTO `hris_job_job_level` (`job_level_aid`, `job_level_is_active`, `job_level_subscriber`, `job_level_level`, `job_level_created`, `job_level_datetime`) VALUES
-(3, 0, '1111', 'Entry-level', '2024-08-05 13:00:17', '2024-08-06 15:26:57'),
+(3, 1, '1111', 'Entry-level', '2024-08-05 13:00:17', '2024-08-08 10:17:31'),
 (4, 1, '222', 'Executive', '2024-08-05 13:00:35', '2024-08-06 15:24:11');
 
 -- --------------------------------------------------------
@@ -199,8 +199,11 @@ CREATE TABLE `hris_leave_leave_benefits` (
 --
 
 INSERT INTO `hris_leave_leave_benefits` (`leave_benefits_aid`, `leave_benefits_is_active`, `leave_benefits_subscriber`, `leave_benefits_job_level_id`, `leave_benefits_job_title_id`, `leave_benefits_leave_type_id`, `leave_benefits_days`, `leave_benefits_created`, `leave_benefits_datetime`) VALUES
-(4, 1, '111', '3', '16', '1', '5', '2024-08-06 12:46:40', '2024-08-06 12:46:40'),
-(5, 1, '222', '4', '14', '2', '3', '2024-08-06 15:35:01', '2024-08-06 15:35:01');
+(4, 1, '111', '3', '16', '1', '5', '2024-08-06 12:46:40', '2024-08-08 13:26:38'),
+(5, 1, '222', '4', '14', '2', '3', '2024-08-06 15:35:01', '2024-08-06 15:35:01'),
+(13, 1, '888', 'Entry-level', '16', '1', '9', '2024-08-08 12:49:04', '2024-08-08 12:49:04'),
+(14, 1, '888', 'Entry-level', '16', '2', '7', '2024-08-08 12:49:40', '2024-08-08 12:49:40'),
+(15, 1, '555', '3', '16', '2', '7', '2024-08-08 12:55:11', '2024-08-08 12:55:11');
 
 -- --------------------------------------------------------
 
@@ -224,6 +227,23 @@ CREATE TABLE `hris_leave_leave_type` (
 INSERT INTO `hris_leave_leave_type` (`leave_type_aid`, `leave_type_is_active`, `leave_type_subscriber`, `leave_type_type`, `leave_type_created`, `leave_type_datetime`) VALUES
 (1, 1, '111', 'Sick Leave', '2024-08-02 13:05:05', '2024-08-02 13:09:11'),
 (2, 1, '222', 'vacation leave', '2024-08-05 10:42:31', '2024-08-05 10:42:31');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hris_notification`
+--
+
+CREATE TABLE `hris_notification` (
+  `notification_aid` int(11) NOT NULL,
+  `notification_is_active` tinyint(1) NOT NULL,
+  `notification_subscriber` varchar(100) NOT NULL,
+  `notification_employee_name` varchar(100) NOT NULL,
+  `notification_purpose` varchar(100) NOT NULL,
+  `notification_email` varchar(100) NOT NULL,
+  `notification_created` datetime NOT NULL,
+  `notification_datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -374,6 +394,12 @@ ALTER TABLE `hris_leave_leave_type`
   ADD PRIMARY KEY (`leave_type_aid`);
 
 --
+-- Indexes for table `hris_notification`
+--
+ALTER TABLE `hris_notification`
+  ADD PRIMARY KEY (`notification_aid`);
+
+--
 -- Indexes for table `hris_user_admin`
 --
 ALTER TABLE `hris_user_admin`
@@ -435,13 +461,19 @@ ALTER TABLE `hris_job_job_title`
 -- AUTO_INCREMENT for table `hris_leave_leave_benefits`
 --
 ALTER TABLE `hris_leave_leave_benefits`
-  MODIFY `leave_benefits_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `leave_benefits_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `hris_leave_leave_type`
 --
 ALTER TABLE `hris_leave_leave_type`
   MODIFY `leave_type_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `hris_notification`
+--
+ALTER TABLE `hris_notification`
+  MODIFY `notification_aid` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `hris_user_admin`

@@ -17,14 +17,20 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
+import { getJobLevelName } from "./functions";
 
 const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [loading, setLoading] = React.useState(false);
+  const [levelName, setLevelName] = React.useState(
+    itemEdit
+      ? getJobLevelName(job_level, itemEdit.leave_benefits_job_level_id)
+      : ""
+  );
   const [jobLevelId, setJobLevelId] = React.useState(
     itemEdit ? itemEdit.leave_benefits_job_level_id : ""
-  );
+  ); // para makuha nag lamn ng leave_benefits_job_level_id when update
 
   const {
     isLoading: jobTitleIsLoading,
@@ -49,6 +55,8 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type }) => {
       dispatch(setIsAdd(false));
     }, 200);
   };
+
+  console.log(levelName);
 
   //activeJobLevel will be an array containing only the elements from job_level.data where job_level_is_active is 1.
   const activeJobLevel = job_level?.data.filter(
@@ -110,6 +118,16 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type }) => {
       ? itemEdit.leave_benefits_leave_type_id
       : "",
     leave_benefits_days: itemEdit ? itemEdit.leave_benefits_days : "",
+
+    leave_benefits_job_level_id_old: itemEdit
+      ? itemEdit.leave_benefits_job_level_id
+      : "",
+    leave_benefits_job_title_id_old: itemEdit
+      ? itemEdit.leave_benefits_job_title_id
+      : "",
+    leave_benefits_leave_type_id_old: itemEdit
+      ? itemEdit.leave_benefits_leave_type_id
+      : "",
   };
   console.log(itemEdit);
   const yupSchema = Yup.object({
@@ -136,8 +154,9 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type }) => {
           initialValues={initVal}
           validationSchema={yupSchema}
           onSubmit={async (values) => {
-            console.log(values);
-            mutation.mutate(values);
+            const data = { ...values, jobLevelName: levelName }; // para makuha ang text o nilalaman pag submit.
+            console.log(data);
+            mutation.mutate(data);
           }}
         >
           {(props) => {
@@ -160,6 +179,9 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type }) => {
                       disabled={mutation.isPending}
                       onChange={(e) => {
                         setJobLevelId(e.target.value);
+                        setLevelName(
+                          e.target.options[e.target.selectedIndex].text
+                        ); //Retrieves the text content of the currently selected option
                         return e;
                       }}
                     >
@@ -169,7 +191,11 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type }) => {
                           <option disabled>No Data</option>
                         ) : (
                           activeJobLevel?.map((item, key) => (
-                            <option value={item.job_level_aid} key={key}>
+                            <option
+                              value={item.job_level_aid}
+                              key={key}
+                              id={item.job_level_level}
+                            >
                               {item.job_level_level}
                             </option>
                           ))
@@ -187,7 +213,9 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type }) => {
                       <option hidden></option>
                       <optgroup label="Select Job Title">
                         {loading || jobTitleIsFetching ? (
-                          <TableSpinner />
+                          <div>
+                            <TableSpinner />
+                          </div>
                         ) : jobTitleError ? (
                           <div className="my-7">
                             <ServerError />
@@ -242,7 +270,13 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type }) => {
                       type="submit"
                       disabled={mutation.isPending || !props.dirty}
                     >
-                      {mutation.isPending ? <ButtonSpinner /> : "Add"}
+                      {mutation.isPending ? (
+                        <ButtonSpinner />
+                      ) : itemEdit ? (
+                        "Update"
+                      ) : (
+                        "Add"
+                      )}
                     </button>
                     <button
                       className="btn-modal-cancel"

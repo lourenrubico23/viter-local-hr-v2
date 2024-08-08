@@ -28,7 +28,19 @@ if (array_key_exists("leave_benefitsid", $_GET)) {
   $leave_benefits_job_level_id_old = checkIndex($data, 'leave_benefits_job_level_id_old');
   $leave_benefits_job_title_id_old = checkIndex($data, 'leave_benefits_job_title_id_old');
   $leave_benefits_leave_type_id_old = checkIndex($data, 'leave_benefits_leave_type_id_old');
-  compareName($leave_benefits, $leave_benefits_job_level_id_old, $leave_benefits->leave_benefits_job_level_id, $leave_benefits_job_title_id_old, $leave_benefits->leave_benefits_job_title_id, $leave_benefits_leave_type_id_old, $leave_benefits->leave_benefits_leave_type_id);
+
+  $jobLevelName = checkIndex($data, "jobLevelName"); // para maiwasan ma over right and id ng text
+  // para maiwasan ang pag kakapareho ng input ng job level, job title, and leave type
+  compareIdName(
+    $leave_benefits,
+    $leave_benefits_job_level_id_old,
+    $leave_benefits->leave_benefits_job_level_id,
+    $leave_benefits_job_title_id_old,
+    $leave_benefits->leave_benefits_job_title_id,
+    $leave_benefits_leave_type_id_old,
+    $leave_benefits->leave_benefits_leave_type_id,
+    $jobLevelName,
+  );
 
   // update
   $query = checkUpdate($leave_benefits);
