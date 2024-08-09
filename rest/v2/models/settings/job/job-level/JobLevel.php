@@ -16,11 +16,15 @@ class JobLevel
     public $job_level_search;
 
     public $tblJobLevel;
+    public $tblJobTitle;
+    public $tblLeaveBenefits;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblJobLevel = "hris_job_job_level";
+        $this->tblJobTitle = "hris_job_job_title";
+        $this->tblLeaveBenefits = "hris_leave_leave_benefits";
     }
 
     public function readAll()
@@ -210,6 +214,36 @@ class JobLevel
                 "job_level_level" => "%{$this->job_level_search}%",
                 "job_level_subscriber" => "%{$this->job_level_search}%",
                 "job_level_is_active" => $this->job_level_is_active,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function checkAssociationJobTitleJobLevelName()
+    {
+        try {
+            $sql = "select job_title_job_level_id from {$this->tblJobTitle} ";
+            $sql .= "where job_title_job_level_id = :job_title_job_level_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "job_title_job_level_id" => $this->job_level_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function checkAssociationLeaveBenefitsJobLevelName()
+    {
+        try {
+            $sql = "select leave_benefits_job_level_id from {$this->tblLeaveBenefits} ";
+            $sql .= "where leave_benefits_job_level_id = :leave_benefits_job_level_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "leave_benefits_job_level_id" => $this->job_level_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

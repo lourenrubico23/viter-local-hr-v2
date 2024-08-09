@@ -18,12 +18,14 @@ class JobTitle
 
     public $tblJobTitle;
     public $tblJobLevel;
+    public $tblLeaveBenefits;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblJobTitle = "hris_job_job_title";
         $this->tblJobLevel = "hris_job_job_level";
+        $this->tblLeaveBenefits = "hris_leave_leave_benefits";
     }
 
     public function readAll()
@@ -228,6 +230,7 @@ class JobTitle
             $sql .= "{$this->tblJobTitle} as title, ";
             $sql .= "{$this->tblJobLevel} as level ";
             $sql .= "where title.job_title_job_level_id = level.job_level_aid ";
+            $sql .= "and title.job_title_is_active = :job_title_is_active ";
             $sql .= "and (title.job_title_subscriber like :job_title_subscriber ";
             $sql .= "or level.job_level_level like :job_level_level ";
             $sql .= "or title.job_title_title like :job_title_title) ";
@@ -238,6 +241,7 @@ class JobTitle
                 "job_title_subscriber" => "%{$this->job_title_search}%",
                 "job_level_level" => "%{$this->job_title_search}%",
                 "job_title_title" => "%{$this->job_title_search}%",
+                "job_title_is_active" => $this->job_title_is_active,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -257,6 +261,21 @@ class JobTitle
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "job_level_level" => "%{$this->job_title_search}%",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function checkAssociationLeaveBenefitsJobTitleName()
+    {
+        try {
+            $sql = "select leave_benefits_job_title_id from {$this->tblLeaveBenefits} ";
+            $sql .= "where leave_benefits_job_title_id = :leave_benefits_job_title_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "leave_benefits_job_title_id" => $this->job_title_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

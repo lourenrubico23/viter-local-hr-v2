@@ -89,3 +89,11 @@ RewriteRule ^leave_benefits/active/([0-9]+)$ controllers/settings/leave/leave-be
 RewriteRule ^leave_benefits/page/([0-9]+)$ controllers/settings/leave/leave-benefits/page.php?start=$1 [L]
 RewriteRule ^leave_benefits/search$ controllers/settings/leave/leave-benefits/search.php [L]
 RewriteRule ^leave_benefits/filter-job-title$ controllers/settings/leave/leave-benefits/filter-job-title.php [L]
+
+# SETTINGS NOTIFICATION
+RewriteRule ^notification$ controllers/settings/notification/notification.php [L]
+RewriteRule ^notification/([0-9]+)$ controllers/settings/notification/notification.php?notificationid=$1 [L]
+RewriteRule ^notification/active/([0-9]+)$ controllers/settings/notification/active.php?notificationid=$1 [L]
+RewriteRule ^notification/page/([0-9]+)$ controllers/settings/notification/page.php?start=$1 [L]
+RewriteRule ^notification/search$ controllers/settings/notification/search.php [L]
+RewriteRule ^notification/search-employees$ controllers/settings/notification/search-employees.php [L]

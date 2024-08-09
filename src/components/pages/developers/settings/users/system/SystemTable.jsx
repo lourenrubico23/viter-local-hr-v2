@@ -71,7 +71,7 @@ const SystemTable = ({ setItemEdit }) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.user_system_fname);
+    setIsData(`${item.user_system_lname}, ${item.user_system_fname}`);
     setIsId(item.user_system_aid);
     setIsArchiving(true);
     setIsRestore(false);
@@ -79,7 +79,7 @@ const SystemTable = ({ setItemEdit }) => {
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.user_system_fname);
+    setIsData(`${item.user_system_lname}, ${item.user_system_fname}`);
     setIsId(item.user_system_aid);
     setIsArchiving(false);
     setIsRestore(true);
@@ -87,7 +87,7 @@ const SystemTable = ({ setItemEdit }) => {
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.user_system_fname);
+    setIsData(`${item.user_system_lname}, ${item.user_system_fname}`);
     setIsId(item.user_system_aid);
   };
 

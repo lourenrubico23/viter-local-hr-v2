@@ -275,7 +275,7 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type }) => {
                       ) : itemEdit ? (
                         "Update"
                       ) : (
-                        "Add"
+                        "Save"
                       )}
                     </button>
                     <button

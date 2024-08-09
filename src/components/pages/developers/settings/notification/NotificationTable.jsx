@@ -1,123 +1,127 @@
-import { queryDataInfinite } from '@/components/helpers/queryDataInfinite'
-import LoadMore from '@/components/partials/LoadMore'
-import ModalArchive from '@/components/partials/modals/ModalArchive'
-import ModalDelete from '@/components/partials/modals/ModalDelete'
-import ModalRestore from '@/components/partials/modals/ModalRestore'
-import NoData from '@/components/partials/NoData'
-import SearchBar from '@/components/partials/SearchBar'
-import ServerError from '@/components/partials/ServerError'
-import FetchingSpinner from '@/components/partials/spinner/FetchingSpinner'
-import TableSpinner from '@/components/partials/spinner/TableSpinner'
-import Status from '@/components/partials/Status'
-import TableLoading from '@/components/partials/TableLoading'
-import { setIsArchive, setIsDelete, setIsRestore, setIsSearch } from '@/store/StoreAction'
-import { StoreContext } from '@/store/StoreContext'
-import { useInfiniteQuery } from '@tanstack/react-query'
-import React from 'react'
-import { FaArchive } from 'react-icons/fa'
-import { FaUserGroup } from 'react-icons/fa6'
-import { MdDelete, MdRestore } from 'react-icons/md'
-import { useInView } from 'react-intersection-observer'
+import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
+import LoadMore from "@/components/partials/LoadMore";
+import ModalArchive from "@/components/partials/modals/ModalArchive";
+import ModalDelete from "@/components/partials/modals/ModalDelete";
+import ModalRestore from "@/components/partials/modals/ModalRestore";
+import NoData from "@/components/partials/NoData";
+import SearchBar from "@/components/partials/SearchBar";
+import ServerError from "@/components/partials/ServerError";
+import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
+import TableSpinner from "@/components/partials/spinner/TableSpinner";
+import Status from "@/components/partials/Status";
+import TableLoading from "@/components/partials/TableLoading";
+import {
+  setIsAdd,
+  setIsArchive,
+  setIsDelete,
+  setIsRestore,
+  setIsSearch,
+} from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React from "react";
+import { FaArchive, FaEdit } from "react-icons/fa";
+import { FaUserGroup } from "react-icons/fa6";
+import { MdDelete, MdRestore } from "react-icons/md";
+import { useInView } from "react-intersection-observer";
 
-const NotificationTable = ({setItemEdit}) => {
-    const {store, dispatch} = React.useContext(StoreContext)
-    const [isArchiving, setIsArchiving] = React.useState(false)
-    const [id, setId] = React.useState("")
-    const [isData, setIsData] = React.useState("")
+const NotificationTable = ({ setItemEdit }) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+  const [isArchiving, setIsArchiving] = React.useState(false);
+  const [id, setId] = React.useState("");
+  const [isData, setIsData] = React.useState("");
 
-    const [onSearch, setOnSearch] = React.useState(false)
-    const [page, setPage] = React.useState(1)
-    const search = React.useRef({value: ""})
-    const {ref, inView} = useInView()
+  const [onSearch, setOnSearch] = React.useState(false);
+  const [page, setPage] = React.useState(1);
+  const search = React.useRef({ value: "" });
+  const { ref, inView } = useInView();
 
-    const [isFilter, setIsFilter] = React.useState(false)
-    const [statusData, setStatusData] = React.useState("all")
+  const [isFilter, setIsFilter] = React.useState(false);
+  const [statusData, setStatusData] = React.useState("all");
 
-    let counter = 1
+  let counter = 1;
 
-    const {
-        data: result,
-        error,
-        fetchNextPage,
-        hasNextPage,
-        isFetching,
-        isFetchingNextPage,
-        isLoading,
-        status,
-      } = useInfiniteQuery({
-        queryKey: [
-          "notification",
-          onSearch,
-          store.isSearch,
+  const {
+    data: result,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isLoading,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ["notification", onSearch, store.isSearch, isFilter, statusData],
+    queryFn: async ({ pageParam = 1 }) =>
+      await queryDataInfinite(
+        `/v2/notification/search`, // search endpoint
+        `/v2/notification/page/${pageParam}`, // list endpoint
+        store.isSearch || isFilter, // search boolean
+        {
+          searchValue: search.current.value,
+          id: "",
           isFilter,
-          statusData,
-        ],
-        queryFn: async ({ pageParam = 1 }) =>
-          await queryDataInfinite(
-            `/v2/notification/search`, // search endpoint
-            `/v2/notification/page/${pageParam}`, // list endpoint
-            store.isSearch || isFilter, // search boolean
-            {
-              searchValue: search.current.value,
-              id: "",
-              isFilter,
-              notification_is_active: statusData === "all" ? "" : statusData,
-            } // search value
-          ),
-        getNextPageParam: (lastPage) => {
-          if (lastPage.page < lastPage.total) {
-            return lastPage.page + lastPage.count;
-          }
-          return;
-        },
-        refetchOnWindowFocus: false,
-      });
+          notification_is_active: statusData === "all" ? "" : statusData,
+        } // search value
+      ),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page < lastPage.total) {
+        return lastPage.page + lastPage.count;
+      }
+      return;
+    },
+    refetchOnWindowFocus: false,
+  });
 
-      const handleChangeStatus = (e) => {
-        setStatusData(e.target.value);
-        setIsFilter(false);
-        setDepartment("all");
-        dispatch(setIsSearch(false));
-        search.current.value = "";
-        if (e.target.value !== "all") {
-          setIsFilter(true);
-        }
-        setPage(1);
-        console.log(statusData);
-      };
+  const handleChangeStatus = (e) => {
+    setStatusData(e.target.value);
+    setIsFilter(false);
+    dispatch(setIsSearch(false));
+    search.current.value = "";
+    if (e.target.value !== "all") {
+      setIsFilter(true);
+    }
+    setPage(1);
+    console.log(statusData);
+  };
 
-      const handleArchive = (item) => {
-        dispatch(setIsArchive(true));
-        setIsData(item.notification_employee_name);
-        setId(item.notification_aid);
-        setIsArchiving(true);
-        setIsRestore(false);
-      };
+  const handleEdit = (item) => {
+    dispatch(setIsAdd(true));
+    setItemEdit(item);
+  };
 
-      const handleRestore = (item) => {
-        dispatch(setIsRestore(true));
-        setIsData(item.notification_employee_name);
-        setId(item.notification_aid);
-        setIsArchiving(false);
-        setIsRestore(true);
-      };
+  const handleArchive = (item) => {
+    dispatch(setIsArchive(true));
+    setIsData(`${item.employees_lname}, ${item.employees_fname}`);
+    setId(item.notification_aid);
+    setIsArchiving(true);
+    setIsRestore(false);
+  };
 
-      const handleDelete = (item) => {
-        dispatch(setIsDelete(true));
-        setIsData(item.notification_employee_name);
-        setId(item.notification_aid);
-      };
+  const handleRestore = (item) => {
+    dispatch(setIsRestore(true));
+    setIsData(`${item.employees_lname}, ${item.employees_fname}`);
+    setId(item.notification_aid);
+    setIsArchiving(false);
+    setIsRestore(true);
+  };
 
-      // used for loading of pages without clicking the Load more button
-      React.useEffect(() => {
-        if (inView) {
-          setPage((prev) => prev + 1);
-          fetchNextPage();
-        }
-      }, [inView]);
+  const handleDelete = (item) => {
+    dispatch(setIsDelete(true));
+    setIsData(`${item.employees_lname}, ${item.employees_fname}`);
+    setId(item.notification_aid);
+  };
+
+  // used for loading of pages without clicking the Load more button
+  React.useEffect(() => {
+    if (inView) {
+      setPage((prev) => prev + 1);
+      fetchNextPage();
+    }
+  }, [inView]);
   return (
     <>
-    <div className="lg:flex items-center gap-3 w-full">
+      <div className="lg:flex items-center gap-3 w-full">
         <div className="flex items-center gap-3 w-full my-3">
           <div className="relative flex flex-col gap-2 w-[120px]">
             <label className="z-10">Status</label>
@@ -207,9 +211,9 @@ const NotificationTable = ({setItemEdit}) => {
                       )}
                     </td>
                     <td>{item.notification_subscriber}</td>
-                    <td className="uppercase">{item.notification_employee_name}</td>
-                    <td className="uppercase">{item.notification_purpose}</td>
-                    <td className="uppercase">{item.notification_email}</td>
+                    <td>{item.employees_fname} {item.employees_lname}</td>
+                    <td>{item.notification_purpose}</td>
+                    <td>{item.notification_email}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
                       {item.notification_is_active ? (
                         <>
@@ -289,8 +293,8 @@ const NotificationTable = ({setItemEdit}) => {
           item={isData}
         />
       )}
-      </>
-  )
-}
+    </>
+  );
+};
 
-export default NotificationTable
+export default NotificationTable;

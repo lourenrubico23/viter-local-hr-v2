@@ -15,11 +15,13 @@ class LeaveType {
     public $leave_type_search;
 
     public $tblLeaveType;
+    public $tblLeaveBenefits;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblLeaveType = "hris_leave_leave_type";
+        $this->tblLeaveBenefits = "hris_leave_leave_benefits";
     }
 
     public function readAll()
@@ -209,6 +211,21 @@ class LeaveType {
                 "leave_type_type" => "%{$this->leave_type_search}%",
                 "leave_type_subscriber" => "%{$this->leave_type_search}%",
                 "leave_type_is_active" => $this->leave_type_is_active,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function checkAssociationLeaveBenefitsLeaveTypeName()
+    {
+        try {
+            $sql = "select leave_benefits_leave_type_id from {$this->tblLeaveBenefits} ";
+            $sql .= "where leave_benefits_leave_type_id = :leave_benefits_leave_type_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "leave_benefits_leave_type_id" => $this->leave_type_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

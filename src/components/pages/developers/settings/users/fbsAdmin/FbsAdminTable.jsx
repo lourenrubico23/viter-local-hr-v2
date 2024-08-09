@@ -70,7 +70,7 @@ const FbsAdminTable = ({ setItemEdit }) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.user_admin_fname);
+    setIsData(`${item.user_admin_lname}, ${item.user_admin_fname}`);
     setIsId(item.user_admin_aid);
     setIsArchiving(true);
     setIsRestore(false);
@@ -78,7 +78,7 @@ const FbsAdminTable = ({ setItemEdit }) => {
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.user_admin_fname);
+    setIsData(`${item.user_admin_lname}, ${item.user_admin_fname}`);
     setIsId(item.user_admin_aid);
     setIsArchiving(false);
     setIsRestore(true);
@@ -86,7 +86,7 @@ const FbsAdminTable = ({ setItemEdit }) => {
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.user_admin_fname);
+    setIsData(`${item.user_admin_lname}, ${item.user_admin_fname}`);
     setIsId(item.user_admin_aid);
   };
 

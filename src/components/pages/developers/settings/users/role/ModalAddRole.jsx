@@ -117,7 +117,7 @@ const ModalAddRole = ({ itemEdit }) => {
                       type="submit"
                       disabled={mutation.isPending || !props.dirty}
                     >
-                      {mutation.isPending ? <ButtonSpinner /> : "Add"}
+                      {mutation.isPending ? <ButtonSpinner /> : itemEdit ? "Update" : "Save"}
                     </button>
                     <button
                       className="btn-modal-cancel"

@@ -1,9 +1,11 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
-import { InputSelect, InputText } from "@/components/helpers/FormInputs";
+import { InputText } from "@/components/helpers/FormInputs";
 import { queryData } from "@/components/helpers/queryData";
-import ButtonSpinner from "@/components/partials/spinner/ButtonSpinner";
-import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
+import NoData from "@/components/partials/NoData";
+import ServerError from "@/components/partials/ServerError";
 import ModalWrapper from "@/components/partials/modals/ModalWrapper";
+import ButtonSpinner from "@/components/partials/spinner/ButtonSpinner";
+import TableSpinner from "@/components/partials/spinner/TableSpinner";
 import {
   setError,
   setIsAdd,
@@ -16,12 +18,8 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
-import TableSpinner from "@/components/partials/spinner/TableSpinner";
-import ServerError from "@/components/partials/ServerError";
-import NoData from "@/components/partials/NoData";
-import ModalError from "@/components/partials/modals/ModalError";
 
-const ModalAddJobTitle = ({ itemEdit, job_level }) => {
+const ModalAddJobTitle = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [loading, setLoading] = React.useState(false);
@@ -62,7 +60,7 @@ const ModalAddJobTitle = ({ itemEdit, job_level }) => {
     }, 200);
   };
 
-  const handleJobLevel = (item) => {
+  const handleClickJobLevel = (item) => {
     setJobLevel(item.job_level_level);
     setJobLevelValue(item.job_level_level);
     setJobLevelid(item.job_level_aid);
@@ -224,7 +222,7 @@ const ModalAddJobTitle = ({ itemEdit, job_level }) => {
                                 className="cursor-pointer"
                                 value={item.job_level_aid}
                                 key={key}
-                                onClick={() => handleJobLevel(item)}
+                                onClick={() => handleClickJobLevel(item)}
                               >
                                 {item.job_level_level}
                               </div>
@@ -254,7 +252,7 @@ const ModalAddJobTitle = ({ itemEdit, job_level }) => {
                         type="submit"
                         disabled={mutation.isPending || !props.dirty}
                       >
-                        {mutation.isPending ? <ButtonSpinner /> : "Add"}
+                        {mutation.isPending ? <ButtonSpinner /> : itemEdit ? "Update" : "Save"}
                       </button>
                       <button
                         className="btn-modal-cancel"
@@ -271,7 +269,6 @@ const ModalAddJobTitle = ({ itemEdit, job_level }) => {
           </Formik>
         </div>
       </ModalWrapper>
-      {store.error && <ModalError />}
     </>
   );
 };

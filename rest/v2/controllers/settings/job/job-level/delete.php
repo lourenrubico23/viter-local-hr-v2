@@ -11,6 +11,8 @@ if (array_key_exists("job_levelid", $_GET)) {
   // get data
   $job_level->job_level_aid = $_GET['job_levelid'];
   checkId($job_level->job_level_aid);
+  isAssociatedJobTitleJobLevelName($job_level);
+  isAssociatedLeaveBenefitsJobLevelName($job_level);
 
   $query = checkDelete($job_level);
 

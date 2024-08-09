@@ -284,7 +284,8 @@ class LeaveBenefits
             $sql .= "{$this->tblJobTitle} as title, ";
             $sql .= "{$this->tblJobLevel} as level, ";
             $sql .= "{$this->tblLeaveType} as type ";
-            $sql .= "where ben.leave_benefits_job_level_id = level.job_level_aid ";
+            $sql .= "where ben.leave_benefits_is_active = :leave_benefits_is_active ";
+            $sql .= "and ben.leave_benefits_job_level_id = level.job_level_aid ";
             $sql .= "and ben.leave_benefits_job_title_id = title.job_title_aid ";
             $sql .= "and ben.leave_benefits_leave_type_id = type.leave_type_aid ";
             $sql .= "and (ben.leave_benefits_subscriber like :leave_benefits_subscriber ";
@@ -303,6 +304,7 @@ class LeaveBenefits
                 "job_title_title" => "%{$this->leave_benefits_search}%",
                 "leave_type_type" => "%{$this->leave_benefits_search}%",
                 "leave_benefits_days" => "%{$this->leave_benefits_search}%",
+                "leave_benefits_is_active" => $this->leave_benefits_is_active,
             ]);
         } catch (PDOException $ex) {
             $query = false;

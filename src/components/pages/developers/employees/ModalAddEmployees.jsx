@@ -244,7 +244,7 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
                       type="submit"
                       disabled={mutation.isPending || !props.dirty}
                     >
-                      {mutation.isPending ? <ButtonSpinner /> : "Add"}
+                      {mutation.isPending ? <ButtonSpinner /> : itemEdit ? "Update" : "Save"}
                     </button>
                     <button
                       className="btn-modal-cancel"

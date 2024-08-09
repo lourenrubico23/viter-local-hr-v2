@@ -11,6 +11,7 @@ if (array_key_exists("leave_typeid", $_GET)) {
   // get data
   $leave_type->leave_type_aid = $_GET['leave_typeid'];
   checkId($leave_type->leave_type_aid);
+  isAssociatedLeaveBenefitsLeaveTypeName($leave_type);
 
   $query = checkDelete($leave_type);
 

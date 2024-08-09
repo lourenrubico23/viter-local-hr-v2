@@ -98,7 +98,7 @@ const LeaveBenefitsTable = ({ setItemEdit }) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.leave_type_type);
+    setIsData(`${item.job_level_level}, ${item.job_title_title}, ${item.leave_type_type}`);
     setIsId(item.leave_benefits_aid);
     setIsArchiving(true);
     setIsRestore(false);
@@ -106,7 +106,7 @@ const LeaveBenefitsTable = ({ setItemEdit }) => {
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.leave_type_type);
+    setIsData(`${item.job_level_level}, ${item.job_title_title}, ${item.leave_type_type}`);
     setIsId(item.leave_benefits_aid);
     setIsArchiving(false);
     setIsRestore(true);
@@ -114,7 +114,7 @@ const LeaveBenefitsTable = ({ setItemEdit }) => {
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.leave_type_type);
+    setIsData(`${item.job_level_level}, ${item.job_title_title}, ${item.leave_type_type}`);
     setIsId(item.leave_benefits_aid);
   };
 

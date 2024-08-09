@@ -15,3 +15,19 @@ function checkFilterByStatusAndSearch($object)
     checkQuery($query, "Empty records. (filter by status)");
     return $query;
 }
+
+// association with job title 
+function isAssociatedJobTitleJobLevelName($object)
+{
+    $query = $object->checkAssociationJobTitleJobLevelName();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
+}
+
+// association with leave Benefits 
+function isAssociatedLeaveBenefitsJobLevelName($object)
+{
+    $query = $object->checkAssociationLeaveBenefitsJobLevelName();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
+}

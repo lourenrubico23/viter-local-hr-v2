@@ -71,7 +71,7 @@ const OtherTable = ({ setItemEdit }) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.user_other_fname);
+    setIsData(`${item.user_other_lname}, ${item.user_other_fname}`);
     setIsId(item.user_other_aid);
     setIsArchiving(true);
     setIsRestore(false);
@@ -79,7 +79,7 @@ const OtherTable = ({ setItemEdit }) => {
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.user_other_fname);
+    setIsData(`${item.user_other_lname}, ${item.user_other_fname}`);
     setIsId(item.user_other_aid);
     setIsArchiving(false);
     setIsRestore(true);
@@ -87,7 +87,7 @@ const OtherTable = ({ setItemEdit }) => {
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.user_other_fname);
+    setIsData(`${item.user_other_lname}, ${item.user_other_fname}`);
     setIsId(item.user_other_aid);
   };
 

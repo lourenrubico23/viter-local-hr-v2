@@ -118,7 +118,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.employees_fname);
+    setIsData(`${item.employees_lname}, ${item.employees_fname}`);
     setIsId(item.employees_aid);
     setIsArchiving(true);
     setIsRestore(false);
@@ -126,7 +126,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.employees_fname);
+    setIsData(`${item.employees_lname}, ${item.employees_fname}`);
     setIsId(item.employees_aid);
     setIsArchiving(false);
     setIsRestore(true);
@@ -134,7 +134,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.employees_fname);
+    setIsData(`${item.employees_lname}, ${item.employees_fname}`);
     setIsId(item.employees_aid);
   };
 
