@@ -1,16 +1,15 @@
-import Header from "@/components/partials/Header";
-import React from "react";
-import Navigation from "../Navigation";
-import { StoreContext } from "@/store/StoreContext";
-import { setIsAdd, setIsSettingsOpen } from "@/store/StoreAction";
-import { FaPlus } from "react-icons/fa6";
-import EmployeesTable from "./EmployeesTable";
-import Footer from "@/components/partials/Footer";
-import ModalAddEmployees from "./ModalAddEmployees";
-import ModalSuccess from "@/components/partials/modals/ModalSuccess";
-import ModalError from "@/components/partials/modals/ModalError";
 import useQueryData from "@/components/custom-hooks/useQueryData";
-import PersonalInfo from "../employees-info/PersonalInfo";
+import Footer from "@/components/partials/Footer";
+import Header from "@/components/partials/Header";
+import ModalError from "@/components/partials/modals/ModalError";
+import ModalSuccess from "@/components/partials/modals/ModalSuccess";
+import { setIsAdd } from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import React from "react";
+import { FaPlus } from "react-icons/fa6";
+import Navigation from "../Navigation";
+import EmployeesTable from "./EmployeesTable";
+import ModalAddEmployees from "./ModalAddEmployees";
 
 const Employees = () => {
   const { store, dispatch } = React.useContext(StoreContext);

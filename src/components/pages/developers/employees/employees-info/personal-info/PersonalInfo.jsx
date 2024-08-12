@@ -5,10 +5,10 @@ import ModalError from "@/components/partials/modals/ModalError";
 import ModalSuccess from "@/components/partials/modals/ModalSuccess";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
-import Navigation from "../Navigation";
 import ModalUpdatePersonalInfo from "./ModalUpdatePersonalInfo";
-import PersonalInfoTable from "./PersonalInfoTable";
 import ModalUpdateFamilyInfo from "./ModalUpdateFamilyInfo";
+import Navigation from "../../../Navigation";
+import PersonalInfoTable from "./PersonalInfoTable";
 
 const PersonalInfo = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -21,7 +21,7 @@ const PersonalInfo = () => {
       <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-2"}`}>
         <Navigation menu="employees" />
         <div className="py-3 ml-2 flex justify-between ">
-          <BreadCrumbs />
+          <BreadCrumbs param={location.search} />
         </div>
         <PersonalInfoTable
           setItemEdit={setItemEdit}

@@ -139,7 +139,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
   };
 
   const handleGoToPage = (item) => {
-    navigate(`${devNavUrl}/employees/info?id=${item.employees_aid}`);
+    navigate(`${devNavUrl}/employees/view?id=${item.employees_aid}`);
   };
 
   // used for loading of pages without clicking the Load more button

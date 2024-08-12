@@ -29,12 +29,14 @@ class Employees
 
     public $tblEmployees;
     public $tblDepartment;
+    public $tblNotification;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblEmployees = "hris_employees";
         $this->tblDepartment = "hris_department";
+        $this->tblNotification = "hris_notification";
     }
 
     public function readAll()
@@ -396,6 +398,21 @@ class Employees
                 "employees_work_email" => "%{$this->employees_search}%",
                 "employees_number" => "%{$this->employees_search}%",
                 "employees_is_active" => $this->employees_is_active,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function checkAssociationNotificationEmployeesName()
+    {
+        try {
+            $sql = "select notification_employee_name_id from {$this->tblNotification} ";
+            $sql .= "where notification_employee_name_id = :notification_employee_name_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "notification_employee_name_id" => $this->employees_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

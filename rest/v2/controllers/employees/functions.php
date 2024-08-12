@@ -49,3 +49,11 @@ function checkSearchAndStatus($object)
     return $query;
 }
 
+// association with notification employees name
+function isAssociatedNotificationEmployeesName($object)
+{
+    $query = $object->checkAssociationNotificationEmployeesName();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
+}
+

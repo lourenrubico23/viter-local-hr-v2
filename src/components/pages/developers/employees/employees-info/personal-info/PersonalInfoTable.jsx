@@ -1,9 +1,8 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import { getUrlParam } from "@/components/helpers/functions-general";
-import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
 import NoData from "@/components/partials/NoData";
-import ServerError from "@/components/partials/ServerError";
 import TableLoading from "@/components/partials/TableLoading";
+import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
 import TableSpinner from "@/components/partials/spinner/TableSpinner";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
@@ -25,7 +24,7 @@ const PersonalInfoTable = ({ setItemEdit, setEditShow }) => {
     "get", // method
     "employeesInfo" // key
   );
-
+  
   const handleBasic = (item) => {
     dispatch(setIsAdd(true));
     setItemEdit(item);

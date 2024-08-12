@@ -6,7 +6,6 @@ import Client from "@/components/pages/developers/client/Client";
 import Employees from "@/components/pages/developers/employees/Employees";
 import Overtime from "@/components/pages/developers/overtime/Overtime";
 import Overview from "@/components/pages/developers/overview/Overview";
-import PersonalInfo from "@/components/pages/developers/employees-info/PersonalInfo";
 import Department from "@/components/pages/developers/settings/department/Department";
 import Notification from "@/components/pages/developers/settings/notification/Notification";
 import FbsAdmin from "@/components/pages/developers/settings/users/fbsAdmin/FbsAdmin";
@@ -22,7 +21,8 @@ import JobTitle from "@/components/pages/developers/settings/job/job-title/JobTi
 import Leave from "@/components/pages/developers/settings/leave/Leave";
 import LeaveType from "@/components/pages/developers/settings/leave/leave-type/LeaveType";
 import LeaveBenefits from "@/components/pages/developers/settings/leave/leave-benefits/LeaveBenefits";
-
+import EmployeesList from "@/components/pages/developers/employees/employees-info/EmployeesList";
+import PersonalInfo from "@/components/pages/developers/employees/employees-info/personal-info/PersonalInfo";
 
 export const routesDeveloper = [
   {
@@ -46,7 +46,11 @@ export const routesDeveloper = [
     element: <Employees />,
   },
   {
-    path: `${devNavUrl}/employees/info`,
+    path: `${devNavUrl}/employees/view`,
+    element: <EmployeesList />,
+  },
+  {
+    path: `${devNavUrl}/employees/view/info`,
     element: <PersonalInfo />,
   },
   {
@@ -99,11 +103,11 @@ export const routesDeveloper = [
   },
   {
     path: `${devNavUrl}/settings/job/level`,
-    element: <JobLevel/>,
+    element: <JobLevel />,
   },
   {
     path: `${devNavUrl}/settings/job/title`,
-    element: <JobTitle/>,
+    element: <JobTitle />,
   },
   {
     path: `${devNavUrl}/settings/leave`,
@@ -122,5 +126,4 @@ export const routesDeveloper = [
     path: `${devNavUrl}/account`,
     element: <Account />,
   },
-  
 ];
