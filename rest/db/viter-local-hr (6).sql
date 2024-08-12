@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 08, 2024 at 09:52 AM
+-- Generation Time: Aug 12, 2024 at 09:55 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -69,9 +69,9 @@ INSERT INTO `hris_department` (`department_aid`, `department_is_active`, `depart
 (2, 1, 'Accounting', '2024-07-22 13:55:46', '2024-07-31 12:38:14'),
 (3, 1, 'VA', '2024-07-25 10:05:18', '2024-07-31 12:38:18'),
 (4, 1, 'Admin', '2024-07-25 10:05:23', '2024-07-25 10:05:23'),
-(5, 1, 'Web', '2024-07-29 09:43:04', '2024-07-29 09:43:04'),
+(5, 1, 'Web', '2024-07-29 09:43:04', '2024-08-09 15:25:43'),
 (6, 1, 'XXXX', '2024-07-29 09:47:56', '2024-07-29 09:47:56'),
-(7, 1, 'YYYY', '2024-07-29 09:48:48', '2024-07-29 09:48:48'),
+(7, 0, 'YYYY', '2024-07-29 09:48:48', '2024-08-09 09:47:46'),
 (20, 1, 'aaaaa', '2024-07-31 12:39:05', '2024-07-31 12:39:05');
 
 -- --------------------------------------------------------
@@ -122,11 +122,11 @@ CREATE TABLE `hris_employees` (
 --
 
 INSERT INTO `hris_employees` (`employees_aid`, `employees_is_active`, `employees_lname`, `employees_fname`, `employees_mname`, `employees_gender`, `employees_department_id`, `employees_personal_email`, `employees_birth_date`, `employees_marital_status`, `employees_date_employed`, `employees_mobile_number`, `employees_work_email`, `employees_number`, `employees_street`, `employees_city`, `employees_province`, `employees_country`, `employees_postal_code`, `employees_telephone_number`, `employees_mother_maiden`, `employees_mother_fname`, `employees_mother_mname`, `employees_father_lname`, `employees_father_fname`, `employees_father_mname`, `employees_family_contact`, `employees_family_address`, `employees_emergency_contact_name`, `employees_emergency_contact_relationship`, `employees_emergency_contact_number`, `employees_emergency_contact_address`, `employees_created`, `employees_datetime`) VALUES
-(6, 1, 'Rubico', 'Louren', 'Macandili', 'female', '5', 'louren@gmail.com', '2024-07-29', 'single', '2024-07-29', '93434343', 'rubico@gmail.com', '111', 'gggggggggg', 'Dolores', 'ddd', 'ddd', '333', '333', 'Malou Macandili', 'hhh', '', 'llllllll', 'sss', 'sss', 'sss', 'ss', 'ss', 'sss', 'ss', 'ss', '2024-07-29 09:44:56', '2024-08-01 07:57:54'),
-(7, 1, 'Dela Cruz', 'Juan', 'Mendez', 'male', '2', 'juan@gmail.com', '2024-07-29', 'single', '2024-07-29', '435454', 'asasa@dsds', '222', 'Bulakin 1', 'Dolores', 'Quezon', 'Philippines', '4326', '+45656565', '', '', '', '', '', '', '', '', '', '', '', '', '2024-07-29 09:49:57', '2024-08-01 08:41:59'),
-(8, 1, 'Lopez', 'Rona', 'sdsd', 'female', '4', 'rona@gmail.com', '2024-07-29', 'widow', '2024-07-29', '45454', 'dfdfdfd@sadfsd', '333', 'Dagatan', 'Dolores', 'Quezon', 'Philippines', '4326', '+89 76764545', '', '', '', '', '', '', '', '', '', '', '', '', '2024-07-29 09:56:10', '2024-08-01 12:15:21'),
+(6, 1, 'Rubico', 'Louren', 'Macandili', 'female', '5', 'louren@gmail.com', '2024-07-29', 'single', '2024-07-29', '93434343', 'rubico@gmail.com', '111', 'gggggggggg', 'Dolores', 'ddd', 'ddd', '333', '333', 'Malou Macandili', 'hhh', 'malasmas', 'llllllll', 'sss', 'sss', 'sss', 'ss', 'ss', 'sss', 'ss', 'bulakin', '2024-07-29 09:44:56', '2024-08-12 07:53:49'),
+(7, 1, 'Dela Cruz', 'Juan', 'Mendez', 'male', '2', 'juan@gmail.com', '2024-07-29', 'single', '2024-07-29', '435454', 'asasa@dsds', '222', 'Bulakin 1', 'Dolores', 'Quezon', 'Philippines', '4326', '+45656565', '', '', '', '', '', '', '', '', '', '', '', '', '2024-07-29 09:49:57', '2024-08-09 14:53:07'),
+(8, 1, 'Lopez', 'Rona', 'sdsd', 'female', '4', 'rona@gmail.com', '2024-07-29', 'widow', '2024-07-29', '45454', 'dfdfdfd@sadfsd', '333', 'Dagatan', 'Dolores', 'Quezon', 'Philippines', '4326', '+89 76764545', '', '', '', '', '', '', '', '', '', '', '', '', '2024-07-29 09:56:10', '2024-08-09 14:53:19'),
 (9, 0, 'sadf', 'fdsfsf', 'fdsfsdf', 'male', '6', 'sdfdsf', '2024-07-29', 'married', '2024-08-09', '324234', 'sdfsdf@sdf', '444', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-07-29 09:59:28', '2024-07-29 12:19:36'),
-(30, 1, 'Manalo', 'Rena', '', 'female', '2', 'rena@gmail.com', '2007-01-17', 'single', '2024-08-01', '90909090', 'rena@frontline.com', '555', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-01 12:12:44', '2024-08-01 12:12:44');
+(30, 1, 'Manalo', 'Rena', '', 'female', '2', 'rena@gmail.com', '2007-01-17', 'single', '2024-08-01', '90909090', 'rena@frontline.com', '555', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-01 12:12:44', '2024-08-09 14:53:17');
 
 -- --------------------------------------------------------
 
@@ -148,8 +148,9 @@ CREATE TABLE `hris_job_job_level` (
 --
 
 INSERT INTO `hris_job_job_level` (`job_level_aid`, `job_level_is_active`, `job_level_subscriber`, `job_level_level`, `job_level_created`, `job_level_datetime`) VALUES
-(3, 1, '1111', 'Entry-level', '2024-08-05 13:00:17', '2024-08-08 10:17:31'),
-(4, 1, '222', 'Executive', '2024-08-05 13:00:35', '2024-08-06 15:24:11');
+(3, 0, '1111', 'Entry-level', '2024-08-05 13:00:17', '2024-08-09 15:57:11'),
+(4, 1, '222', 'Executive', '2024-08-05 13:00:35', '2024-08-09 15:30:59'),
+(5, 1, '333', 'First-level Management', '2024-08-09 15:43:10', '2024-08-09 15:45:04');
 
 -- --------------------------------------------------------
 
@@ -173,8 +174,9 @@ CREATE TABLE `hris_job_job_title` (
 
 INSERT INTO `hris_job_job_title` (`job_title_aid`, `job_title_is_active`, `job_title_subscriber`, `job_title_job_level_id`, `job_title_title`, `job_title_created`, `job_title_datetime`) VALUES
 (14, 1, '777', '4', 'Encoder', '2024-08-06 09:09:40', '2024-08-06 15:34:16'),
-(16, 1, '222', '3', 'utility', '2024-08-06 09:16:08', '2024-08-06 09:16:08'),
-(18, 1, '333', '4', 'VA', '2024-08-07 12:16:19', '2024-08-07 12:16:19');
+(16, 0, '222', '3', 'utility', '2024-08-06 09:16:08', '2024-08-09 15:57:28'),
+(18, 0, '333', '4', 'VA', '2024-08-07 12:16:19', '2024-08-09 12:53:00'),
+(19, 1, '444', '5', 'Rider', '2024-08-09 15:44:10', '2024-08-09 15:44:10');
 
 -- --------------------------------------------------------
 
@@ -200,10 +202,12 @@ CREATE TABLE `hris_leave_leave_benefits` (
 
 INSERT INTO `hris_leave_leave_benefits` (`leave_benefits_aid`, `leave_benefits_is_active`, `leave_benefits_subscriber`, `leave_benefits_job_level_id`, `leave_benefits_job_title_id`, `leave_benefits_leave_type_id`, `leave_benefits_days`, `leave_benefits_created`, `leave_benefits_datetime`) VALUES
 (4, 1, '111', '3', '16', '1', '5', '2024-08-06 12:46:40', '2024-08-08 13:26:38'),
-(5, 1, '222', '4', '14', '2', '3', '2024-08-06 15:35:01', '2024-08-06 15:35:01'),
+(5, 0, '222', '4', '14', '2', '3', '2024-08-06 15:35:01', '2024-08-09 09:47:24'),
 (13, 1, '888', 'Entry-level', '16', '1', '9', '2024-08-08 12:49:04', '2024-08-08 12:49:04'),
 (14, 1, '888', 'Entry-level', '16', '2', '7', '2024-08-08 12:49:40', '2024-08-08 12:49:40'),
-(15, 1, '555', '3', '16', '2', '7', '2024-08-08 12:55:11', '2024-08-08 12:55:11');
+(15, 1, '555', '3', '16', '2', '7', '2024-08-08 12:55:11', '2024-08-08 12:55:11'),
+(16, 1, '333', '5', '19', '1', '3', '2024-08-09 15:44:43', '2024-08-09 15:44:43'),
+(17, 1, '444', '4', '14', '3', '5', '2024-08-09 15:48:52', '2024-08-09 15:48:52');
 
 -- --------------------------------------------------------
 
@@ -225,8 +229,8 @@ CREATE TABLE `hris_leave_leave_type` (
 --
 
 INSERT INTO `hris_leave_leave_type` (`leave_type_aid`, `leave_type_is_active`, `leave_type_subscriber`, `leave_type_type`, `leave_type_created`, `leave_type_datetime`) VALUES
-(1, 1, '111', 'Sick Leave', '2024-08-02 13:05:05', '2024-08-02 13:09:11'),
-(2, 1, '222', 'vacation leave', '2024-08-05 10:42:31', '2024-08-05 10:42:31');
+(1, 0, '111', 'Sick Leave', '2024-08-02 13:05:05', '2024-08-09 15:57:41'),
+(3, 1, '222', 'Vacation', '2024-08-09 15:48:04', '2024-08-09 15:50:10');
 
 -- --------------------------------------------------------
 
@@ -238,11 +242,44 @@ CREATE TABLE `hris_notification` (
   `notification_aid` int(11) NOT NULL,
   `notification_is_active` tinyint(1) NOT NULL,
   `notification_subscriber` varchar(100) NOT NULL,
-  `notification_employee_name` varchar(100) NOT NULL,
+  `notification_employee_name_id` varchar(100) NOT NULL,
   `notification_purpose` varchar(100) NOT NULL,
   `notification_email` varchar(100) NOT NULL,
   `notification_created` datetime NOT NULL,
   `notification_datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hris_notification`
+--
+
+INSERT INTO `hris_notification` (`notification_aid`, `notification_is_active`, `notification_subscriber`, `notification_employee_name_id`, `notification_purpose`, `notification_email`, `notification_created`, `notification_datetime`) VALUES
+(5, 1, '111', '7', 'Leave', 'juan@gmail.com', '2024-08-09 13:50:45', '2024-08-09 14:45:42'),
+(6, 1, '222', '6', 'Overtime', 'louren@gmail.com', '2024-08-09 14:03:07', '2024-08-09 14:45:41');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hris_subscribers`
+--
+
+CREATE TABLE `hris_subscribers` (
+  `subscribers_aid` int(11) NOT NULL,
+  `subscribers_is_active` tinyint(1) NOT NULL,
+  `subscribers_code` int(11) NOT NULL,
+  `subscribers_subscription_type` varchar(100) NOT NULL,
+  `subscribers_payment_type` varchar(100) NOT NULL,
+  `subscribers_date_start` datetime NOT NULL,
+  `subscribers_contact_fname` varchar(100) NOT NULL,
+  `subscribers_contact_lname` varchar(100) NOT NULL,
+  `subscribers_contact_number` varchar(20) NOT NULL,
+  `subscribers_contact_email` varchar(100) NOT NULL,
+  `subscribers_company_name` varchar(100) NOT NULL,
+  `subscribers_total_employees` varchar(100) NOT NULL,
+  `subscribers_amount_per_employee` varchar(100) NOT NULL,
+  `subscribers_address` varchar(100) NOT NULL,
+  `subscribers_created` datetime NOT NULL,
+  `subscribers_datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -295,7 +332,7 @@ INSERT INTO `hris_user_other` (`user_other_aid`, `user_other_is_active`, `user_o
 (8, 1, 'sdsdsd', 'sdsds', 'sdsdsds@sdsd', '18', '2024-07-29 10:40:47', '2024-07-29 10:40:47'),
 (10, 1, 'bbbbb', 'bbbbb', 'bbbbbb@bbbb', '14', '2024-07-29 12:09:21', '2024-07-29 12:09:21'),
 (11, 1, 'Isobel', 'Macandili', 'louren@gmail.com', '19', '2024-07-29 15:47:33', '2024-07-29 15:47:33'),
-(12, 1, 'sa', 'as', 'as@gmail.com', '14', '2024-08-06 12:28:24', '2024-08-06 12:28:24');
+(12, 0, 'sa', 'as', 'as@gmail.com', '14', '2024-08-06 12:28:24', '2024-08-09 10:29:27');
 
 -- --------------------------------------------------------
 
@@ -345,7 +382,7 @@ CREATE TABLE `hris_user_system` (
 INSERT INTO `hris_user_system` (`user_system_aid`, `user_system_is_active`, `user_system_fname`, `user_system_lname`, `user_system_email`, `user_system_role_id`, `user_system_created`, `user_system_datetime`) VALUES
 (6, 1, 'Louren', 'Rubico', 'louren@gmail.com', '9', '2024-07-22 06:59:19', '2024-07-29 12:35:44'),
 (7, 1, 'Luke', 'Rubico', 'lukeisaac@gmail.com', '9', '2024-07-22 07:58:12', '2024-07-31 13:08:14'),
-(8, 1, 'ssdsd', 'sdsd', 'sdsdsds@sad', '13', '2024-07-29 10:45:56', '2024-07-29 10:45:56');
+(8, 1, 'ssdsd', 'sdsd', 'sdsdsds@sad', '13', '2024-07-29 10:45:56', '2024-08-09 14:58:38');
 
 --
 -- Indexes for dumped tables
@@ -400,6 +437,12 @@ ALTER TABLE `hris_notification`
   ADD PRIMARY KEY (`notification_aid`);
 
 --
+-- Indexes for table `hris_subscribers`
+--
+ALTER TABLE `hris_subscribers`
+  ADD PRIMARY KEY (`subscribers_aid`);
+
+--
 -- Indexes for table `hris_user_admin`
 --
 ALTER TABLE `hris_user_admin`
@@ -449,31 +492,37 @@ ALTER TABLE `hris_employees`
 -- AUTO_INCREMENT for table `hris_job_job_level`
 --
 ALTER TABLE `hris_job_job_level`
-  MODIFY `job_level_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `job_level_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `hris_job_job_title`
 --
 ALTER TABLE `hris_job_job_title`
-  MODIFY `job_title_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `job_title_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `hris_leave_leave_benefits`
 --
 ALTER TABLE `hris_leave_leave_benefits`
-  MODIFY `leave_benefits_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `leave_benefits_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `hris_leave_leave_type`
 --
 ALTER TABLE `hris_leave_leave_type`
-  MODIFY `leave_type_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `leave_type_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `hris_notification`
 --
 ALTER TABLE `hris_notification`
-  MODIFY `notification_aid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `notification_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `hris_subscribers`
+--
+ALTER TABLE `hris_subscribers`
+  MODIFY `subscribers_aid` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `hris_user_admin`

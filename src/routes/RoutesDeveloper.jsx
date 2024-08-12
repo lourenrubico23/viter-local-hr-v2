@@ -23,6 +23,9 @@ import LeaveType from "@/components/pages/developers/settings/leave/leave-type/L
 import LeaveBenefits from "@/components/pages/developers/settings/leave/leave-benefits/LeaveBenefits";
 import EmployeesList from "@/components/pages/developers/employees/employees-info/EmployeesList";
 import PersonalInfo from "@/components/pages/developers/employees/employees-info/personal-info/PersonalInfo";
+import Subscribers from "@/components/pages/developers/settings/subscriber/Subscribers";
+import SubscribersList from "@/components/pages/developers/settings/subscriber/subscriber-list/SubscribersList";
+
 
 export const routesDeveloper = [
   {
@@ -72,6 +75,14 @@ export const routesDeveloper = [
   {
     path: `${devNavUrl}/settings/users`,
     element: <User />,
+  },
+  {
+    path: `${devNavUrl}/settings/subscriber`,
+    element: <Subscribers />,
+  },
+  {
+    path: `${devNavUrl}/settings/subscriber/list`,
+    element: <SubscribersList />,
   },
   {
     path: `${devNavUrl}/settings/department`,
