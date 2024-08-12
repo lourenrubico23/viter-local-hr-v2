@@ -63,7 +63,7 @@ class Employees
             $sql = "select * ";
             $sql .= "from ";
             $sql .= "{$this->tblEmployees} as emp, ";
-            $sql .= "{$this->tblDepartment} as dept ";
+            $sql .= "{$this->tblDepartment} as dept, ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
             $sql .= "order by emp.employees_is_active desc, ";
             $sql .= "emp.employees_fname asc, ";
@@ -419,6 +419,4 @@ class Employees
         }
         return $query;
     }
-
-    
 }

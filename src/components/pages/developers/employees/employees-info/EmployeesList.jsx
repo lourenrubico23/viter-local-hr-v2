@@ -1,16 +1,17 @@
-import Header from "@/components/partials/Header";
-import { StoreContext } from "@/store/StoreContext";
-import React from "react";
-import { BiSolidUserDetail } from "react-icons/bi";
-import { GoChevronRight } from "react-icons/go";
-import { Link } from "react-router-dom";
-import Navigation from "../../Navigation";
-import BreadCrumbs from "@/components/partials/BreadCrumbs";
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import { devNavUrl, getUrlParam } from "@/components/helpers/functions-general";
+import BreadCrumbs from "@/components/partials/BreadCrumbs";
+import Header from "@/components/partials/Header";
 import NoData from "@/components/partials/NoData";
-import TableSpinner from "@/components/partials/spinner/TableSpinner";
 import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
+import TableSpinner from "@/components/partials/spinner/TableSpinner";
+import { StoreContext } from "@/store/StoreContext";
+import React from "react";
+import { GoChevronRight } from "react-icons/go";
+import { PiUserListFill } from "react-icons/pi";
+import { Link } from "react-router-dom";
+import Navigation from "../../Navigation";
+import ServerError from "@/components/partials/ServerError";
 
 const EmployeesList = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -33,26 +34,17 @@ const EmployeesList = () => {
       <Header />
       <div className={`wrapper ${store.isShow ? "lg:ml-48" : "ml-1"} `}>
         <Navigation menu="employees" submenu="view" />
-        <div className="py-3 ml-2">
-          <BreadCrumbs param={location.search}/>
+        <div className="py-3 ml-2 pl-0.5 lg:pl-0">
+          <BreadCrumbs param={location.search} />
         </div>
-        <div className="title text-base py-2.5">
-          <h2 className="uppercase">Employee</h2>
-        </div>
-        <div className="title text-base py-1">
-          {employees?.data.map((item, key) => (
-            <h2 className="uppercase" key={key}>
-              {item.employees_lname}, {item.employees_fname}
-            </h2>
-          ))}
-        </div>
+
         <div className="relative">
-        {isFetching && status !== "loading" && <FetchingSpinner />}
+          {isFetching && status !== "loading" && <FetchingSpinner />}
 
           {isLoading && status !== "pending" && <TableSpinner />}
           {error && (
             <div>
-              <NoData />
+              <ServerError />
             </div>
           )}
 
@@ -64,6 +56,16 @@ const EmployeesList = () => {
             <div>
               {employees?.data.map((item, key) => (
                 <div key={key}>
+                  <div className="title text-base py-2.5">
+                    <h2 className="uppercase">Employee</h2>
+                  </div>
+                  <div className="title text-base py-1">
+                    {employees?.data.map((item, key) => (
+                      <h2 className="uppercase" key={key}>
+                        {item.employees_lname}, {item.employees_fname}
+                      </h2>
+                    ))}
+                  </div>
                   <div className="list-content mx-0">
                     <div className="list-button border-b border-dark/40">
                       <Link
@@ -71,7 +73,7 @@ const EmployeesList = () => {
                         className="flex items-center gap-2 py-3 hover:bg-dark/5"
                       >
                         <span className="flex items-center gap-2 ml-2.5 text-xs font-bold">
-                          <BiSolidUserDetail className="text-lg" />
+                          <PiUserListFill className="text-lg" />
                           Personal Information
                         </span>
                         <GoChevronRight className="text-sm" />
@@ -85,7 +87,7 @@ const EmployeesList = () => {
                         className="flex items-center gap-2 py-3 hover:bg-dark/5"
                       >
                         <span className="flex items-center gap-2 ml-2.5 text-xs font-bold">
-                          <BiSolidUserDetail className="text-lg" />
+                          <PiUserListFill className="text-lg" />
                           Job and Pay
                         </span>
                         <GoChevronRight className="text-sm" />
@@ -99,7 +101,7 @@ const EmployeesList = () => {
                         className="flex items-center gap-2 py-3 hover:bg-dark/5"
                       >
                         <span className="flex items-center gap-2 ml-2.5 text-xs font-bold">
-                          <BiSolidUserDetail className="text-lg" />
+                          <PiUserListFill className="text-lg" />
                           Job History
                         </span>
                         <GoChevronRight className="text-sm" />
@@ -113,7 +115,7 @@ const EmployeesList = () => {
                         className="flex items-center gap-2 py-3 hover:bg-dark/5"
                       >
                         <span className="flex items-center gap-2 ml-2.5 text-xs font-bold">
-                          <BiSolidUserDetail className="text-lg" />
+                          <PiUserListFill className="text-lg" />
                           Government Deductions
                         </span>
                         <GoChevronRight className="text-sm" />
@@ -127,7 +129,7 @@ const EmployeesList = () => {
                         className="flex items-center gap-2 py-3 hover:bg-dark/5"
                       >
                         <span className="flex items-center gap-2 ml-2.5 text-xs font-bold">
-                          <BiSolidUserDetail className="text-lg" />
+                          <PiUserListFill className="text-lg" />
                           Other Benefits
                         </span>
                         <GoChevronRight className="text-sm" />
@@ -141,7 +143,7 @@ const EmployeesList = () => {
                         className="flex items-center gap-2 py-3 hover:bg-dark/5"
                       >
                         <span className="flex items-center gap-2 ml-2.5 text-xs font-bold">
-                          <BiSolidUserDetail className="text-lg" />
+                          <PiUserListFill className="text-lg" />
                           De minimis
                         </span>
                         <GoChevronRight className="text-sm" />
@@ -155,7 +157,7 @@ const EmployeesList = () => {
                         className="flex items-center gap-2 py-3 hover:bg-dark/5"
                       >
                         <span className="flex items-center gap-2 ml-2.5 text-xs font-bold">
-                          <BiSolidUserDetail className="text-lg" />
+                          <PiUserListFill className="text-lg" />
                           Earnings
                         </span>
                         <GoChevronRight className="text-sm" />
@@ -169,7 +171,7 @@ const EmployeesList = () => {
                         className="flex items-center gap-2 py-3 hover:bg-dark/5"
                       >
                         <span className="flex items-center gap-2 ml-2.5 text-xs font-bold">
-                          <BiSolidUserDetail className="text-lg" />
+                          <PiUserListFill className="text-lg" />
                           Deductions
                         </span>
                         <GoChevronRight className="text-sm" />
@@ -183,7 +185,7 @@ const EmployeesList = () => {
                         className="flex items-center gap-2 py-3 hover:bg-dark/5"
                       >
                         <span className="flex items-center gap-2 ml-2.5 text-xs font-bold">
-                          <BiSolidUserDetail className="text-lg" />
+                          <PiUserListFill className="text-lg" />
                           Payslip
                         </span>
                         <GoChevronRight className="text-sm" />
