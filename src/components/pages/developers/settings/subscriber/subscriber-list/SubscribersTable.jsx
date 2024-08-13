@@ -1,26 +1,34 @@
-import { queryDataInfinite } from '@/components/helpers/queryDataInfinite';
-import LoadMore from '@/components/partials/LoadMore';
-import ModalArchive from '@/components/partials/modals/ModalArchive';
-import ModalDelete from '@/components/partials/modals/ModalDelete';
-import ModalRestore from '@/components/partials/modals/ModalRestore';
-import NoData from '@/components/partials/NoData';
-import SearchBar from '@/components/partials/SearchBar';
-import ServerError from '@/components/partials/ServerError';
-import FetchingSpinner from '@/components/partials/spinner/FetchingSpinner';
-import TableSpinner from '@/components/partials/spinner/TableSpinner';
-import Status from '@/components/partials/Status';
-import TableLoading from '@/components/partials/TableLoading';
-import { setIsAdd, setIsArchive, setIsDelete, setIsRestore, setIsSearch } from '@/store/StoreAction';
-import { StoreContext } from '@/store/StoreContext';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import React from 'react'
-import { FaArchive, FaEdit } from 'react-icons/fa';
-import { FaUserGroup } from 'react-icons/fa6';
-import { MdDelete, MdRestore } from 'react-icons/md';
-import { useInView } from 'react-intersection-observer';
+import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
+import LoadMore from "@/components/partials/LoadMore";
+import ModalArchive from "@/components/partials/modals/ModalArchive";
+import ModalDelete from "@/components/partials/modals/ModalDelete";
+import ModalRestore from "@/components/partials/modals/ModalRestore";
+import NoData from "@/components/partials/NoData";
+import SearchBar from "@/components/partials/SearchBar";
+import ServerError from "@/components/partials/ServerError";
+import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
+import TableSpinner from "@/components/partials/spinner/TableSpinner";
+import Status from "@/components/partials/Status";
+import TableLoading from "@/components/partials/TableLoading";
+import {
+  setIsAdd,
+  setIsArchive,
+  setIsDelete,
+  setIsRestore,
+  setIsSearch,
+} from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React from "react";
+import { FaArchive, FaEdit } from "react-icons/fa";
+import { FaUserGroup } from "react-icons/fa6";
+import { MdDelete, MdRestore } from "react-icons/md";
+import { useInView } from "react-intersection-observer";
+import ViewModal from "./ViewModal";
+import { useNavigate } from "react-router-dom";
 
-const SubscribersTable = ({ setItemEdit }) => {
-    const { store, dispatch } = React.useContext(StoreContext);
+const SubscribersTable = ({ setItemEdit, setIsView }) => {
+  const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
   const [isData, setIsData] = React.useState("");
@@ -33,6 +41,7 @@ const SubscribersTable = ({ setItemEdit }) => {
   const [isFilter, setIsFilter] = React.useState(false);
   const [statusData, setStatusData] = React.useState("all");
 
+  
   let counter = 1;
 
   const {
@@ -79,9 +88,15 @@ const SubscribersTable = ({ setItemEdit }) => {
     console.log(statusData);
   };
 
+  const handleClickView = () => {
+    setIsView(true);
+    setItemEdit(null);
+  };
+
   const handleEdit = (item) => {
     dispatch(setIsAdd(true));
     setItemEdit(item);
+    
   };
 
   const handleArchive = (item) => {
@@ -116,7 +131,7 @@ const SubscribersTable = ({ setItemEdit }) => {
 
   return (
     <>
-    <div className="lg:flex items-center gap-3 w-full">
+      <div className="lg:flex items-center gap-3 w-full">
         <div className="flex items-center gap-3 w-full my-3">
           <div className="relative flex flex-col gap-2 w-[120px]">
             <label className="z-10">Status</label>
@@ -154,9 +169,9 @@ const SubscribersTable = ({ setItemEdit }) => {
             onSearch={onSearch}
           />
         </div>
-        </div>
+      </div>
 
-        <div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0 relative">
+      <div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0 relative">
         {isFetching && !isFetchingNextPage && status !== "loading" && (
           <FetchingSpinner />
         )}
@@ -165,7 +180,7 @@ const SubscribersTable = ({ setItemEdit }) => {
             <tr>
               <th className="pl-2 w-[1rem]">#</th>
               <th className="w-[1rem]">Status</th>
-              <th className="w-[2rem]">Code</th>
+              <th>Code</th>
               <th>Product</th>
               <th>Name</th>
               <th>Contact Person</th>
@@ -213,14 +228,33 @@ const SubscribersTable = ({ setItemEdit }) => {
                     <td>{item.subscribers_code}</td>
                     <td>{item.subscribers_subscription_type}</td>
                     <td>{item.subscribers_company_name}</td>
-                    <td>{item.subscribers_contact_fname} {item.subscribers_contact_lname}</td>
+                    <td>
+                      {item.subscribers_contact_fname}{" "}
+                      {item.subscribers_contact_lname}
+                    </td>
                     <td>{item.subscribers_contact_email}</td>
-                    <td>{item.subscribers_total_employees}</td>
-                    <td>{item.subscribers_date_start}</td>
+                    <td className="flex items-center gap-2">
+                      {item.subscribers_total_employees}
+                      <button className="text-primary hover:underline" onClick={handleClickView}>View</button>
+                      
+                    </td>
+                    <td>
+                      {new Date(item.subscribers_date_start).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
+                    </td>
                     <td>{item.subscribers_payment_type}</td>
-                    <td>{item.subscribers_amount_per_employee}</td>
-                    <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
-                      {item.job_level_is_active ? (
+                    <td>
+                      <span className="mr-1">&#8369;</span>
+                      {item.subscribers_amount_per_employee}
+                    </td>
+                    <td className="flex items-center lg:gap-3 justify-end mt-2 lg:mt-0">
+                      {item.subscribers_is_active ? (
                         <>
                           <button
                             className="tooltip-action-table"
@@ -272,7 +306,7 @@ const SubscribersTable = ({ setItemEdit }) => {
           refView={ref}
         />
       </div>
-      
+
       {store.isArchive && (
         <ModalArchive
           setIsArchive={setIsArchive}
@@ -298,8 +332,10 @@ const SubscribersTable = ({ setItemEdit }) => {
           item={isData}
         />
       )}
-    </>
-  )
-}
 
-export default SubscribersTable
+  
+    </>
+  );
+};
+
+export default SubscribersTable;

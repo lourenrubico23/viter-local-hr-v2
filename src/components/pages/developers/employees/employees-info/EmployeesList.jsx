@@ -12,6 +12,7 @@ import { PiUserListFill } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import Navigation from "../../Navigation";
 import ServerError from "@/components/partials/ServerError";
+import Footer from "@/components/partials/Footer";
 
 const EmployeesList = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -197,6 +198,7 @@ const EmployeesList = () => {
             </div>
           )}
         </div>
+        <Footer/>
       </div>
     </>
   );

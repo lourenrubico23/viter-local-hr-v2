@@ -97,3 +97,10 @@ RewriteRule ^notification/active/([0-9]+)$ controllers/settings/notification/act
 RewriteRule ^notification/page/([0-9]+)$ controllers/settings/notification/page.php?start=$1 [L]
 RewriteRule ^notification/search$ controllers/settings/notification/search.php [L]
 RewriteRule ^notification/search-employees$ controllers/settings/notification/search-employees.php [L]
+
+# SETTINGS SUBSCRIBERS
+RewriteRule ^subscribers$ controllers/settings/subscribers/subscribers-list/subscribers.php [L]
+RewriteRule ^subscribers/([0-9]+)$ controllers/settings/subscribers/subscribers-list/subscribers.php?subscribersid=$1 [L]
+RewriteRule ^subscribers/active/([0-9]+)$ controllers/settings/subscribers/subscribers-list/active.php?subscribersid=$1 [L]
+RewriteRule ^subscribers/page/([0-9]+)$ controllers/settings/subscribers/subscribers-list/page.php?start=$1 [L]
+RewriteRule ^subscribers/search$ controllers/settings/subscribers/subscribers-list/search.php [L]

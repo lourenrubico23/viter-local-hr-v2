@@ -215,7 +215,7 @@ class Announcement
         return $query;
     }
 
-    public function filterByStatusAndSearch() // for search only
+    public function filterByStatusAndSearch() // for status and search
     {
         try {
             $sql = "select * ";

@@ -10,10 +10,12 @@ import ModalAddSubscribers from "./ModalAddSubscribers";
 import ModalSuccess from "@/components/partials/modals/ModalSuccess";
 import ModalError from "@/components/partials/modals/ModalError";
 import Footer from "@/components/partials/Footer";
+import ViewModal from "./ViewModal";
 
 const SubscribersList = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
+  const [isView, setIsView] = React.useState(false)
 
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -43,12 +45,13 @@ const SubscribersList = () => {
           <h2>Subscriber</h2>
         </div>
         <div className="pb-4">
-          <SubscribersTable setItemEdit={setItemEdit} />
+          <SubscribersTable setItemEdit={setItemEdit} setIsView={setIsView}/>
         </div>
         <Footer />
       </div>
 
       {store.isAdd && <ModalAddSubscribers itemEdit={itemEdit} />}
+      {isView && <ViewModal setItemEdit={setItemEdit} setIsView={setIsView}/>}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>
