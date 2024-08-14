@@ -51,7 +51,7 @@ const SubscribersList = () => {
       </div>
 
       {store.isAdd && <ModalAddSubscribers itemEdit={itemEdit} />}
-      {isView && <ViewModal setItemEdit={setItemEdit} setIsView={setIsView}/>}
+      {isView && <ViewModal itemEdit={itemEdit} setIsView={setIsView}/>}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>

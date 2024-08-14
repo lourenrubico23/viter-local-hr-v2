@@ -18,7 +18,7 @@ const SubscribersList = () => {
           </Link>
         </div>
         <div className="list-button border-b border-dark/40">
-          <Link to="/settings/subsribers/addons" className="flex items-center gap-2 py-3 hover:bg-dark/5">
+          <Link to="/settings/subscriber/addons" className="flex items-center gap-2 py-3 hover:bg-dark/5">
             <span className='flex items-center gap-2 ml-2.5 text-xs font-bold'>
               <FaListCheck className="text-lg" />
               Addons
@@ -27,7 +27,7 @@ const SubscribersList = () => {
           </Link>
         </div>
         <div className="list-button border-b border-dark/40">
-          <Link to="/settings/subsribers/features" className="flex items-center gap-2 py-3 hover:bg-dark/5">
+          <Link to="/settings/subscriber/features" className="flex items-center gap-2 py-3 hover:bg-dark/5">
             <span className='flex items-center gap-2 ml-2.5 text-xs font-bold'>
               <RiListCheck className="text-lg" />
               Features

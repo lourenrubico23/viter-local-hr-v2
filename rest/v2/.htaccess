@@ -104,3 +104,11 @@ RewriteRule ^subscribers/([0-9]+)$ controllers/settings/subscribers/subscribers-
 RewriteRule ^subscribers/active/([0-9]+)$ controllers/settings/subscribers/subscribers-list/active.php?subscribersid=$1 [L]
 RewriteRule ^subscribers/page/([0-9]+)$ controllers/settings/subscribers/subscribers-list/page.php?start=$1 [L]
 RewriteRule ^subscribers/search$ controllers/settings/subscribers/subscribers-list/search.php [L]
+RewriteRule ^subscribers/read-all-subscribers-log-by-id$ controllers/settings/subscribers/subscribers-list/read-all-subscribers-log-by-id.php [L]
+
+# SETTINGS FEATURES
+RewriteRule ^features$ controllers/settings/subscribers/features/features.php [L]
+RewriteRule ^features/([0-9]+)$ controllers/settings/subscribers/features/features.php?featuresid=$1 [L]
+RewriteRule ^features/active/([0-9]+)$ controllers/settings/subscribers/features/active.php?featuresid=$1 [L]
+RewriteRule ^features/page/([0-9]+)$ controllers/settings/subscribers/features/page.php?start=$1 [L]
+RewriteRule ^features/search$ controllers/settings/subscribers/features/search.php [L]

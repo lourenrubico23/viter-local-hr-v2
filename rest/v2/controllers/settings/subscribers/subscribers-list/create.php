@@ -26,11 +26,11 @@ $subscribers->subscribers_created = date("Y-m-d H:i:s");
 $subscribers->subscribers_datetime = date("Y-m-d H:i:s");
 
 //checks newly added data if it already exists
-isNameExist($subscribers, $subscribers->subscribers_company_name);
+isNameExist($subscribers, $subscribers->subscribers_contact_email);
 $subscribers->subscribers_code = setSubscriberCode($subscribers);
 $query = checkCreate($subscribers);
 $subscribers->subscribers_log_subscriber_code = $subscribers->subscribers_code;
-$subscribers->subscribers_log_subscriber_id = $subscribers->lastInsertedId;
+$subscribers->subscribers_log_subscriber_id = $subscribers->lastInsertedId; // get the last id
 $subscribers->subscribers_log_subscriber_changes = "{$subscribers->subscribers_total_employees} employees";
-checkCreateSubscriberLog($subscribers,$data);
+checkCreateSubscriberLog($subscribers, $data);
 returnSuccess($subscribers, "subscribers", $query);

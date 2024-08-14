@@ -1,14 +1,14 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
-import { getUrlParam } from "@/components/helpers/functions-general";
+import { formatDate, getTimeFormat } from "@/components/helpers/functions-general";
 import ModalWrapper from "@/components/partials/modals/ModalWrapper";
-import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import { GoDotFill } from "react-icons/go";
 import { GrFormClose } from "react-icons/gr";
 
-const ViewModal = ({ setIsView }) => {
+const ViewModal = ({ setIsView, itemEdit }) => {
   const [animate, setAnimate] = React.useState("translate-x-full");
 
+  console.log(itemEdit);
   const handleClose = () => {
     setAnimate("translate-x-full");
     setTimeout(() => {
@@ -27,9 +27,14 @@ const ViewModal = ({ setIsView }) => {
     status,
     data: subscribers,
   } = useQueryData(
-    `/v2/subscribers`, // endpoint
-    "get", // method
-    "subscribers" // key
+    `/v2/subscribers/read-all-subscribers-log-by-id`, // endpoint
+    "post", // method
+    "subscribers", // key
+    {
+      subscribers_log_subscriber_id: itemEdit.subscribers_aid,
+      subscribers_log_subscriber_code: itemEdit.subscribers_code,
+    },
+    {}
   );
 
   return (
@@ -50,8 +55,8 @@ const ViewModal = ({ setIsView }) => {
           key={key}
         >
           <ul className="text-right">
-            <li>August 13, 2024</li>
-            <li>12:00:00 PM</li>
+            <li>{formatDate(item.subscribers_log_datetime)}</li>
+            <li>{getTimeFormat(item.subscribers_log_datetime)}</li>
           </ul>
           <span>
             <GoDotFill className="size-6 text-gray-400" />
@@ -60,7 +65,7 @@ const ViewModal = ({ setIsView }) => {
             <li>
               {item.subscribers_log_subscriber_changes}
               <div className="text-gray-500 font-bold">
-                [{item.subscribers_company_name}]
+                [{item.subscribers_log_lname}, {item.subscribers_log_fname}]
               </div>
             </li>
           </ul>

@@ -48,14 +48,26 @@ class Subscribers
     public function readAll()
     {
         try {
-            $sql = "select * ";
-            $sql .= "from ";
-            $sql .= "{$this->tblSubscribers} as subs, ";
-            $sql .= "{$this->tblSubscribersLog} as log ";
-            $sql .= "where subs.subscribers_aid = log.subscribers_log_subscriber_id ";
-            $sql .= "and subs.subscribers_total_employees = log.subscribers_log_subscriber_changes ";
+            $sql = "select * from {$this->tblSubscribers} ";
             $sql .= "order by subscribers_code asc ";
             $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function readAllSubscribersLogById()
+    {
+        try {
+            $sql = "select * from {$this->tblSubscribersLog} ";
+            $sql .= "where subscribers_log_subscriber_id = :subscribers_log_subscriber_id ";
+            $sql .= "and subscribers_log_subscriber_code = :subscribers_log_subscriber_code ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "subscribers_log_subscriber_id" => $this->subscribers_log_subscriber_id,
+                "subscribers_log_subscriber_code" => $this->subscribers_log_subscriber_code,
+            ]);
         } catch (PDOException $ex) {
             $query = false;
         }
@@ -272,11 +284,11 @@ class Subscribers
     public function checkName()
     {
         try {
-            $sql = "select subscribers_company_name from {$this->tblSubscribers} ";
-            $sql .= "where subscribers_company_name = :subscribers_company_name ";
+            $sql = "select subscribers_contact_email from {$this->tblSubscribers} ";
+            $sql .= "where subscribers_contact_email = :subscribers_contact_email ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "subscribers_company_name" => "{$this->subscribers_company_name}",
+                "subscribers_contact_email" => "{$this->subscribers_contact_email}",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -289,9 +301,9 @@ class Subscribers
         try {
             $sql = "select * ";
             $sql .= "from {$this->tblSubscribers} ";
-            $sql .= "where subscribers_is_active = subscribers_is_active ";
-            $sql .= "and subscribers_is_active = :subscribers_is_active ";
-            $sql .= "order by subscribers_code asc ";
+            $sql .= "where subscribers_is_active = :subscribers_is_active ";
+            $sql .= "order by subscribers_is_active desc, ";
+            $sql .= "subscribers_code asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "subscribers_is_active" => $this->subscribers_is_active,
@@ -352,7 +364,7 @@ class Subscribers
         return $query;
     }
 
-    public function createSubscriberLog()// create of subscribers log
+    public function createSubscriberLog() // create of subscribers log
     {
         try {
             $sql = "insert into {$this->tblSubscribersLog} ";

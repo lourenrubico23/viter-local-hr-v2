@@ -199,7 +199,7 @@ class JobLevel
         return $query;
     }
 
-    public function filterByStatusAndSearch() // for search only
+    public function filterByStatusAndSearch() // for search and status
     {
         try {
             $sql = "select * ";

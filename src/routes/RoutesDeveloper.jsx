@@ -25,6 +25,7 @@ import EmployeesList from "@/components/pages/developers/employees/employees-inf
 import PersonalInfo from "@/components/pages/developers/employees/employees-info/personal-info/PersonalInfo";
 import Subscribers from "@/components/pages/developers/settings/subscriber/Subscribers";
 import SubscribersList from "@/components/pages/developers/settings/subscriber/subscriber-list/SubscribersList";
+import Features from "@/components/pages/developers/settings/subscriber/features/Features";
 
 
 export const routesDeveloper = [
@@ -83,6 +84,10 @@ export const routesDeveloper = [
   {
     path: `${devNavUrl}/settings/subscriber/list`,
     element: <SubscribersList />,
+  },
+  {
+    path: `${devNavUrl}/settings/subscriber/features`,
+    element: <Features />,
   },
   {
     path: `${devNavUrl}/settings/department`,

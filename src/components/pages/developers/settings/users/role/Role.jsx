@@ -20,7 +20,7 @@ const Role = () => {
     setItemEdit(null);
   };
 
-  React.useEffect(() => {
+  React.useEffect(() => { //effect to remain the settings open even after refresh
     dispatch(setIsSettingsOpen(true));
   }, []);
 
@@ -42,7 +42,7 @@ const Role = () => {
         <div className="text-base">
           <h2>Users Role</h2>
         </div>
-        <div className="pb-4">
+        <div className="pb-4 mt-4">
           <RoleTable setItemEdit={setItemEdit} />
         </div>
         <Footer />

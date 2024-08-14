@@ -1,3 +1,4 @@
+import useQueryData from "@/components/custom-hooks/useQueryData";
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
 import LoadMore from "@/components/partials/LoadMore";
 import ModalArchive from "@/components/partials/modals/ModalArchive";
@@ -24,10 +25,8 @@ import { FaArchive, FaEdit } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
-import ViewModal from "./ViewModal";
-import { useNavigate } from "react-router-dom";
 
-const SubscribersTable = ({ setItemEdit, setIsView }) => {
+const FeatureTable = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
@@ -53,17 +52,17 @@ const SubscribersTable = ({ setItemEdit, setIsView }) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ["subscribers", onSearch, store.isSearch, isFilter, statusData],
+    queryKey: ["features", onSearch, store.isSearch, isFilter, statusData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/v2/subscribers/search`, // search endpoint
-        `/v2/subscribers/page/${pageParam}`, // list endpoint
+        `/v2/features/search`, // search endpoint
+        `/v2/features/page/${pageParam}`, // list endpoint
         store.isSearch || isFilter, // search boolean
         {
           searchValue: search.current.value,
           id: "",
           isFilter,
-          subscribers_is_active: statusData === "all" ? "" : statusData,
+          features_is_active: statusData === "all" ? "" : statusData,
         } // search value
       ),
     getNextPageParam: (lastPage) => {
@@ -87,12 +86,6 @@ const SubscribersTable = ({ setItemEdit, setIsView }) => {
     console.log(statusData);
   };
 
-  const handleClickView = (item) => {
-    setIsView(true);
-    setItemEdit(item);
-    setIsId(item.subscribers_aid);
-  };
-
   const handleEdit = (item) => {
     dispatch(setIsAdd(true));
     setItemEdit(item);
@@ -100,27 +93,26 @@ const SubscribersTable = ({ setItemEdit, setIsView }) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.subscribers_company_name);
-    setIsId(item.subscribers_aid);
+    setIsData(item.features_name);
+    setIsId(item.features_aid);
     setIsArchiving(true);
     setIsRestore(false);
   };
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.subscribers_company_name);
-    setIsId(item.subscribers_aid);
+    setIsData(item.features_name);
+    setIsId(item.features_aid);
     setIsArchiving(false);
     setIsRestore(true);
   };
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.subscribers_company_name);
-    setIsId(item.subscribers_aid);
+    setIsData(item.features_name);
+    setIsId(item.features_aid);
   };
 
-  // used for loading of pages without clicking the Load more button
   React.useEffect(() => {
     if (inView) {
       setPage((prev) => prev + 1);
@@ -130,7 +122,7 @@ const SubscribersTable = ({ setItemEdit, setIsView }) => {
 
   return (
     <>
-      <div className="lg:flex items-center gap-3 w-full">
+    <div className="lg:flex items-center gap-3 w-full">
         <div className="flex items-center gap-3 w-full my-3">
           <div className="relative flex flex-col gap-2 w-[120px]">
             <label className="z-10">Status</label>
@@ -171,7 +163,7 @@ const SubscribersTable = ({ setItemEdit, setIsView }) => {
       </div>
 
       <div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0 relative">
-        {isFetching && !isFetchingNextPage && status !== "loading" && (
+      {isFetching && !isFetchingNextPage && status !== "loading" && (
           <FetchingSpinner />
         )}
         <table>
@@ -179,15 +171,8 @@ const SubscribersTable = ({ setItemEdit, setIsView }) => {
             <tr>
               <th className="pl-2 w-[1rem]">#</th>
               <th className="w-[1rem]">Status</th>
+              <th>Features Name</th>
               <th>Code</th>
-              <th>Product</th>
-              <th>Name</th>
-              <th>Contact Person</th>
-              <th>Email</th>
-              <th>Total Employee</th>
-              <th>Date Start</th>
-              <th>Payment Type</th>
-              <th>Amount</th>
               <th className="text-right">Actions</th>
             </tr>
           </thead>
@@ -218,46 +203,16 @@ const SubscribersTable = ({ setItemEdit, setIsView }) => {
                   <tr key={key}>
                     <td className="pl-2">{counter++}</td>
                     <td>
-                      {item.subscribers_is_active === 1 ? (
+                      {item.features_is_active === 1 ? (
                         <Status text="Active" />
                       ) : (
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.subscribers_code}</td>
-                    <td>{item.subscribers_subscription_type}</td>
-                    <td>{item.subscribers_company_name}</td>
-                    <td>
-                      {item.subscribers_contact_fname}{" "}
-                      {item.subscribers_contact_lname}
-                    </td>
-                    <td>{item.subscribers_contact_email}</td>
-                    <td className="flex items-center gap-2">
-                      {item.subscribers_total_employees}
-                      <button
-                        className="text-primary hover:underline"
-                        onClick={() => handleClickView(item)}
-                      >
-                        View
-                      </button>
-                    </td>
-                    <td>
-                      {new Date(item.subscribers_date_start).toLocaleDateString(
-                        "en-US",
-                        {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }
-                      )}
-                    </td>
-                    <td>{item.subscribers_payment_type}</td>
-                    <td>
-                      <span className="mr-1">&#8369;</span>
-                      {item.subscribers_amount_per_employee}
-                    </td>
+                    <td>{item.features_name}</td>
+                    <td>{item.features_code}</td>
                     <td className="flex items-center lg:gap-3 justify-end mt-2 lg:mt-0">
-                      {item.subscribers_is_active ? (
+                      {item.features_is_active ? (
                         <>
                           <button
                             className="tooltip-action-table"
@@ -313,8 +268,8 @@ const SubscribersTable = ({ setItemEdit, setIsView }) => {
       {store.isArchive && (
         <ModalArchive
           setIsArchive={setIsArchive}
-          queryKey={"subscribers"}
-          mysqlEndpoint={`/v2/subscribers/active/${id}`}
+          queryKey={"features"}
+          mysqlEndpoint={`/v2/features/active/${id}`}
           item={isData}
           archive={isArchiving}
         />
@@ -322,16 +277,16 @@ const SubscribersTable = ({ setItemEdit, setIsView }) => {
       {store.isDelete && (
         <ModalDelete
           setIsDelete={setIsDelete}
-          queryKey={"subscribers"}
-          mysqlEndpoint={`/v2/subscribers/${id}`}
+          queryKey={"features"}
+          mysqlEndpoint={`/v2/features/${id}`}
           item={isData}
         />
       )}
       {store.isRestore && (
         <ModalRestore
           setIsRestore={setIsRestore}
-          queryKey={"subscribers"}
-          mysqlEndpoint={`/v2/subscribers/active/${id}`}
+          queryKey={"features"}
+          mysqlEndpoint={`/v2/features/active/${id}`}
           item={isData}
         />
       )}
@@ -339,4 +294,4 @@ const SubscribersTable = ({ setItemEdit, setIsView }) => {
   );
 };
 
-export default SubscribersTable;
+export default FeatureTable;

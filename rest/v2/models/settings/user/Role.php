@@ -32,7 +32,7 @@ class Role
         try {
             $sql = "select * from {$this->tblUserRole} ";
             $sql .= "order by user_role_is_active desc, ";
-            $sql .= "user_role_aid asc ";
+            $sql .= "user_role_name asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -47,7 +47,7 @@ class Role
             $sql .= "from ";
             $sql .= "{$this->tblUserRole} ";
             $sql .= "order by user_role_is_active desc, "; //para nasa baba ng table ang mga inactive or archived
-            $sql .= "user_role_aid asc ";
+            $sql .= "user_role_name asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);

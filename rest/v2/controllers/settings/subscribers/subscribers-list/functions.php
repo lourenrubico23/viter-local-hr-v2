@@ -59,3 +59,10 @@ function compareSubscriberLog($object, $totalEmployeeOld, $totalEmployee, $data)
         checkCreateSubscriberLog($object, $data);
     }
 }
+
+function checkReadAllSubscribersLogById($object)
+{
+    $query = $object->readAllSubscribersLogById();
+    checkQuery($query, "There's a problem processing your request. (readAll SubscribersLog)");
+    return $query;
+}
