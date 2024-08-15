@@ -112,3 +112,12 @@ RewriteRule ^features/([0-9]+)$ controllers/settings/subscribers/features/featur
 RewriteRule ^features/active/([0-9]+)$ controllers/settings/subscribers/features/active.php?featuresid=$1 [L]
 RewriteRule ^features/page/([0-9]+)$ controllers/settings/subscribers/features/page.php?start=$1 [L]
 RewriteRule ^features/search$ controllers/settings/subscribers/features/search.php [L]
+
+# SETTINGS ADDONS
+RewriteRule ^addons$ controllers/settings/subscribers/addons/addons.php [L]
+RewriteRule ^addons/([0-9]+)$ controllers/settings/subscribers/addons/addons.php?addonsid=$1 [L]
+RewriteRule ^addons/active/([0-9]+)$ controllers/settings/subscribers/addons/active.php?addonsid=$1 [L]
+RewriteRule ^addons/page/([0-9]+)$ controllers/settings/subscribers/addons/page.php?start=$1 [L]
+RewriteRule ^addons/search$ controllers/settings/subscribers/addons/search.php [L]
+RewriteRule ^addons/search-features$ controllers/settings/subscribers/addons/search-features.php [L]
+RewriteRule ^addons/search-subscribers$ controllers/settings/subscribers/addons/search-subscribers.php [L]

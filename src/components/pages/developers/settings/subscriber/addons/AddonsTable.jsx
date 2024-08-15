@@ -1,33 +1,26 @@
-import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
-import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
-import LoadMore from "@/components/partials/LoadMore";
-import ModalArchive from "@/components/partials/modals/ModalArchive";
-import ModalDelete from "@/components/partials/modals/ModalDelete";
-import ModalRestore from "@/components/partials/modals/ModalRestore";
-import NoData from "@/components/partials/NoData";
-import SearchBar from "@/components/partials/SearchBar";
-import ServerError from "@/components/partials/ServerError";
-import Status from "@/components/partials/Status";
-import TableLoading from "@/components/partials/TableLoading";
-import TableSpinner from "@/components/partials/spinner/TableSpinner";
-import {
-  setIsAdd,
-  setIsArchive,
-  setIsDelete,
-  setIsRestore,
-  setIsSearch,
-} from "@/store/StoreAction";
-import { StoreContext } from "@/store/StoreContext";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import React from "react";
-import { FaArchive, FaEdit } from "react-icons/fa";
-import { FaList } from "react-icons/fa6";
-import { MdDelete, MdRestore } from "react-icons/md";
-import { useInView } from "react-intersection-observer";
-import { formatDate } from "@/components/helpers/functions-general";
+import { queryDataInfinite } from '@/components/helpers/queryDataInfinite';
+import LoadMore from '@/components/partials/LoadMore';
+import ModalArchive from '@/components/partials/modals/ModalArchive';
+import ModalDelete from '@/components/partials/modals/ModalDelete';
+import ModalRestore from '@/components/partials/modals/ModalRestore';
+import NoData from '@/components/partials/NoData';
+import SearchBar from '@/components/partials/SearchBar';
+import ServerError from '@/components/partials/ServerError';
+import FetchingSpinner from '@/components/partials/spinner/FetchingSpinner';
+import TableSpinner from '@/components/partials/spinner/TableSpinner';
+import Status from '@/components/partials/Status';
+import TableLoading from '@/components/partials/TableLoading';
+import { setIsAdd, setIsArchive, setIsDelete, setIsRestore, setIsSearch } from '@/store/StoreAction';
+import { StoreContext } from '@/store/StoreContext';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import React from 'react'
+import { FaArchive, FaEdit } from 'react-icons/fa';
+import { FaUserGroup } from 'react-icons/fa6';
+import { MdDelete, MdRestore } from 'react-icons/md';
+import { useInView } from 'react-intersection-observer';
 
-const AnnouncementTable = ({ setItemEdit }) => {
-  const { store, dispatch } = React.useContext(StoreContext);
+const AddonsTable = ({ setItemEdit }) => {
+    const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
   const [isData, setIsData] = React.useState("");
@@ -52,17 +45,17 @@ const AnnouncementTable = ({ setItemEdit }) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ["announcement", onSearch, store.isSearch, isFilter, statusData],
+    queryKey: ["addons", onSearch, store.isSearch, isFilter, statusData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/v2/announcement/search`, // search endpoint
-        `/v2/announcement/page/${pageParam}`, // list endpoint
+        `/v2/addons/search`, // search endpoint
+        `/v2/addons/page/${pageParam}`, // list endpoint
         store.isSearch || isFilter, // search boolean
         {
           searchValue: search.current.value,
           id: "",
           isFilter,
-          announcement_is_active: statusData === "all" ? "" : statusData,
+          addons_is_active: statusData === "all" ? "" : statusData,
         } // search value
       ),
     getNextPageParam: (lastPage) => {
@@ -93,27 +86,26 @@ const AnnouncementTable = ({ setItemEdit }) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.announcement_title);
-    setIsId(item.announcement_aid);
+    setIsData(item.subscribers_code);
+    setIsId(item.addons_aid);
     setIsArchiving(true);
     setIsRestore(false);
   };
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.announcement_title);
-    setIsId(item.announcement_aid);
+    setIsData(item.subscribers_code);
+    setIsId(item.addons_aid);
     setIsArchiving(false);
     setIsRestore(true);
   };
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.announcement_title);
-    setIsId(item.announcement_aid);
+    setIsData(item.subscribers_code);
+    setIsId(item.addons_aid);
   };
 
-  // used for loading of pages without clicking the Load more button
   React.useEffect(() => {
     if (inView) {
       setPage((prev) => prev + 1);
@@ -123,7 +115,7 @@ const AnnouncementTable = ({ setItemEdit }) => {
 
   return (
     <>
-      <div className="lg:flex items-center gap-3 w-full">
+    <div className="lg:flex items-center gap-3 w-full">
         <div className="flex items-center gap-3 w-full my-3">
           <div className="relative flex flex-col gap-2 w-[120px]">
             <label className="z-10">Status</label>
@@ -141,7 +133,7 @@ const AnnouncementTable = ({ setItemEdit }) => {
 
           <div className="flex items-center gap-2">
             <span>
-              <FaList className="text-gray-500" />
+              <FaUserGroup className="text-gray-500" />
             </span>
             {store.isSearch || isFilter
               ? result?.pages[0].count
@@ -164,7 +156,7 @@ const AnnouncementTable = ({ setItemEdit }) => {
       </div>
 
       <div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0 relative">
-        {isFetching && !isFetchingNextPage && status !== "loading" && (
+      {isFetching && !isFetchingNextPage && status !== "loading" && (
           <FetchingSpinner />
         )}
         <table>
@@ -172,10 +164,11 @@ const AnnouncementTable = ({ setItemEdit }) => {
             <tr>
               <th className="pl-2 w-[1rem]">#</th>
               <th className="w-[1rem]">Status</th>
-              <th className="w-[2rem]">Code</th>
-              <th>Date</th>
-              <th>Title</th>
-              <th>Description</th>
+              <th>Subscriber Code</th>
+              <th>Product</th>
+              <th>Company</th>
+              <th>Feature Code</th>
+              <th>Feature Description</th>
               <th className="text-right">Actions</th>
             </tr>
           </thead>
@@ -205,20 +198,20 @@ const AnnouncementTable = ({ setItemEdit }) => {
                 {page.data?.map((item, key) => (
                   <tr key={key}>
                     <td className="pl-2">{counter++}</td>
-
                     <td>
-                      {item.announcement_is_active === 1 ? (
+                      {item.addons_is_active === 1 ? (
                         <Status text="Active" />
                       ) : (
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.announcement_subscriber}</td>
-                    <td>{formatDate(item.announcement_date)}</td>
-                    <td>{item.announcement_title}</td>
-                    <td>{item.announcement_description}</td>
-                    <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
-                      {item.announcement_is_active ? (
+                    <td>{item.subscribers_code}</td>
+                    <td>{item.subscribers_subscription_type}</td>
+                    <td>{item.subscribers_company_name}</td>
+                    <td>{item.features_code}</td>
+                    <td></td>
+                    <td className="flex items-center lg:gap-3 justify-end mt-2 lg:mt-0">
+                      {item.addons_is_active ? (
                         <>
                           <button
                             className="tooltip-action-table"
@@ -274,8 +267,8 @@ const AnnouncementTable = ({ setItemEdit }) => {
       {store.isArchive && (
         <ModalArchive
           setIsArchive={setIsArchive}
-          queryKey={"announcement"}
-          mysqlEndpoint={`/v2/announcement/active/${id}`}
+          queryKey={"addons"}
+          mysqlEndpoint={`/v2/addons/active/${id}`}
           item={isData}
           archive={isArchiving}
         />
@@ -283,21 +276,21 @@ const AnnouncementTable = ({ setItemEdit }) => {
       {store.isDelete && (
         <ModalDelete
           setIsDelete={setIsDelete}
-          queryKey={"announcement"}
-          mysqlEndpoint={`/v2/announcement/${id}`}
+          queryKey={"addons"}
+          mysqlEndpoint={`/v2/addons/${id}`}
           item={isData}
         />
       )}
       {store.isRestore && (
         <ModalRestore
           setIsRestore={setIsRestore}
-          queryKey={"announcement"}
-          mysqlEndpoint={`/v2/announcement/active/${id}`}
+          queryKey={"addons"}
+          mysqlEndpoint={`/v2/addons/active/${id}`}
           item={isData}
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default AnnouncementTable;
+export default AddonsTable

@@ -26,6 +26,7 @@ import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
 import ViewModal from "./ViewModal";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "@/components/helpers/functions-general";
 
 const SubscribersTable = ({ setItemEdit, setIsView }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -241,16 +242,7 @@ const SubscribersTable = ({ setItemEdit, setIsView }) => {
                         View
                       </button>
                     </td>
-                    <td>
-                      {new Date(item.subscribers_date_start).toLocaleDateString(
-                        "en-US",
-                        {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }
-                      )}
-                    </td>
+                    <td>{formatDate(item.subscribers_date_start)}</td>
                     <td>{item.subscribers_payment_type}</td>
                     <td>
                       <span className="mr-1">&#8369;</span>

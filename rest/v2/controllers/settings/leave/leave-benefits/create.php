@@ -18,7 +18,7 @@ $leave_benefits->leave_benefits_days = checkIndex($data, "leave_benefits_days");
 $leave_benefits->leave_benefits_created = date("Y-m-d H:i:s");
 $leave_benefits->leave_benefits_datetime = date("Y-m-d H:i:s");
 
-// para macreate ang text 
+// id to text convertion 
 $jobLevelName = checkIndex($data, "jobLevelName");
 //checks newly added data if it already exists
 isNameExist($leave_benefits, $jobLevelName);

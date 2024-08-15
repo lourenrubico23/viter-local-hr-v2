@@ -21,17 +21,6 @@ const JobTitle = () => {
     setItemEdit(null);
   };
 
-  const {
-    isLoading: job_levelIsLoading,
-    isFetching: job_levelIsFetching,
-    error: job_levelError,
-    data: job_level,
-  } = useQueryData(
-    `/v2/job_level`, // endpoint
-    "get", // method
-    "job_level" // key
-  );
-
   React.useEffect(() => {
     dispatch(setIsSettingsOpen(true));
   }, []);
@@ -44,7 +33,7 @@ const JobTitle = () => {
         <div className="py-3 ml-2 flex justify-between">
           <BreadCrumbs param={location.search} />
           <button
-            className="flex items-center gap-1 text-primary"
+            className="flex items-center gap-1 text-primary hover:underline"
             onClick={handleAdd}
           >
             <FaPlus />
@@ -61,7 +50,7 @@ const JobTitle = () => {
       </div>
 
       {store.isAdd && (
-        <ModalAddJobTitle itemEdit={itemEdit} job_level={job_level} />
+        <ModalAddJobTitle itemEdit={itemEdit} />
       )}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}

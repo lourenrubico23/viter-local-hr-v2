@@ -34,7 +34,7 @@ const Department = () => {
             <h2>Department</h2>
           </div>
           <button
-            className="flex items-center gap-1 text-primary"
+            className="flex items-center gap-1 text-primary hover:underline"
             onClick={handleAdd}
           >
             <FaPlus />

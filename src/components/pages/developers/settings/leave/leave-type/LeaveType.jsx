@@ -32,7 +32,7 @@ const LeaveType = () => {
         <div className="py-3 ml-2 flex justify-between">
           <BreadCrumbs param={location.search} />
           <button
-            className="flex items-center gap-1 text-primary"
+            className="flex items-center gap-1 text-primary hover:underline"
             onClick={handleAdd}
           >
             <FaPlus />

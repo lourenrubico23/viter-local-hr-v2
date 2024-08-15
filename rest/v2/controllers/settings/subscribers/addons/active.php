@@ -5,32 +5,35 @@ require '../../../../core/header.php';
 require '../../../../core/functions.php';
 require 'functions.php';
 // use needed classes
-require '../../../../models/settings/subscribers/subscribers-list/Subscribers.php';
+require '../../../../models/settings/subscribers/addons/Addons.php';
+// get payload
 
 // check database connection
+
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$subscribers = new Subscribers($conn);
-$response = new Response();
+$addons = new Addons($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
+// get $_GET data
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
-    checkApiKey();
+  //checkApiKey();
+  if (array_key_exists("addonsid", $_GET)) {
+    // check data
     checkPayload($data);
-
-    // ito ang kinukuha ng payload
-    $subscribers->subscribers_log_subscriber_id = checkIndex($data, "subscribers_log_subscriber_id");
-    $subscribers->subscribers_log_subscriber_code = checkIndex($data, "subscribers_log_subscriber_code");
-
-
-    $query = checkReadAllSubscribersLogById($subscribers);
+    $addons->addons_aid = $_GET['addonsid'];
+    $addons->addons_is_active = trim($data["isActive"]);
+    $addons->addons_datetime = date("Y-m-d H:i:s");
+    checkId($addons->addons_aid);
+    $query = checkActive($addons);
     http_response_code(200);
-    getQueriedData($query);
-    // return 404 error if endpoint not available
-    checkEndpoint();
+    returnSuccess($addons, "addons", $query);
+  }
+  // return 404 error if endpoint not available
+  checkEndpoint();
 }
 
 http_response_code(200);

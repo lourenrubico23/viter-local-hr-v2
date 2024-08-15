@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2024 at 09:55 AM
+-- Generation Time: Aug 15, 2024 at 10:03 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `viter-local-hr`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hris_addons`
+--
+
+CREATE TABLE `hris_addons` (
+  `addons_aid` int(11) NOT NULL,
+  `addons_is_active` tinyint(1) NOT NULL,
+  `addons_subscriber_id` varchar(100) NOT NULL,
+  `addons_feature_code_id` varchar(100) NOT NULL,
+  `addons_created` datetime NOT NULL,
+  `addons_datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hris_addons`
+--
+
+INSERT INTO `hris_addons` (`addons_aid`, `addons_is_active`, `addons_subscriber_id`, `addons_feature_code_id`, `addons_created`, `addons_datetime`) VALUES
+(1, 1, '10', '12', '2024-08-15 14:07:14', '2024-08-15 15:44:06'),
+(3, 1, '11', '1', '2024-08-15 14:24:06', '2024-08-15 14:24:06'),
+(4, 1, '10', '6', '2024-08-15 15:44:23', '2024-08-15 15:44:23');
 
 -- --------------------------------------------------------
 
@@ -131,6 +155,30 @@ INSERT INTO `hris_employees` (`employees_aid`, `employees_is_active`, `employees
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `hris_features`
+--
+
+CREATE TABLE `hris_features` (
+  `features_aid` int(11) NOT NULL,
+  `features_is_active` tinyint(1) NOT NULL,
+  `features_name` varchar(100) NOT NULL,
+  `features_code` varchar(100) NOT NULL,
+  `features_created` datetime NOT NULL,
+  `features_datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hris_features`
+--
+
+INSERT INTO `hris_features` (`features_aid`, `features_is_active`, `features_name`, `features_code`, `features_created`, `features_datetime`) VALUES
+(1, 1, 'Rest Day Tagging', 'rd-tagging', '2024-08-14 09:13:51', '2024-08-15 12:48:03'),
+(6, 1, 'Payroll', 'daily-payroll', '2024-08-14 09:36:31', '2024-08-15 12:48:01'),
+(12, 1, 'Office locations', 'locations', '2024-08-14 09:52:11', '2024-08-14 09:53:46');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `hris_job_job_level`
 --
 
@@ -176,7 +224,8 @@ INSERT INTO `hris_job_job_title` (`job_title_aid`, `job_title_is_active`, `job_t
 (14, 1, '777', '4', 'Encoder', '2024-08-06 09:09:40', '2024-08-06 15:34:16'),
 (16, 0, '222', '3', 'utility', '2024-08-06 09:16:08', '2024-08-09 15:57:28'),
 (18, 0, '333', '4', 'VA', '2024-08-07 12:16:19', '2024-08-09 12:53:00'),
-(19, 1, '444', '5', 'Rider', '2024-08-09 15:44:10', '2024-08-09 15:44:10');
+(19, 1, '444', '5', 'Rider', '2024-08-09 15:44:10', '2024-08-09 15:44:10'),
+(20, 1, '666', '5', 'tyty', '2024-08-15 14:05:31', '2024-08-15 14:05:31');
 
 -- --------------------------------------------------------
 
@@ -207,7 +256,8 @@ INSERT INTO `hris_leave_leave_benefits` (`leave_benefits_aid`, `leave_benefits_i
 (14, 1, '888', 'Entry-level', '16', '2', '7', '2024-08-08 12:49:40', '2024-08-08 12:49:40'),
 (15, 1, '555', '3', '16', '2', '7', '2024-08-08 12:55:11', '2024-08-08 12:55:11'),
 (16, 1, '333', '5', '19', '1', '3', '2024-08-09 15:44:43', '2024-08-09 15:44:43'),
-(17, 1, '444', '4', '14', '3', '5', '2024-08-09 15:48:52', '2024-08-09 15:48:52');
+(17, 1, '444', '4', '14', '3', '5', '2024-08-09 15:48:52', '2024-08-09 15:48:52'),
+(18, 1, '444', '5', '19', '3', '6', '2024-08-14 09:38:47', '2024-08-14 09:38:47');
 
 -- --------------------------------------------------------
 
@@ -266,10 +316,10 @@ INSERT INTO `hris_notification` (`notification_aid`, `notification_is_active`, `
 CREATE TABLE `hris_subscribers` (
   `subscribers_aid` int(11) NOT NULL,
   `subscribers_is_active` tinyint(1) NOT NULL,
-  `subscribers_code` int(11) NOT NULL,
+  `subscribers_code` varchar(50) NOT NULL,
   `subscribers_subscription_type` varchar(100) NOT NULL,
   `subscribers_payment_type` varchar(100) NOT NULL,
-  `subscribers_date_start` datetime NOT NULL,
+  `subscribers_date_start` date NOT NULL,
   `subscribers_contact_fname` varchar(100) NOT NULL,
   `subscribers_contact_lname` varchar(100) NOT NULL,
   `subscribers_contact_number` varchar(20) NOT NULL,
@@ -281,6 +331,52 @@ CREATE TABLE `hris_subscribers` (
   `subscribers_created` datetime NOT NULL,
   `subscribers_datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hris_subscribers`
+--
+
+INSERT INTO `hris_subscribers` (`subscribers_aid`, `subscribers_is_active`, `subscribers_code`, `subscribers_subscription_type`, `subscribers_payment_type`, `subscribers_date_start`, `subscribers_contact_fname`, `subscribers_contact_lname`, `subscribers_contact_number`, `subscribers_contact_email`, `subscribers_company_name`, `subscribers_total_employees`, `subscribers_amount_per_employee`, `subscribers_address`, `subscribers_created`, `subscribers_datetime`) VALUES
+(10, 1, 'FBS001', 'Payroll', 'Annual', '2024-07-31', 'Louren', 'Rubico', '09343434', 'louren@gmail.com', 'Louren222', '100', '200', 'asdasdad', '2024-08-13 14:59:37', '2024-08-13 15:31:01'),
+(11, 1, 'FBS002', 'Hris', 'Monthly', '2024-08-13', 'Rona', 'Manalo', '0909090', 'manalo@gmail.com', 'Manalo', '100', '130', 'fghfhgh', '2024-08-13 15:00:40', '2024-08-13 15:00:40'),
+(14, 1, 'FBS003', 'Payroll', 'Monthly', '2024-08-13', 'mmmm', 'mmm', '676767', 'mmm@gmail.com', 'mmm', '300', '120', 'hyhjtyh', '2024-08-13 15:04:20', '2024-08-14 15:48:37'),
+(17, 0, 'FBS004', 'Hris', 'Monthly', '2024-08-14', 'yyyy', 'yyyyy', '66665', 'yyyy@yyyy', 'yyyyy', '100', '78', 'sdfsdfs', '2024-08-14 15:30:38', '2024-08-15 08:12:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hris_subscribers_log`
+--
+
+CREATE TABLE `hris_subscribers_log` (
+  `subscribers_log_aid` int(11) NOT NULL,
+  `subscribers_log_user_id` varchar(20) NOT NULL,
+  `subscribers_log_fname` varchar(100) NOT NULL,
+  `subscribers_log_lname` varchar(100) NOT NULL,
+  `subscribers_log_subscriber_code` varchar(50) NOT NULL,
+  `subscribers_log_subscriber_id` varchar(50) NOT NULL,
+  `subscribers_log_subscriber_changes` varchar(100) NOT NULL,
+  `subscribers_log_datetime` datetime NOT NULL,
+  `subscribers_log_created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hris_subscribers_log`
+--
+
+INSERT INTO `hris_subscribers_log` (`subscribers_log_aid`, `subscribers_log_user_id`, `subscribers_log_fname`, `subscribers_log_lname`, `subscribers_log_subscriber_code`, `subscribers_log_subscriber_id`, `subscribers_log_subscriber_changes`, `subscribers_log_datetime`, `subscribers_log_created`) VALUES
+(0, '1', 'First name', 'Last Name', 'FBS002', '9', '150 employees', '2024-08-13 14:42:00', '2024-08-13 14:42:00'),
+(0, '1', 'First name', 'Last Name', 'FBS001', '10', '130 employees', '2024-08-13 14:59:37', '2024-08-13 14:59:37'),
+(0, '1', 'First name', 'Last Name', 'FBS002', '11', '100 employees', '2024-08-13 15:00:40', '2024-08-13 15:00:40'),
+(0, '1', 'First name', 'Last Name', 'FBS002', '12', '120 employees', '2024-08-13 15:01:10', '2024-08-13 15:01:10'),
+(0, '1', 'First name', 'Last Name', 'FBS002', '13', '100 employees', '2024-08-13 15:01:53', '2024-08-13 15:01:53'),
+(0, '1', 'First name', 'Last Name', 'FBS003', '14', '230 employees', '2024-08-13 15:04:20', '2024-08-13 15:04:20'),
+(0, '1', 'First name', 'Last Name', 'FBS003', '14', '400 employees', '2024-08-13 15:48:23', '2024-08-13 15:48:23'),
+(0, '1', 'First name', 'Last Name', 'FBS003', '14', '300 employees', '2024-08-14 06:52:05', '2024-08-14 06:52:05'),
+(0, '1', 'First name', 'Last Name', 'FBS004', '15', '600 employees', '2024-08-14 15:00:15', '2024-08-14 15:00:15'),
+(0, '1', 'First name', 'Last Name', 'FBS005', '16', '400 employees', '2024-08-14 15:01:17', '2024-08-14 15:01:17'),
+(0, '1', 'First name', 'Last Name', 'FBS004', '17', '67 employees', '2024-08-14 15:30:38', '2024-08-14 15:30:38'),
+(0, '1', 'First name', 'Last Name', 'FBS004', '17', '100 employees', '2024-08-15 07:12:49', '2024-08-15 07:12:49');
 
 -- --------------------------------------------------------
 
@@ -389,6 +485,12 @@ INSERT INTO `hris_user_system` (`user_system_aid`, `user_system_is_active`, `use
 --
 
 --
+-- Indexes for table `hris_addons`
+--
+ALTER TABLE `hris_addons`
+  ADD PRIMARY KEY (`addons_aid`);
+
+--
 -- Indexes for table `hris_announcement`
 --
 ALTER TABLE `hris_announcement`
@@ -405,6 +507,12 @@ ALTER TABLE `hris_department`
 --
 ALTER TABLE `hris_employees`
   ADD PRIMARY KEY (`employees_aid`);
+
+--
+-- Indexes for table `hris_features`
+--
+ALTER TABLE `hris_features`
+  ADD PRIMARY KEY (`features_aid`);
 
 --
 -- Indexes for table `hris_job_job_level`
@@ -471,6 +579,12 @@ ALTER TABLE `hris_user_system`
 --
 
 --
+-- AUTO_INCREMENT for table `hris_addons`
+--
+ALTER TABLE `hris_addons`
+  MODIFY `addons_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `hris_announcement`
 --
 ALTER TABLE `hris_announcement`
@@ -489,6 +603,12 @@ ALTER TABLE `hris_employees`
   MODIFY `employees_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
+-- AUTO_INCREMENT for table `hris_features`
+--
+ALTER TABLE `hris_features`
+  MODIFY `features_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT for table `hris_job_job_level`
 --
 ALTER TABLE `hris_job_job_level`
@@ -498,13 +618,13 @@ ALTER TABLE `hris_job_job_level`
 -- AUTO_INCREMENT for table `hris_job_job_title`
 --
 ALTER TABLE `hris_job_job_title`
-  MODIFY `job_title_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `job_title_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `hris_leave_leave_benefits`
 --
 ALTER TABLE `hris_leave_leave_benefits`
-  MODIFY `leave_benefits_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `leave_benefits_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `hris_leave_leave_type`
@@ -522,7 +642,7 @@ ALTER TABLE `hris_notification`
 -- AUTO_INCREMENT for table `hris_subscribers`
 --
 ALTER TABLE `hris_subscribers`
-  MODIFY `subscribers_aid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `subscribers_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `hris_user_admin`
