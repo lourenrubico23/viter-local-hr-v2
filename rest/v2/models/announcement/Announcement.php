@@ -18,20 +18,27 @@ class Announcement
     public $announcement_search;
 
     public $tblAnnouncement;
+    public $tblSubscribers;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblAnnouncement = "hris_announcement";
+        $this->tblSubscribers = "hris_subscribers";
     }
 
     public function readAll()
     {
         try {
-            $sql = "select * from {$this->tblAnnouncement} ";
-            $sql .= "order by announcement_is_active desc, ";
-            $sql .= "announcement_date asc, ";
-            $sql .= "announcement_title asc ";
+            $sql = "select * ";
+            $sql .= "from ";
+            $sql .= "{$this->tblAnnouncement} as announcement, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
+            $sql .= "where announcement.announcement_subscriber = subscribers.subscribers_aid ";
+            $sql .= "order by announcement.announcement_is_active desc, ";
+            $sql .= "announcement.announcement_subscriber asc, ";
+            $sql .= "announcement.announcement_date asc, ";
+            $sql .= "announcement.announcement_title asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -44,10 +51,13 @@ class Announcement
         try {
             $sql = "select * ";
             $sql .= "from ";
-            $sql .= "{$this->tblAnnouncement} ";
-            $sql .= "order by announcement_is_active desc, ";
-            $sql .= "announcement_date asc, "; //para nasa baba ng table ang mga inactive or archived
-            $sql .= "announcement_title asc "; //para nasa baba ng table ang mga inactive or archived
+            $sql .= "{$this->tblAnnouncement} as announcement, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
+            $sql .= "where announcement.announcement_subscriber = subscribers.subscribers_aid ";
+            $sql .= "order by announcement.announcement_is_active desc, ";
+            $sql .= "announcement.announcement_subscriber asc, ";
+            $sql .= "announcement.announcement_date asc, ";
+            $sql .= "announcement.announcement_title asc ";//para nasa baba ng table ang mga inactive or archived
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -65,19 +75,21 @@ class Announcement
     {
         try {
             $sql = "select * ";
-            $sql .= "from {$this->tblAnnouncement} ";
-            $sql .= "where announcement_title = announcement_title ";
-            $sql .= "and (announcement_title like :announcement_title ";
-            $sql .= "or announcement_subscriber like :announcement_subscriber ";
-            $sql .= "or DATE_FORMAT(announcement_date, '%M %e, %Y') LIKE :announcement_date ";
-            $sql .= "or announcement_description like :announcement_description) ";
-            $sql .= "order by announcement_is_active desc, ";
-            $sql .= "announcement_date asc, ";
-            $sql .= "announcement_title asc ";
+            $sql .= "from ";
+            $sql .= "{$this->tblAnnouncement} as announcement, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
+            $sql .= "where announcement.announcement_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and (announcement.announcement_title like :announcement_title ";
+            $sql .= "or subscribers.subscribers_code like :subscribers_code ";
+            $sql .= "or DATE_FORMAT(announcement.announcement_date, '%M %e, %Y') LIKE :announcement_date ";
+            $sql .= "or announcement.announcement_description like :announcement_description) ";
+            $sql .= "order by announcement.announcement_is_active desc, ";
+            $sql .= "announcement.announcement_date asc, ";
+            $sql .= "announcement.announcement_title asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "announcement_title" => "%{$this->announcement_search}%",
-                "announcement_subscriber" => "%{$this->announcement_search}%",
+                "subscribers_code" => "%{$this->announcement_search}%",
                 "announcement_date" => "%{$this->announcement_search}%",
                 "announcement_description" => "%{$this->announcement_search}%",
             ]);
@@ -200,14 +212,20 @@ class Announcement
     {
         try {
             $sql = "select * ";
-            $sql .= "from {$this->tblAnnouncement} ";
-            $sql .= "where announcement_is_active = :announcement_is_active ";
-            $sql .= "order by announcement_is_active desc, ";
-            $sql .= "announcement_date asc, ";
-            $sql .= "announcement_title asc ";
+            $sql .= "from ";
+            $sql .= "{$this->tblAnnouncement} as announcement, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
+            $sql .= "where announcement.announcement_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and (announcement.announcement_subscriber = :announcement_subscriber ";
+            $sql .= "or announcement.announcement_is_active = :announcement_is_active) ";
+            $sql .= "order by announcement.announcement_is_active desc, ";
+            $sql .= "announcement.announcement_subscriber asc, ";
+            $sql .= "announcement.announcement_date asc, ";
+            $sql .= "announcement.announcement_title asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "announcement_is_active" => $this->announcement_is_active,
+                "announcement_subscriber" => $this->announcement_subscriber,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -219,22 +237,44 @@ class Announcement
     {
         try {
             $sql = "select * ";
-            $sql .= "from {$this->tblAnnouncement} ";
-            $sql .= "where announcement_is_active = :announcement_is_active ";
-            $sql .= "and (announcement_title like :announcement_title ";
-            $sql .= "or announcement_subscriber like :announcement_subscriber ";
-            $sql .= "or DATE_FORMAT(announcement_date, '%M %e, %Y') LIKE :announcement_date ";
-            $sql .= "or announcement_description like :announcement_description) ";
-            $sql .= "order by announcement_is_active desc, ";
-            $sql .= "announcement_date asc, ";
-            $sql .= "announcement_title asc ";
+            $sql .= "from ";
+            $sql .= "{$this->tblAnnouncement} as announcement, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
+            $sql .= "where announcement.announcement_is_active = :announcement_is_active ";
+            $sql .= "and announcement.announcement_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and (announcement.announcement_title like :announcement_title ";
+            $sql .= "or subscribers.subscribers_code like :subscribers_code ";
+            $sql .= "or DATE_FORMAT(announcement.announcement_date, '%M %e, %Y') LIKE :announcement_date ";
+            $sql .= "or announcement.announcement_description like :announcement_description) ";
+            $sql .= "order by announcement.announcement_is_active desc, ";
+            $sql .= "announcement.announcement_date asc, ";
+            $sql .= "announcement.announcement_title asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "announcement_title" => "%{$this->announcement_search}%",
-                "announcement_subscriber" => "%{$this->announcement_search}%",
+                "subscribers_code" => "%{$this->announcement_search}%",
                 "announcement_date" => "%{$this->announcement_search}%",
                 "announcement_description" => "%{$this->announcement_search}%",
                 "announcement_is_active" => $this->announcement_is_active,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function searchSubcribers() // for Subscribers debounce
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblSubscribers} ";
+            $sql .= "where subscribers_company_name like :subscribers_company_name ";
+            $sql .= "and subscribers_is_active = 1 ";
+            $sql .= "order by ";
+            $sql .= "subscribers_company_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "subscribers_company_name" => "%{$this->announcement_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

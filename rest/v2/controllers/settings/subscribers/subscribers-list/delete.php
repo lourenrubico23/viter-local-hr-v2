@@ -11,6 +11,7 @@ if (array_key_exists("subscribersid", $_GET)) {
   // get data
   $subscribers->subscribers_aid = $_GET['subscribersid'];
   checkId($subscribers->subscribers_aid);
+  isAssociatedAddonsSubscribersCode($subscribers);
 
   $query = checkDelete($subscribers);
 

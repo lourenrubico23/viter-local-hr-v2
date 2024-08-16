@@ -23,3 +23,11 @@ function checkSearchEmployeeName($object)
     checkQuery($query, "Empty records. (filter by search employees name)");
     return $query;
 }
+
+// filter by search features
+function checkSearchSubcribers($object)
+{
+    $query = $object->searchSubcribers();
+    checkQuery($query, "Empty records. (filter by search subscribers)");
+    return $query;
+}

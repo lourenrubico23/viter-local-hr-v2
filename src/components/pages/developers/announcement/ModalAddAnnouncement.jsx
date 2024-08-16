@@ -14,10 +14,75 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
+import useQueryData from "@/components/custom-hooks/useQueryData";
+import TableSpinner from "@/components/partials/spinner/TableSpinner";
+import ServerError from "@/components/partials/ServerError";
+import NoData from "@/components/partials/NoData";
 
 const ModalAddAnnouncement = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
+  const [loading, setLoading] = React.useState(false);
+  const [onFocusSubscriber, setOnFocusSubscriber] = React.useState(false);
+  const [subscriberValue, setSubscriberValue] = React.useState(
+    itemEdit
+      ? `${itemEdit.subscribers_company_name} (${itemEdit.subscribers_code})`
+      : ""
+  ); // to get the data from table when update
+  const [subscriber, setSubscriber] = React.useState(
+    itemEdit ? itemEdit.subscribers_company_name : ""
+  );
+  const [subscriberId, setSubscriberId] = React.useState(
+    itemEdit ? itemEdit.announcement_subscriber : ""
+  );
+
+  const {
+    isFetching: subscriberDataIsFetching,
+    error: subscriberDataError,
+    data: subscriberData,
+  } = useQueryData(
+    `/v2/announcement/search-subscribers`, // endpoint
+    "post", // method
+    "announcement/search-subscribers", // key
+    {
+      searchValue: subscriber, // payload
+    },
+    {
+      searchValue: subscriber, // id
+    },
+    true // refetchOnWindowFocus
+  );
+
+  const handleClickSubscriber = (item) => {
+    setSubscriber(item.subscribers_company_name);
+    setSubscriberValue(
+      `${item.subscribers_company_name} (${item.subscribers_code})`
+    );
+    setSubscriberId(item.subscribers_aid);
+    setOnFocusSubscriber(false);
+  };
+
+  const handleOnChangeSubscriber = (e) => {
+    setSubscriberValue(e.target.value);
+    setLoading(true);
+    setSubscriberId("");
+    if (e.target.value === "") {
+      setLoading(false);
+    }
+
+    let timeOut;
+
+    timeOut = setTimeout(() => {
+      clearTimeout(timeOut);
+      let val = e.target.value;
+      if (val === "") {
+        setSubscriber(val);
+        return;
+      }
+      setSubscriber(val);
+      setLoading(false);
+    }, 500); // debounce seconds to fetch
+  };
 
   const handleClose = () => {
     setAnimate("translate-x-full");
@@ -25,6 +90,24 @@ const ModalAddAnnouncement = ({ itemEdit }) => {
       dispatch(setIsAdd(false));
     }, 200);
   };
+
+  // to close the modal when clicking outside for Subscriber
+  const refSubscriber = React.useRef();
+
+  const clickOutsideRefSubscriber = (e) => {
+    if (
+      refSubscriber.current !== undefined &&
+      refSubscriber.current !== null &&
+      !refSubscriber.current?.contains(e.target)
+    ) {
+      setOnFocusSubscriber(false);
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener("click", clickOutsideRefSubscriber);
+    return () => document.addEventListener("click", clickOutsideRefSubscriber);
+  }, []);
 
   const queryClient = useQueryClient();
 
@@ -67,7 +150,6 @@ const ModalAddAnnouncement = ({ itemEdit }) => {
   };
 
   const yupSchema = Yup.object({
-    announcement_subscriber: Yup.string().required("Required"),
     announcement_date: Yup.string().required("Required"),
     announcement_title: Yup.string().required("Required"),
     announcement_description: Yup.string().required("Required"),
@@ -89,21 +171,62 @@ const ModalAddAnnouncement = ({ itemEdit }) => {
           initialValues={initVal}
           validationSchema={yupSchema}
           onSubmit={async (values) => {
-            console.log(values);
-            mutation.mutate(values);
+            // to set error message when the input of Subscriber doesnt have input or laman
+            if (subscriberId === "" || !subscriberId) {
+              dispatch(setError(true));
+              dispatch(setMessage("Subscriber is Required."));
+              return;
+            }
+            // to get all of the data including announcement_subscriber
+            const data = {
+              ...values,
+              announcement_subscriber: subscriberId,
+            };
+            mutation.mutate(data);
           }}
         >
           {(props) => {
             return (
               <Form className="modal-form">
                 <div className="form-input">
-                  <div className="input-wrapper">
+                <div className="input-wrapper">
                     <InputText
                       label="*Subscriber"
                       type="text"
+                      value={subscriberValue}
                       name="announcement_subscriber"
                       disabled={mutation.isPending}
+                      onFocus={() => setOnFocusSubscriber(true)}
+                      onChange={handleOnChangeSubscriber}
+                      refVal={refSubscriber}
                     />
+                    {onFocusSubscriber && (
+                      <div className="w-full h-40 max-h-40 overflow-y-auto absolute top-[34px] bg-white shadow-md z-50 rounded-sm border border-gray-200 pt-1">
+                        {loading || subscriberDataIsFetching ? (
+                          <TableSpinner />
+                        ) : subscriberDataError ? (
+                          <div className="my-7">
+                            <ServerError />
+                          </div>
+                        ) : subscriberData?.count > 0 ? (
+                          subscriberData?.data.map((item, key) => (
+                            <div
+                              className="cursor-pointer hover:bg-gray-100 px-2"
+                              value={item.subscribers_aid}
+                              key={key}
+                              onClick={() => handleClickSubscriber(item)}
+                            >
+                              {item.subscribers_company_name} (
+                              {item.subscribers_code})
+                            </div>
+                          ))
+                        ) : (
+                          <div className="my-7">
+                            <NoData />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div className="input-wrapper">
                     <InputText
@@ -123,7 +246,7 @@ const ModalAddAnnouncement = ({ itemEdit }) => {
                   </div>
                   <div className="input-wrapper">
                     <InputTextArea
-                      label="*Description"
+                      label="Description"
                       type="text"
                       name="announcement_description"
                       disabled={mutation.isPending}

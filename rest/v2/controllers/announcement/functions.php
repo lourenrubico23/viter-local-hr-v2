@@ -15,3 +15,11 @@ function checkFilterByStatusAndSearch($object)
     checkQuery($query, "Empty records. (filter by status)");
     return $query;
 }
+
+// filter by search features
+function checkSearchSubcribers($object)
+{
+    $query = $object->searchSubcribers();
+    checkQuery($query, "Empty records. (filter by search subscribers)");
+    return $query;
+}

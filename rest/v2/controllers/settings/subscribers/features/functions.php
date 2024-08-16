@@ -15,3 +15,11 @@ function checkFilterByStatusAndSearch($object)
     checkQuery($query, "Empty records. (filter by status and search)");
     return $query;
 }
+
+// association with addons
+function isAssociatedAddonsFeaturesCode($object)
+{
+    $query = $object->checkAssociationAddonsFeaturesCode();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
+}

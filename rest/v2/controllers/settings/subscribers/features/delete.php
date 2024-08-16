@@ -11,6 +11,7 @@ if (array_key_exists("featuresid", $_GET)) {
   // get data
   $features->features_aid = $_GET['featuresid'];
   checkId($features->features_aid);
+  isAssociatedAddonsFeaturesCode($features);
 
   $query = checkDelete($features);
 

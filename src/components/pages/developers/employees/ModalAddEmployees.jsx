@@ -14,10 +14,93 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
+import useQueryData from "@/components/custom-hooks/useQueryData";
+import TableSpinner from "@/components/partials/spinner/TableSpinner";
+import ServerError from "@/components/partials/ServerError";
+import NoData from "@/components/partials/NoData";
 
 const ModalAddEmployees = ({ itemEdit, departmentData }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
+  const [loading, setLoading] = React.useState(false);
+  const [onFocusSubscriber, setOnFocusSubscriber] = React.useState(false);
+  const [subscriberValue, setSubscriberValue] = React.useState(
+    itemEdit
+      ? `${itemEdit.subscribers_company_name} (${itemEdit.subscribers_code})`
+      : ""
+  ); // to get the data from table when update
+  const [subscriber, setSubscriber] = React.useState(
+    itemEdit ? itemEdit.subscribers_company_name : ""
+  );
+  const [subscriberId, setSubscriberId] = React.useState(
+    itemEdit ? itemEdit.employees_subscribers_id : ""
+  );
+
+  const {
+    isFetching: subscriberDataIsFetching,
+    error: subscriberDataError,
+    data: subscriberData,
+  } = useQueryData(
+    `/v2/employees/search-subscribers`, // endpoint
+    "post", // method
+    "employees/search-subscribers", // key
+    {
+      searchValue: subscriber, // payload
+    },
+    {
+      searchValue: subscriber, // id
+    },
+    true // refetchOnWindowFocus
+  );
+
+  const handleClickSubscriber = (item) => {
+    setSubscriber(item.subscribers_company_name);
+    setSubscriberValue(
+      `${item.subscribers_company_name} (${item.subscribers_code})`
+    );
+    setSubscriberId(item.subscribers_aid);
+    setOnFocusSubscriber(false);
+  };
+
+  const handleOnChangeSubscriber = (e) => {
+    setSubscriberValue(e.target.value);
+    setLoading(true);
+    setSubscriberId("");
+    if (e.target.value === "") {
+      setLoading(false);
+    }
+
+    let timeOut;
+
+    timeOut = setTimeout(() => {
+      clearTimeout(timeOut);
+      let val = e.target.value;
+      if (val === "") {
+        setSubscriber(val);
+        return;
+      }
+      setSubscriber(val);
+      setLoading(false);
+    }, 500); // debounce seconds to fetch
+  };
+
+  // to close the modal when clicking outside for Subscriber
+  const refSubscriber = React.useRef();
+
+  const clickOutsideRefSubscriber = (e) => {
+    if (
+      refSubscriber.current !== undefined &&
+      refSubscriber.current !== null &&
+      !refSubscriber.current?.contains(e.target)
+    ) {
+      setOnFocusSubscriber(false);
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener("click", clickOutsideRefSubscriber);
+    return () => document.addEventListener("click", clickOutsideRefSubscriber);
+  }, []);
 
   const handleClose = () => {
     setAnimate("translate-x-full");
@@ -63,6 +146,7 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
 
   const initVal = {
     employees_aid: itemEdit ? itemEdit.employees_aid : "",
+    employees_subscribers_id: itemEdit ? itemEdit.employees_subscribers_id : "",
     employees_fname: itemEdit ? itemEdit.employees_fname : "",
     employees_lname: itemEdit ? itemEdit.employees_lname : "",
     employees_mname: itemEdit ? itemEdit.employees_mname : "",
@@ -74,7 +158,6 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
     employees_date_employed: itemEdit ? itemEdit.employees_date_employed : "",
     employees_mobile_number: itemEdit ? itemEdit.employees_mobile_number : "",
     employees_work_email: itemEdit ? itemEdit.employees_work_email : "",
-    employees_number: itemEdit ? itemEdit.employees_number : "",
 
     employees_fname_old: itemEdit ? itemEdit.employees_fname : "",
   };
@@ -94,7 +177,6 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
     employees_work_email: Yup.string()
       .required("Required")
       .email("Invalid Email."),
-    employees_number: Yup.string().required("Required"),
   });
 
   return (
@@ -113,21 +195,62 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
           initialValues={initVal}
           validationSchema={yupSchema}
           onSubmit={async (values) => {
-            console.log(values);
-            mutation.mutate(values);
+            // to set error message when the input of Subscriber doesnt have input or laman
+            if (subscriberId === "" || !subscriberId) {
+              dispatch(setError(true));
+              dispatch(setMessage("Subscriber is Required."));
+              return;
+            }
+            // to get all of the data including announcement_subscriber
+            const data = {
+              ...values,
+              announcement_subscriber: subscriberId,
+            };
+            mutation.mutate(data);
           }}
         >
           {(props) => {
             return (
               <Form className="modal-form">
                 <div className="form-input">
-                  <div className="input-wrapper">
+                <div className="input-wrapper">
                     <InputText
-                      label="*Employees Number"
-                      type="number"
-                      name="employees_number"
+                      label="*Subscriber"
+                      type="text"
+                      value={subscriberValue}
+                      name="employees_subscribers_id"
                       disabled={mutation.isPending}
+                      onFocus={() => setOnFocusSubscriber(true)}
+                      onChange={handleOnChangeSubscriber}
+                      refVal={refSubscriber}
                     />
+                    {onFocusSubscriber && (
+                      <div className="w-full h-40 max-h-40 overflow-y-auto absolute top-[34px] bg-white shadow-md z-50 rounded-sm border border-gray-200 pt-1">
+                        {loading || subscriberDataIsFetching ? (
+                          <TableSpinner />
+                        ) : subscriberDataError ? (
+                          <div className="my-7">
+                            <ServerError />
+                          </div>
+                        ) : subscriberData?.count > 0 ? (
+                          subscriberData?.data.map((item, key) => (
+                            <div
+                              className="cursor-pointer hover:bg-gray-100 px-2"
+                              value={item.subscribers_aid}
+                              key={key}
+                              onClick={() => handleClickSubscriber(item)}
+                            >
+                              {item.subscribers_company_name} (
+                              {item.subscribers_code})
+                            </div>
+                          ))
+                        ) : (
+                          <div className="my-7">
+                            <NoData />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div className="input-wrapper">
                     <InputText

@@ -21,16 +21,6 @@ const Addons = () => {
     setItemEdit(null);
   };
 
-  const {
-    isLoading: featuresIsLoading,
-    isFetching: featuresIsFetching,
-    error: featuresError,
-    data: dataFeatures,
-  } = useQueryData(
-    `/v2/features`, // endpoint
-    "get", // method
-    "features" // key
-  );
 
   React.useEffect(() => {
     //effect to remain the settings open even after refresh
@@ -61,7 +51,7 @@ const Addons = () => {
         <Footer />
       </div>
 
-      {store.isAdd && <ModalAddAddons itemEdit={itemEdit} dataFeatures={dataFeatures}/>}
+      {store.isAdd && <ModalAddAddons itemEdit={itemEdit} />}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>

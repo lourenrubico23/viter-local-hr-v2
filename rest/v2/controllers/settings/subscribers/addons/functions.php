@@ -32,10 +32,5 @@ function checkSearchSubcribers($object)
     return $query;
 }
 
-// // association with leave benefits job title name
-// function isAssociatedLeaveBenefitsJobTitleName($object)
-// {
-//     $query = $object->checkAssociationLeaveBenefitsJobTitleName();
-//     $count = $query->rowCount();
-//     checkExistence($count, "You cannot delete this item because it is already associated with other module.");
-// }
+
+

@@ -129,7 +129,7 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type }) => {
       ? itemEdit.leave_benefits_leave_type_id
       : "",
   };
-  console.log(itemEdit);
+
   const yupSchema = Yup.object({
     leave_benefits_subscriber: Yup.string().required("Required"),
     leave_benefits_job_level_id: Yup.string().required("Required"),

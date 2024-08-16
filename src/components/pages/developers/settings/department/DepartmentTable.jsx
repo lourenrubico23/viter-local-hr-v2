@@ -170,6 +170,7 @@ const DepartmentTable = ({ setItemEdit }) => {
             <tr>
               <th className="pl-2 w-[1rem]">#</th>
               <th className="w-[1rem]">Status</th>
+              <th>Code</th>
               <th>Department Name</th>
               <th className="text-right">Actions</th>
             </tr>
@@ -206,7 +207,8 @@ const DepartmentTable = ({ setItemEdit }) => {
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.department_name}</td>
+                    <td>{item.subscribers_code}</td>
+                    <td className="uppercase">{item.department_name}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
                       {item.department_is_active ? (
                         <>

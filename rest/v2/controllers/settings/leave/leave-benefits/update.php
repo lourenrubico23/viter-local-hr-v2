@@ -30,6 +30,7 @@ if (array_key_exists("leave_benefitsid", $_GET)) {
   $leave_benefits_leave_type_id_old = checkIndex($data, 'leave_benefits_leave_type_id_old');
 
   $jobLevelName = checkIndex($data, "jobLevelName"); // para maiwasan ma over right and id ng text
+  //checks current data to avoid same entries from being updated
   // para maiwasan ang pag kakapareho ng input ng job level, job title, and leave type
   compareIdName(
     $leave_benefits,

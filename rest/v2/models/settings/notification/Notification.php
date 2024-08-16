@@ -19,12 +19,14 @@ class Notification
 
     public $tblNotification;
     public $tblEmployees;
+    public $tblSubscribers;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblNotification = "hris_notification";
         $this->tblEmployees = "hris_employees";
+        $this->tblSubscribers = "hris_subscribers";
     }
 
     public function readAll()
@@ -33,11 +35,13 @@ class Notification
             $sql = "select * ";
             $sql .= "from ";
             $sql .= "{$this->tblNotification} as notif, ";
-            $sql .= "{$this->tblEmployees} as emp ";
+            $sql .= "{$this->tblEmployees} as emp, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where notif.notification_employee_name_id = emp.employees_aid ";
+            $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
-            $sql .= "notif.notification_purpose asc ";
+            $sql .= "notif.notification_subscriber asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -51,11 +55,13 @@ class Notification
             $sql = "select * ";
             $sql .= "from ";
             $sql .= "{$this->tblNotification} as notif, ";
-            $sql .= "{$this->tblEmployees} as emp ";
+            $sql .= "{$this->tblEmployees} as emp, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where notif.notification_employee_name_id = emp.employees_aid ";
-            $sql .= "and notif.notification_employee_name_id = notification_employee_name_id ";
+            $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
             $sql .= "order by notif.notification_is_active desc, ";
-            $sql .= "notif.notification_employee_name_id asc ";
+            $sql .= "notif.notification_employee_name_id asc, ";
+            $sql .= "notif.notification_subscriber asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -75,18 +81,20 @@ class Notification
             $sql = "select * ";
             $sql .= "from ";
             $sql .= "{$this->tblNotification} as notif, ";
-            $sql .= "{$this->tblEmployees} as emp ";
+            $sql .= "{$this->tblEmployees} as emp, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where notif.notification_employee_name_id = emp.employees_aid ";
+            $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
             $sql .= "and (concat(emp.employees_fname, ' ', emp.employees_lname) like :full_name ";
             $sql .= "or notif.notification_purpose like :notification_purpose ";
             $sql .= "or notif.notification_email like :notification_email ";
-            $sql .= "or notif.notification_subscriber like :notification_subscriber) ";
+            $sql .= "or or subscribers.subscribers_code like :subscribers_code) ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
-            $sql .= "notif.notification_purpose asc ";
+            $sql .= "notif.notification_subscriber asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "notification_subscriber" => "%{$this->notification_search}%",
+                "subscribers_code" => "%{$this->notification_search}%",
                 "notification_purpose" => "%{$this->notification_search}%",
                 "notification_email" => "%{$this->notification_search}%",
                 "full_name" => "%{$this->notification_search}%",
@@ -212,13 +220,13 @@ class Notification
             $sql = "select * ";
             $sql .= "from ";
             $sql .= "{$this->tblNotification} as notif, ";
-            $sql .= "{$this->tblEmployees} as emp ";
+            $sql .= "{$this->tblEmployees} as emp, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where notif.notification_employee_name_id = emp.employees_aid ";
-            $sql .= "and (notif.notification_employee_name_id = :notification_employee_name_id ";
-            $sql .= "or notif.notification_is_active = :notification_is_active) ";
+            $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
-            $sql .= "notif.notification_purpose asc ";
+            $sql .= "notif.notification_subscriber asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "notification_is_active" => $this->notification_is_active,
@@ -242,13 +250,13 @@ class Notification
             $sql .= "and (concat(emp.employees_fname, ' ', emp.employees_lname) like :full_name ";
             $sql .= "or notif.notification_purpose like :notification_purpose ";
             $sql .= "or notif.notification_email like :notification_email ";
-            $sql .= "or notif.notification_subscriber like :notification_subscriber) ";
+            $sql .= "or subscribers.subscribers_code like :subscribers_code) ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
             $sql .= "notif.notification_purpose asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "notification_subscriber" => "%{$this->notification_search}%",
+                "subscribers_code" => "%{$this->notification_search}%",
                 "notification_purpose" => "%{$this->notification_search}%",
                 "notification_email" => "%{$this->notification_search}%",
                 "full_name" => "%{$this->notification_search}%",
@@ -273,6 +281,25 @@ class Notification
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "full_name" => "%{$this->notification_search}%",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function searchSubcribers() // for Subscribers debounce
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblSubscribers} ";
+            $sql .= "where subscribers_company_name like :subscribers_company_name ";
+            $sql .= "and subscribers_is_active = 1 ";
+            $sql .= "order by ";
+            $sql .= "subscribers_company_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "subscribers_company_name" => "%{$this->notification_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

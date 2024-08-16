@@ -1,4 +1,4 @@
-export const getJobLevelName = (job_level, jobLevelId) => { // function para gawing number and jobLe
+export const getJobLevelName = (job_level, jobLevelId) => { // function para hindi ma over right ng text ang id ng job level
   let name = "";
 
   job_level?.data.map((item) => {

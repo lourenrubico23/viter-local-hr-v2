@@ -213,7 +213,7 @@ const AnnouncementTable = ({ setItemEdit }) => {
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.announcement_subscriber}</td>
+                    <td>{item.subscribers_code}</td>
                     <td>{formatDate(item.announcement_date)}</td>
                     <td>{item.announcement_title}</td>
                     <td>{item.announcement_description}</td>

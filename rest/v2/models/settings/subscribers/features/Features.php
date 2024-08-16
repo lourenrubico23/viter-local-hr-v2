@@ -16,11 +16,13 @@ class Features
     public $features_search;
 
     public $tblFeatures;
+    public $tblAddons;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblFeatures = "hris_features";
+        $this->tblAddons = "hris_addons";
     }
 
     public function readAll()
@@ -217,4 +219,18 @@ class Features
         return $query;
     }
 
+    public function checkAssociationAddonsFeaturesCode()
+    {
+        try {
+            $sql = "select addons_feature_code_id from {$this->tblAddons} ";
+            $sql .= "where addons_feature_code_id = :addons_feature_code_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "addons_feature_code_id" => $this->features_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
 }

@@ -37,12 +37,14 @@ class Subscribers
 
     public $tblSubscribers;
     public $tblSubscribersLog;
+    public $tblAddons;
 
     public function __construct($db)
     {
         $this->connection = $db;
         $this->tblSubscribers = "hris_subscribers";
         $this->tblSubscribersLog = "hris_subscribers_log";
+        $this->tblAddons = "hris_addons";
     }
 
     public function readAll()
@@ -396,6 +398,21 @@ class Subscribers
                 "subscribers_log_created" => $this->subscribers_log_created,
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function checkAssociationAddonsSubscribersCode()
+    {
+        try {
+            $sql = "select addons_subscriber_id from {$this->tblAddons} ";
+            $sql .= "where addons_subscriber_id = :addons_subscriber_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "addons_subscriber_id" => $this->subscribers_aid,
+            ]);
         } catch (PDOException $ex) {
             $query = false;
         }

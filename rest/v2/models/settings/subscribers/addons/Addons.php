@@ -187,11 +187,13 @@ class Addons
     public function checkName()
     {
         try {
-            $sql = "select addons_feature_code_id from {$this->tblAddons} ";
+            $sql = "select addons_aid from {$this->tblAddons} ";
             $sql .= "where addons_feature_code_id = :addons_feature_code_id ";
+            $sql .= "and addons_subscriber_id = :addons_subscriber_id ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "addons_feature_code_id" => "{$this->addons_feature_code_id}",
+                "addons_subscriber_id" => "{$this->addons_subscriber_id}",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -294,4 +296,6 @@ class Addons
         }
         return $query;
     }
+
+    
 }

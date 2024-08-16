@@ -18,19 +18,18 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
-import { getFeaturesName } from "./function";
 
-const ModalAddAddons = ({ itemEdit, dataFeatures }) => {
+const ModalAddAddons = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [loading, setLoading] = React.useState(false);
   const [onFocusFeatures, setOnFocusFeatures] = React.useState(false);
   const [onFocusSubscriber, setOnFocusSubscriber] = React.useState(false);
   const [featuresValue, setFeaturesValue] = React.useState(
-    itemEdit ? itemEdit.features_name : ""
+    itemEdit ? `${itemEdit.features_name} (${itemEdit.features_code})` : ""
   ); // to get the data from table when update
   const [subscriberValue, setSubscriberValue] = React.useState(
-    itemEdit ? itemEdit.subscribers_company_name : ""
+    itemEdit ? `${itemEdit.subscribers_company_name} (${itemEdit.subscribers_code})` : ""
   ); // to get the data from table when update
   const [features, setFeatures] = React.useState(
     itemEdit ? itemEdit.features_name : ""
@@ -44,8 +43,6 @@ const ModalAddAddons = ({ itemEdit, dataFeatures }) => {
   const [subscriberId, setSubscriberId] = React.useState(
     itemEdit ? itemEdit.addons_subscriber_id : ""
   );
-const [featuresName, setFeaturesName] = React.useState(itemEdit ? getFeaturesName(dataFeatures, itemEdit.addons_feature_code_id)
-: "")
 
   const {
     isFetching: featuresDataIsFetching,
@@ -108,6 +105,7 @@ const [featuresName, setFeaturesName] = React.useState(itemEdit ? getFeaturesNam
     setFeaturesValue(e.target.value);
     setLoading(true);
     setFeaturesId("");
+
     if (e.target.value === "") {
       setLoading(false);
     }
@@ -222,6 +220,8 @@ const [featuresName, setFeaturesName] = React.useState(itemEdit ? getFeaturesNam
     addons_feature_code_id_old: itemEdit ? itemEdit.addons_feature_code_id : "",
   };
 
+  const yupSchema = Yup.object({});
+
   return (
     <ModalWrapper
       className={`transition-all ease-linear transform duration-200 ${animate}`}
@@ -236,6 +236,7 @@ const [featuresName, setFeaturesName] = React.useState(itemEdit ? getFeaturesNam
       <div className="modal-content">
         <Formik
           initialValues={initVal}
+          validationSchema={yupSchema}
           onSubmit={async (values) => {
             // to set error message when the input of features doesnt have input or laman
             if (featuresId === "" || !featuresId) {
@@ -254,6 +255,7 @@ const [featuresName, setFeaturesName] = React.useState(itemEdit ? getFeaturesNam
               ...values,
               addons_feature_code_id: featuresId,
               addons_subscriber_id: subscriberId,
+              featuresName: features,
             };
             mutation.mutate(data);
           }}
@@ -262,44 +264,6 @@ const [featuresName, setFeaturesName] = React.useState(itemEdit ? getFeaturesNam
             return (
               <Form className="modal-form">
                 <div className="form-input">
-                  <div className="input-wrapper">
-                    <InputText
-                      label="*Features"
-                      type="text"
-                      value={featuresValue}
-                      name="addons_feature_code_id"
-                      disabled={mutation.isPending}
-                      onFocus={() => setOnFocusFeatures(true)}
-                      onChange={handleOnChangeFeatures}
-                      refVal={refFeatures}
-                    />
-                    {onFocusFeatures && (
-                      <div className="w-full h-40 max-h-40 overflow-y-auto absolute top-[34px] bg-white shadow-md z-50 rounded-sm border border-gray-200 pt-1">
-                        {loading || featuresDataIsFetching ? (
-                          <TableSpinner />
-                        ) : featuresDataError ? (
-                          <div className="my-7">
-                            <ServerError />
-                          </div>
-                        ) : featuresData?.count > 0 ? (
-                          featuresData?.data.map((item, key) => (
-                            <div
-                              className="cursor-pointer hover:bg-gray-100 px-2"
-                              value={item.features_aid}
-                              key={key}
-                              onClick={() => handleClickFeatures(item)}
-                            >
-                              {item.features_name} ({item.features_code})
-                            </div>
-                          ))
-                        ) : (
-                          <div className="my-7">
-                            <NoData />
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
                   <div className="input-wrapper">
                     <InputText
                       label="*Subscriber"
@@ -339,11 +303,60 @@ const [featuresName, setFeaturesName] = React.useState(itemEdit ? getFeaturesNam
                       </div>
                     )}
                   </div>
+                  <div className="input-wrapper">
+                    <InputText
+                      label="*Features"
+                      type="text"
+                      value={featuresValue}
+                      name="addons_feature_code_id"
+                      disabled={mutation.isPending}
+                      onFocus={() => setOnFocusFeatures(true)}
+                      onChange={handleOnChangeFeatures}
+                      refVal={refFeatures}
+                    />
+                    {onFocusFeatures && (
+                      <div className="w-full h-40 max-h-40 overflow-y-auto absolute top-[34px] bg-white shadow-md z-50 rounded-sm border border-gray-200 pt-1">
+                        {loading || featuresDataIsFetching ? (
+                          <TableSpinner />
+                        ) : featuresDataError ? (
+                          <div className="my-7">
+                            <ServerError />
+                          </div>
+                        ) : featuresData?.count > 0 ? (
+                          featuresData?.data.map((item, key) => (
+                            <div
+                              className="cursor-pointer hover:bg-gray-100 px-2"
+                              value={item.features_aid}
+                              key={key}
+                              onClick={() => handleClickFeatures(item)}
+                            >
+                              {item.features_name} ({item.features_code})
+                            </div>
+                          ))
+                        ) : (
+                          <div className="my-7">
+                            <NoData />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="form-action">
                   <div className="form-btn">
-                    <button className="btn-modal-submit" type="submit">
+                    <button
+                      className="btn-modal-submit"
+                      type="submit"
+                      disabled={
+                        mutation.isPending ||
+                        (!props.dirty &&
+                          Number(props.values.addons_subscriber_id) ===
+                            Number(subscriberId) &&
+                          Number(props.values.addons_feature_code_id) ===
+                            Number(featuresId))
+                      }
+                    >
                       {mutation.isPending ? (
                         <ButtonSpinner />
                       ) : itemEdit ? (

@@ -52,6 +52,7 @@ function checkCreateSubscriberLog($object, $data)
     return $query;
 }
 
+// compare for backlog
 function compareSubscriberLog($object, $totalEmployeeOld, $totalEmployee, $data)
 {
     if ($totalEmployeeOld != $totalEmployee) {
@@ -65,4 +66,12 @@ function checkReadAllSubscribersLogById($object)
     $query = $object->readAllSubscribersLogById();
     checkQuery($query, "There's a problem processing your request. (readAll SubscribersLog)");
     return $query;
+}
+
+// association with addons
+function isAssociatedAddonsSubscribersCode($object)
+{
+    $query = $object->checkAssociationAddonsSubscribersCode();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }

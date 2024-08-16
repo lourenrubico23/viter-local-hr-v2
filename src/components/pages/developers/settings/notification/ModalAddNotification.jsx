@@ -23,6 +23,18 @@ const ModalAddNotification = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [loading, setLoading] = React.useState(false);
+  const [onFocusSubscriber, setOnFocusSubscriber] = React.useState(false);
+  const [subscriberValue, setSubscriberValue] = React.useState(
+    itemEdit
+      ? `${itemEdit.subscribers_company_name} (${itemEdit.subscribers_code})`
+      : ""
+  ); // to get the data from table when update
+  const [subscriber, setSubscriber] = React.useState(
+    itemEdit ? itemEdit.subscribers_company_name : ""
+  );
+  const [subscriberId, setSubscriberId] = React.useState(
+    itemEdit ? itemEdit.notification_subscriber : ""
+  );
   const [onFocusEmployees, setOnFocusEmployees] = React.useState(false);
   const [employeesValue, setEmployeesValue] = React.useState(
     (`${itemEdit ? itemEdit.employees_lname : ""} ${itemEdit ? itemEdit.employees_fname : ""}`)
@@ -58,7 +70,72 @@ const ModalAddNotification = ({ itemEdit }) => {
     true // refetchOnWindowFocus
   );
 
-  console.log(notificationData);
+  const {
+    isFetching: subscriberDataIsFetching,
+    error: subscriberDataError,
+    data: subscriberData,
+  } = useQueryData(
+    `/v2/notification/search-subscribers`, // endpoint
+    "post", // method
+    "notification/search-subscribers", // key
+    {
+      searchValue: subscriber, // payload
+    },
+    {
+      searchValue: subscriber, // id
+    },
+    true // refetchOnWindowFocus
+  );
+
+
+  const handleClickSubscriber = (item) => {
+    setSubscriber(item.subscribers_company_name);
+    setSubscriberValue(
+      `${item.subscribers_company_name} (${item.subscribers_code})`
+    );
+    setSubscriberId(item.subscribers_aid);
+    setOnFocusSubscriber(false);
+  };
+
+  const handleOnChangeSubscriber = (e) => {
+    setSubscriberValue(e.target.value);
+    setLoading(true);
+    setSubscriberId("");
+    if (e.target.value === "") {
+      setLoading(false);
+    }
+
+    let timeOut;
+
+    timeOut = setTimeout(() => {
+      clearTimeout(timeOut);
+      let val = e.target.value;
+      if (val === "") {
+        setSubscriber(val);
+        return;
+      }
+      setSubscriber(val);
+      setLoading(false);
+    }, 500); // debounce seconds to fetch
+  };
+
+  // to close the modal when clicking outside for Subscriber
+  const refSubscriber = React.useRef();
+
+  const clickOutsideRefSubscriber = (e) => {
+    if (
+      refSubscriber.current !== undefined &&
+      refSubscriber.current !== null &&
+      !refSubscriber.current?.contains(e.target)
+    ) {
+      setOnFocusSubscriber(false);
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener("click", clickOutsideRefSubscriber);
+    return () => document.addEventListener("click", clickOutsideRefSubscriber);
+  }, []);
 
   const queryClient = useQueryClient();
 
@@ -153,7 +230,6 @@ const ModalAddNotification = ({ itemEdit }) => {
   };
 
   const yupSchema = Yup.object({
-    notification_subscriber: Yup.string().required("Required"),
     notification_purpose: Yup.string().required("Required"),
     notification_email: Yup.string()
       .required("Required")
@@ -181,10 +257,17 @@ const ModalAddNotification = ({ itemEdit }) => {
               dispatch(setMessage("Employee is Required."));
               return;
             }
+             // to set error message when the input of Subscriber doesnt have input or laman
+             if (subscriberId === "" || !subscriberId) {
+              dispatch(setError(true));
+              dispatch(setMessage("Subscriber is Required."));
+              return;
+            }
             // to get all of the data including notification_employee_name_id
             const data = {
               ...values,
               notification_employee_name_id: employeesId,
+              announcement_subscriber: subscriberId
             };
             mutation.mutate(data);
           }}
@@ -193,13 +276,44 @@ const ModalAddNotification = ({ itemEdit }) => {
             return (
               <Form className="modal-form">
                 <div className="form-input">
-                  <div className="input-wrapper">
+                <div className="input-wrapper">
                     <InputText
                       label="*Subscriber"
                       type="text"
+                      value={subscriberValue}
                       name="notification_subscriber"
                       disabled={mutation.isPending}
+                      onFocus={() => setOnFocusSubscriber(true)}
+                      onChange={handleOnChangeSubscriber}
+                      refVal={refSubscriber}
                     />
+                    {onFocusSubscriber && (
+                      <div className="w-full h-40 max-h-40 overflow-y-auto absolute top-[34px] bg-white shadow-md z-50 rounded-sm border border-gray-200 pt-1">
+                        {loading || subscriberDataIsFetching ? (
+                          <TableSpinner />
+                        ) : subscriberDataError ? (
+                          <div className="my-7">
+                            <ServerError />
+                          </div>
+                        ) : subscriberData?.count > 0 ? (
+                          subscriberData?.data.map((item, key) => (
+                            <div
+                              className="cursor-pointer hover:bg-gray-100 px-2"
+                              value={item.subscribers_aid}
+                              key={key}
+                              onClick={() => handleClickSubscriber(item)}
+                            >
+                              {item.subscribers_company_name} (
+                              {item.subscribers_code})
+                            </div>
+                          ))
+                        ) : (
+                          <div className="my-7">
+                            <NoData />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div className="input-wrapper">
                     <InputText

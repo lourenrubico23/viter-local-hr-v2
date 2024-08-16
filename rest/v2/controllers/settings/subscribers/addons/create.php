@@ -18,7 +18,7 @@ $addons->addons_datetime = date("Y-m-d H:i:s");
 // id to text convertion
 $featuresName = checkIndex($data, "featuresName");
 //checks newly added data if it already exists
-isNameExist($addons, $addons->$featuresName);
+isNameExist($addons, $featuresName);
 
 $query = checkCreate($addons);
 

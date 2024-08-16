@@ -11,6 +11,7 @@ checkPayload($data);
 // get data
 $department->department_is_active = 1;
 $department->department_name = checkIndex($data, "department_name");
+$department->department_subscribers_id = checkIndex($data, "department_subscribers_id");
 $department->department_created = date("Y-m-d H:i:s");
 $department->department_datetime = date("Y-m-d H:i:s");
 
