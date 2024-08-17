@@ -13,7 +13,7 @@ function checkFilterByStatus($object)
 function checkFilterByStatusDepartmentAndSearch($object)
 {
     $query = $object->filterByStatusDepartmentAndSearch();
-    checkQuery($query, "Empty records. (filter by status)");
+    checkQuery($query, "Empty records. (filter by status, department and search)");
     return $query;
 }
 
@@ -21,7 +21,7 @@ function checkFilterByStatusDepartmentAndSearch($object)
 function checkFilterByDepartment($object)
 {
     $query = $object->filterByDepartment();
-    checkQuery($query, "Empty records. (filter by status)");
+    checkQuery($query, "Empty records. (filter by department)");
     return $query;
 }
 
@@ -29,7 +29,7 @@ function checkFilterByDepartment($object)
 function checkFilterByStatusAndDepartment($object)
 {
     $query = $object->filterByStatusAndDepartment();
-    checkQuery($query, "Empty records. (filter by status)");
+    checkQuery($query, "Empty records. (filter by status and department)");
     return $query;
 }
 
@@ -37,7 +37,7 @@ function checkFilterByStatusAndDepartment($object)
 function checkSearchAndDepartment($object)
 {
     $query = $object->searchAndDepartment();
-    checkQuery($query, "Empty records. (filter by status)");
+    checkQuery($query, "Empty records. (filter by search and department)");
     return $query;
 }
 
@@ -45,7 +45,7 @@ function checkSearchAndDepartment($object)
 function checkSearchAndStatus($object)
 {
     $query = $object->searchAndStatus();
-    checkQuery($query, "Empty records. (filter by status)");
+    checkQuery($query, "Empty records. (filter by status and search)");
     return $query;
 }
 

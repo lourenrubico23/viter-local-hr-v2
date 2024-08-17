@@ -204,7 +204,7 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
             // to get all of the data including announcement_subscriber
             const data = {
               ...values,
-              announcement_subscriber: subscriberId,
+              employees_subscribers_id: subscriberId,
             };
             mutation.mutate(data);
           }}

@@ -72,6 +72,8 @@ class Employees
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
             $sql .= "and emp.employees_subscribers_id = subscribers.subscribers_aid ";
+            $sql .= "and emp.employees_department_id = employees_department_id ";
+            $sql .= "and emp.employees_subscribers_id = employees_subscribers_id ";
             $sql .= "order by emp.employees_is_active desc, ";
             $sql .= "emp.employees_subscribers_id asc, ";
             $sql .= "emp.employees_fname asc, ";
@@ -95,8 +97,10 @@ class Employees
             $sql = "select * ";
             $sql .= "from ";
             $sql .= "{$this->tblEmployees} as emp, ";
-            $sql .= "{$this->tblDepartment} as dept ";
+            $sql .= "{$this->tblDepartment} as dept, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
+            $sql .= "and emp.employees_subscribers_id = subscribers.subscribers_aid ";
             $sql .= "and emp.employees_aid = :employees_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
@@ -261,7 +265,8 @@ class Employees
             $sql .= "where emp.employees_department_id = dept.department_aid ";
             $sql .= "and emp.employees_subscribers_id = subscribers.subscribers_aid ";
             $sql .= "and (emp.employees_department_id = :employees_department_id ";
-            $sql .= "or emp.employees_subscribers_id = :employees_subscribers_id) ";
+            $sql .= "or emp.employees_subscribers_id = :employees_subscribers_id ";
+            $sql .= "or emp.employees_is_active = :employees_is_active) ";
             $sql .= "order by emp.employees_is_active desc, ";
             $sql .= "emp.employees_subscribers_id asc, ";
             $sql .= "emp.employees_fname asc, ";
@@ -292,7 +297,8 @@ class Employees
             $sql .= "or subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or emp.employees_fname like :employees_fname ";
             $sql .= "or emp.employees_lname like :employees_lname ";
-            $sql .= "or emp.employees_work_email like :employees_work_email) ";
+            $sql .= "or emp.employees_work_email like :employees_work_email ";
+            $sql .= "or emp.employees_is_active = :employees_is_active) ";
             $sql .= "order by emp.employees_is_active desc, ";
             $sql .= "emp.employees_subscribers_id asc, ";
             $sql .= "emp.employees_fname asc, ";
