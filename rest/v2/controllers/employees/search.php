@@ -48,7 +48,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             http_response_code(200);
             getQueriedData($query);
         }
-        // search by both department id and status active
+        // search by both department id and status
         if (
             $employees->employees_department_id != ""
             && $employees->employees_is_active != ""

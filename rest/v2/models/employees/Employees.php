@@ -291,14 +291,15 @@ class Employees
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblDepartment} as dept, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
-            $sql .= "where emp.employees_department_id = dept.department_aid ";
+            $sql .= "where emp.employees_is_active = :employees_is_active ";
+            $sql .= "and emp.employees_department_id = :employees_department_id ";
+            $sql .= "and emp.employees_department_id = dept.department_aid ";
             $sql .= "and emp.employees_subscribers_id = subscribers.subscribers_aid ";
             $sql .= "and (concat(emp.employees_fname, ' ', emp.employees_lname) like :full_name ";
             $sql .= "or subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or emp.employees_fname like :employees_fname ";
             $sql .= "or emp.employees_lname like :employees_lname ";
-            $sql .= "or emp.employees_work_email like :employees_work_email ";
-            $sql .= "or emp.employees_is_active = :employees_is_active) ";
+            $sql .= "or emp.employees_work_email like :employees_work_email) ";
             $sql .= "order by emp.employees_is_active desc, ";
             $sql .= "emp.employees_subscribers_id asc, ";
             $sql .= "emp.employees_fname asc, ";
@@ -311,6 +312,7 @@ class Employees
                 "employees_lname" => "%{$this->employees_search}%",
                 "employees_work_email" => "%{$this->employees_search}%",
                 "employees_is_active" => $this->employees_is_active,
+                "employees_department_id" => $this->employees_department_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -328,8 +330,7 @@ class Employees
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
             $sql .= "and emp.employees_subscribers_id = subscribers.subscribers_aid ";
-            $sql .= "and (emp.employees_department_id = :employees_department_id ";
-            $sql .= "or emp.employees_is_active = :employees_is_active) ";
+            $sql .= "and emp.employees_department_id = :employees_department_id ";
             $sql .= "order by emp.employees_is_active desc, ";
             $sql .= "emp.employees_subscribers_id asc, ";
             $sql .= "emp.employees_fname asc, ";
@@ -337,7 +338,6 @@ class Employees
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "employees_department_id" => $this->employees_department_id,
-                "employees_is_active" => $this->employees_is_active,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -355,16 +355,14 @@ class Employees
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where emp.employees_department_id = dept.department_aid ";
             $sql .= "and emp.employees_subscribers_id = subscribers.subscribers_aid ";
-            $sql .= "and (emp.employees_department_id = :employees_department_id ";
-            $sql .= "or emp.employees_subscribers_id = :employees_subscribers_id ";
-            $sql .= "or emp.employees_is_active = :employees_is_active) ";
+            $sql .= "and emp.employees_department_id = :employees_department_id ";
+            $sql .= "and emp.employees_is_active = :employees_is_active ";
             $sql .= "order by emp.employees_is_active desc, ";
             $sql .= "emp.employees_subscribers_id asc, ";
             $sql .= "emp.employees_fname asc, ";
             $sql .= "emp.employees_lname asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "employees_subscribers_id" => $this->employees_subscribers_id,
                 "employees_department_id" => $this->employees_department_id,
                 "employees_is_active" => $this->employees_is_active,
             ]);
@@ -382,14 +380,14 @@ class Employees
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblDepartment} as dept, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
-            $sql .= "where emp.employees_department_id = dept.department_aid ";
+            $sql .= "where emp.employees_department_id = :employees_department_id ";
+            $sql .= "and emp.employees_department_id = dept.department_aid ";
             $sql .= "and emp.employees_subscribers_id = subscribers.subscribers_aid ";
             $sql .= "and (concat(emp.employees_fname, ' ', emp.employees_lname) like :full_name ";
             $sql .= "or subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or emp.employees_fname like :employees_fname ";
             $sql .= "or emp.employees_lname like :employees_lname ";
-            $sql .= "or emp.employees_work_email like :employees_work_email ";
-            $sql .= "or emp.employees_is_active = :employees_is_active) ";
+            $sql .= "or emp.employees_work_email like :employees_work_email) ";
             $sql .= "order by emp.employees_is_active desc, ";
             $sql .= "emp.employees_subscribers_id asc, ";
             $sql .= "emp.employees_fname asc, ";
@@ -401,7 +399,7 @@ class Employees
                 "employees_fname" => "%{$this->employees_search}%",
                 "employees_lname" => "%{$this->employees_search}%",
                 "employees_work_email" => "%{$this->employees_search}%",
-                "employees_is_active" => $this->employees_is_active,
+                "employees_department_id" => $this->employees_department_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -417,14 +415,14 @@ class Employees
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblDepartment} as dept, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
-            $sql .= "where emp.employees_department_id = dept.department_aid ";
+            $sql .= "where emp.employees_is_active = :employees_is_active ";
+            $sql .= "and emp.employees_department_id = dept.department_aid ";
             $sql .= "and emp.employees_subscribers_id = subscribers.subscribers_aid ";
             $sql .= "and (concat(emp.employees_fname, ' ', emp.employees_lname) like :full_name ";
             $sql .= "or subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or emp.employees_fname like :employees_fname ";
             $sql .= "or emp.employees_lname like :employees_lname ";
-            $sql .= "or emp.employees_work_email like :employees_work_email ";
-            $sql .= "or emp.employees_is_active = :employees_is_active) ";
+            $sql .= "or emp.employees_work_email like :employees_work_email) ";
             $sql .= "order by emp.employees_is_active desc, ";
             $sql .= "emp.employees_subscribers_id asc, ";
             $sql .= "emp.employees_fname asc, ";

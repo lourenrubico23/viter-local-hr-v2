@@ -267,7 +267,7 @@ const ModalAddNotification = ({ itemEdit }) => {
             const data = {
               ...values,
               notification_employee_name_id: employeesId,
-              announcement_subscriber: subscriberId
+              notification_subscriber: subscriberId,
             };
             mutation.mutate(data);
           }}
