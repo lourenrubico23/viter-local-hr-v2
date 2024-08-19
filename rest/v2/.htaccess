@@ -69,6 +69,7 @@ RewriteRule ^job_level/([0-9]+)$ controllers/settings/job/job-level/jobLevel.php
 RewriteRule ^job_level/active/([0-9]+)$ controllers/settings/job/job-level/active.php?job_levelid=$1 [L]
 RewriteRule ^job_level/page/([0-9]+)$ controllers/settings/job/job-level/page.php?start=$1 [L]
 RewriteRule ^job_level/search$ controllers/settings/job/job-level/search.php [L]
+RewriteRule ^job_level/search-subscribers$ controllers/settings/leave/leave-benefits/search-subscribers.php [L]
 
 # SETTINGS JOB TITLE
 RewriteRule ^job_title$ controllers/settings/job/job-title/jobTitle.php [L]
@@ -77,6 +78,8 @@ RewriteRule ^job_title/active/([0-9]+)$ controllers/settings/job/job-title/activ
 RewriteRule ^job_title/page/([0-9]+)$ controllers/settings/job/job-title/page.php?start=$1 [L]
 RewriteRule ^job_title/search$ controllers/settings/job/job-title/search.php [L]
 RewriteRule ^job_title/search-job-level$ controllers/settings/job/job-title/search-job-level.php [L]
+RewriteRule ^job_title/search-subscribers$ controllers/settings/job/job-title/search-subscribers.php [L]
+RewriteRule ^job_title/filter-job-level$ controllers/settings/job/job-title/filter-job-level.php [L]
 
 # SETTINGS LEAVE TYPE
 RewriteRule ^leave_type$ controllers/settings/leave/leave-type/leaveType.php [L]
@@ -92,6 +95,8 @@ RewriteRule ^leave_benefits/active/([0-9]+)$ controllers/settings/leave/leave-be
 RewriteRule ^leave_benefits/page/([0-9]+)$ controllers/settings/leave/leave-benefits/page.php?start=$1 [L]
 RewriteRule ^leave_benefits/search$ controllers/settings/leave/leave-benefits/search.php [L]
 RewriteRule ^leave_benefits/filter-job-title$ controllers/settings/leave/leave-benefits/filter-job-title.php [L]
+RewriteRule ^leave_benefits/filter-job-level$ controllers/settings/leave/leave-benefits/filter-job-level.php [L]
+RewriteRule ^leave_benefits/search-subscribers$ controllers/settings/leave/leave-benefits/search-subscribers.php [L]
 
 # SETTINGS NOTIFICATION
 RewriteRule ^notification$ controllers/settings/notification/notification.php [L]

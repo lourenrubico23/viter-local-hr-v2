@@ -20,8 +20,10 @@ $leave_benefits->leave_benefits_datetime = date("Y-m-d H:i:s");
 
 // id to text convertion 
 $jobLevelName = checkIndex($data, "jobLevelName");
+// id to text convertion 
+$subscriberCode = checkIndex($data, "subscriberCode");
 //checks newly added data if it already exists
-isNameExist($leave_benefits, $jobLevelName);
+isNameExist($leave_benefits, $jobLevelName, $subscriberCode);
 
 $query = checkCreate($leave_benefits);
 

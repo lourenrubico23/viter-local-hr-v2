@@ -221,8 +221,8 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
             <tr>
               <th className="pl-2 w-[1rem]">#</th>
               <th className="w-[1rem]">Status</th>
+              <th>Employee #</th>
               <th>Code</th>
-              <th>Employee Number</th>
               <th>Employee Name</th>
               <th>Work Email</th>
               <th className="text-right">Actions</th>
@@ -263,10 +263,10 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td onClick={() => handleGoToPage(item)}></td>
                     <td onClick={() => handleGoToPage(item)}>
                       {item.subscribers_code}
                     </td>
+                    <td onClick={() => handleGoToPage(item)}></td>
                     <td onClick={() => handleGoToPage(item)}>
                       {item.employees_fname} {item.employees_lname}
                     </td>

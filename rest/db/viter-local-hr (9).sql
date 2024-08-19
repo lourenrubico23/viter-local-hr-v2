@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 16, 2024 at 10:01 AM
+-- Generation Time: Aug 19, 2024 at 10:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -139,6 +139,14 @@ CREATE TABLE `hris_employees` (
   `employees_datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `hris_employees`
+--
+
+INSERT INTO `hris_employees` (`employees_aid`, `employees_is_active`, `employees_subscribers_id`, `employees_lname`, `employees_fname`, `employees_mname`, `employees_gender`, `employees_department_id`, `employees_personal_email`, `employees_birth_date`, `employees_marital_status`, `employees_date_employed`, `employees_mobile_number`, `employees_work_email`, `employees_street`, `employees_city`, `employees_province`, `employees_country`, `employees_postal_code`, `employees_telephone_number`, `employees_mother_maiden`, `employees_mother_fname`, `employees_mother_mname`, `employees_father_lname`, `employees_father_fname`, `employees_father_mname`, `employees_family_contact`, `employees_family_address`, `employees_emergency_contact_name`, `employees_emergency_contact_relationship`, `employees_emergency_contact_number`, `employees_emergency_contact_address`, `employees_created`, `employees_datetime`) VALUES
+(31, 1, '10', 'Rubico', 'Louren', 'Macandili', 'female', '21', 'louren@gmail.com', '2024-08-19', 'single', '2024-08-19', '9090909', 'rubico@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-19 06:50:38', '2024-08-19 06:50:38'),
+(32, 1, '11', 'Manalo', 'Rona', '', 'female', '22', 'rona@gmail.com', '2024-08-19', 'married', '2024-08-19', '9878787', 'manalo@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-19 06:51:59', '2024-08-19 08:12:21');
+
 -- --------------------------------------------------------
 
 --
@@ -172,7 +180,7 @@ INSERT INTO `hris_features` (`features_aid`, `features_is_active`, `features_nam
 CREATE TABLE `hris_job_job_level` (
   `job_level_aid` int(11) NOT NULL,
   `job_level_is_active` tinyint(1) NOT NULL,
-  `job_level_subscriber` varchar(100) NOT NULL,
+  `job_level_subscriber_id` varchar(50) NOT NULL,
   `job_level_level` varchar(100) NOT NULL,
   `job_level_created` datetime NOT NULL,
   `job_level_datetime` datetime NOT NULL
@@ -182,10 +190,13 @@ CREATE TABLE `hris_job_job_level` (
 -- Dumping data for table `hris_job_job_level`
 --
 
-INSERT INTO `hris_job_job_level` (`job_level_aid`, `job_level_is_active`, `job_level_subscriber`, `job_level_level`, `job_level_created`, `job_level_datetime`) VALUES
-(3, 0, '1111', 'Entry-level', '2024-08-05 13:00:17', '2024-08-09 15:57:11'),
-(4, 1, '222', 'Executive', '2024-08-05 13:00:35', '2024-08-09 15:30:59'),
-(5, 1, '333', 'First-level Management', '2024-08-09 15:43:10', '2024-08-09 15:45:04');
+INSERT INTO `hris_job_job_level` (`job_level_aid`, `job_level_is_active`, `job_level_subscriber_id`, `job_level_level`, `job_level_created`, `job_level_datetime`) VALUES
+(6, 1, '10', 'Entry-level', '2024-08-19 13:04:13', '2024-08-19 13:04:13'),
+(7, 1, '11', 'Executive', '2024-08-19 13:04:30', '2024-08-19 13:04:30'),
+(8, 1, '14', 'First-level Management', '2024-08-19 13:04:54', '2024-08-19 13:04:54'),
+(9, 1, '10', '555', '2024-08-19 14:39:25', '2024-08-19 14:39:25'),
+(10, 1, '11', '444', '2024-08-19 14:39:32', '2024-08-19 14:39:32'),
+(11, 1, '14', '333', '2024-08-19 14:39:39', '2024-08-19 14:39:39');
 
 -- --------------------------------------------------------
 
@@ -202,17 +213,6 @@ CREATE TABLE `hris_job_job_title` (
   `job_title_created` datetime NOT NULL,
   `job_title_datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `hris_job_job_title`
---
-
-INSERT INTO `hris_job_job_title` (`job_title_aid`, `job_title_is_active`, `job_title_subscriber`, `job_title_job_level_id`, `job_title_title`, `job_title_created`, `job_title_datetime`) VALUES
-(14, 1, '777', '4', 'Encoder', '2024-08-06 09:09:40', '2024-08-06 15:34:16'),
-(16, 0, '222', '3', 'utility', '2024-08-06 09:16:08', '2024-08-09 15:57:28'),
-(18, 0, '333', '4', 'VA', '2024-08-07 12:16:19', '2024-08-09 12:53:00'),
-(19, 1, '444', '5', 'Rider', '2024-08-09 15:44:10', '2024-08-09 15:44:10'),
-(20, 1, '666', '5', 'tyty', '2024-08-15 14:05:31', '2024-08-15 14:05:31');
 
 -- --------------------------------------------------------
 
@@ -231,20 +231,6 @@ CREATE TABLE `hris_leave_leave_benefits` (
   `leave_benefits_created` datetime NOT NULL,
   `leave_benefits_datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `hris_leave_leave_benefits`
---
-
-INSERT INTO `hris_leave_leave_benefits` (`leave_benefits_aid`, `leave_benefits_is_active`, `leave_benefits_subscriber`, `leave_benefits_job_level_id`, `leave_benefits_job_title_id`, `leave_benefits_leave_type_id`, `leave_benefits_days`, `leave_benefits_created`, `leave_benefits_datetime`) VALUES
-(4, 1, '111', '3', '16', '1', '5', '2024-08-06 12:46:40', '2024-08-08 13:26:38'),
-(5, 0, '222', '4', '14', '2', '3', '2024-08-06 15:35:01', '2024-08-09 09:47:24'),
-(13, 1, '888', 'Entry-level', '16', '1', '9', '2024-08-08 12:49:04', '2024-08-08 12:49:04'),
-(14, 1, '888', 'Entry-level', '16', '2', '7', '2024-08-08 12:49:40', '2024-08-08 12:49:40'),
-(15, 1, '555', '3', '16', '2', '7', '2024-08-08 12:55:11', '2024-08-08 12:55:11'),
-(16, 1, '333', '5', '19', '1', '3', '2024-08-09 15:44:43', '2024-08-09 15:44:43'),
-(17, 1, '444', '4', '14', '3', '5', '2024-08-09 15:48:52', '2024-08-09 15:48:52'),
-(18, 1, '444', '5', '19', '3', '6', '2024-08-14 09:38:47', '2024-08-14 09:38:47');
 
 -- --------------------------------------------------------
 
@@ -285,6 +271,14 @@ CREATE TABLE `hris_notification` (
   `notification_created` datetime NOT NULL,
   `notification_datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hris_notification`
+--
+
+INSERT INTO `hris_notification` (`notification_aid`, `notification_is_active`, `notification_subscriber`, `notification_employee_name_id`, `notification_purpose`, `notification_email`, `notification_created`, `notification_datetime`) VALUES
+(7, 1, '10', '31', 'Overtime', 'louren@gmail.com', '2024-08-19 06:53:39', '2024-08-19 15:24:13'),
+(8, 1, '11', '32', 'Leave', 'rona@gmail.com', '2024-08-19 08:12:42', '2024-08-19 15:24:30');
 
 -- --------------------------------------------------------
 
@@ -579,7 +573,7 @@ ALTER TABLE `hris_department`
 -- AUTO_INCREMENT for table `hris_employees`
 --
 ALTER TABLE `hris_employees`
-  MODIFY `employees_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `employees_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `hris_features`
@@ -591,13 +585,13 @@ ALTER TABLE `hris_features`
 -- AUTO_INCREMENT for table `hris_job_job_level`
 --
 ALTER TABLE `hris_job_job_level`
-  MODIFY `job_level_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `job_level_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `hris_job_job_title`
 --
 ALTER TABLE `hris_job_job_title`
-  MODIFY `job_title_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `job_title_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `hris_leave_leave_benefits`
@@ -615,7 +609,7 @@ ALTER TABLE `hris_leave_leave_type`
 -- AUTO_INCREMENT for table `hris_notification`
 --
 ALTER TABLE `hris_notification`
-  MODIFY `notification_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `notification_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `hris_subscribers`

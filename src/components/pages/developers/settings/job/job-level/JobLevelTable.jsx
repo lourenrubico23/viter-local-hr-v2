@@ -209,7 +209,7 @@ const JobLevelTable = ({ setItemEdit }) => {
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.job_level_subscriber}</td>
+                    <td>{item.subscribers_code}</td>
                     <td className="uppercase">{item.job_level_level}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
                       {item.job_level_is_active ? (

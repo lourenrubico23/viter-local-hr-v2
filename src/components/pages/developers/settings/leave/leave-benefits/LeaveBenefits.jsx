@@ -54,6 +54,17 @@ const LeaveBenefits = () => {
     "job_title" // key
   );
 
+  const {
+    isLoading: subscribersIsLoading,
+    isFetching: subscribersIsFetching,
+    error: subscribersError,
+    data: subscribers,
+  } = useQueryData(
+    `/v2/subscribers`, // endpoint
+    "get", // method
+    "subscribers" // key
+  );
+
   React.useEffect(() => {
     dispatch(setIsSettingsOpen(true));
   }, []);
@@ -88,6 +99,7 @@ const LeaveBenefits = () => {
           job_level={job_level}
           leave_type={leave_type}
           job_title={job_title}
+          subscribers={subscribers}
         />
       )}
       {store.success && <ModalSuccess />}

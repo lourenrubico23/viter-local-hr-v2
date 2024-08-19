@@ -13,6 +13,7 @@ class LeaveBenefits
     public $leave_benefits_datetime;
 
     public $job_title_job_level_id;
+    public $job_level_subscriber;
 
     public $connection;
     public $lastInsertedId;
@@ -24,6 +25,7 @@ class LeaveBenefits
     public $tblJobTitle;
     public $tblJobLevel;
     public $tblLeaveType;
+    public $tblSubscribers;
 
     public function __construct($db)
     {
@@ -32,6 +34,7 @@ class LeaveBenefits
         $this->tblJobTitle = "hris_job_job_title";
         $this->tblJobLevel = "hris_job_job_level";
         $this->tblLeaveType = "hris_leave_leave_type";
+        $this->tblSubscribers = "hris_subscribers";
     }
 
     public function readAll()
@@ -42,10 +45,12 @@ class LeaveBenefits
             $sql .= "{$this->tblLeaveBenefits} as ben, ";
             $sql .= "{$this->tblJobTitle} as title, ";
             $sql .= "{$this->tblJobLevel} as level, ";
-            $sql .= "{$this->tblLeaveType} as type ";
+            $sql .= "{$this->tblLeaveType} as type, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where ben.leave_benefits_job_level_id = level.job_level_aid ";
             $sql .= "and ben.leave_benefits_job_title_id = title.job_title_aid ";
             $sql .= "and ben.leave_benefits_leave_type_id = type.leave_type_aid ";
+            $sql .= "and ben.leave_benefits_subscriber = subscribers.subscribers_aid ";
             $sql .= "order by ben.leave_benefits_is_active desc, ";
             $sql .= "ben.leave_benefits_job_level_id asc, ";
             $sql .= "ben.leave_benefits_job_title_id asc, ";
@@ -65,10 +70,12 @@ class LeaveBenefits
             $sql .= "{$this->tblLeaveBenefits} as ben, ";
             $sql .= "{$this->tblJobTitle} as title, ";
             $sql .= "{$this->tblJobLevel} as level, ";
-            $sql .= "{$this->tblLeaveType} as type ";
+            $sql .= "{$this->tblLeaveType} as type, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where ben.leave_benefits_job_level_id = level.job_level_aid ";
             $sql .= "and ben.leave_benefits_job_title_id = title.job_title_aid ";
             $sql .= "and ben.leave_benefits_leave_type_id = type.leave_type_aid ";
+            $sql .= "and ben.leave_benefits_subscriber = subscribers.subscribers_aid ";
             $sql .= "order by ben.leave_benefits_is_active desc, ";
             $sql .= "ben.leave_benefits_job_level_id asc, ";
             $sql .= "ben.leave_benefits_job_title_id asc, ";
@@ -94,11 +101,13 @@ class LeaveBenefits
             $sql .= "{$this->tblLeaveBenefits} as ben, ";
             $sql .= "{$this->tblJobTitle} as title, ";
             $sql .= "{$this->tblJobLevel} as level, ";
-            $sql .= "{$this->tblLeaveType} as type ";
+            $sql .= "{$this->tblLeaveType} as type, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where ben.leave_benefits_job_level_id = level.job_level_aid ";
             $sql .= "and ben.leave_benefits_job_title_id = title.job_title_aid ";
             $sql .= "and ben.leave_benefits_leave_type_id = type.leave_type_aid ";
-            $sql .= "and (ben.leave_benefits_subscriber like :leave_benefits_subscriber ";
+            $sql .= "and ben.leave_benefits_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and (subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or level.job_level_level like :job_level_level ";
             $sql .= "or title.job_title_title like :job_title_title ";
             $sql .= "or type.leave_type_type like :leave_type_type ";
@@ -109,7 +118,7 @@ class LeaveBenefits
             $sql .= "ben.leave_benefits_leave_type_id asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "leave_benefits_subscriber" => "%{$this->leave_benefits_search}%",
+                "subscribers_code" => "%{$this->leave_benefits_search}%",
                 "job_level_level" => "%{$this->leave_benefits_search}%",
                 "job_title_title" => "%{$this->leave_benefits_search}%",
                 "leave_type_type" => "%{$this->leave_benefits_search}%",
@@ -250,13 +259,16 @@ class LeaveBenefits
             $sql .= "{$this->tblLeaveBenefits} as ben, ";
             $sql .= "{$this->tblJobTitle} as title, ";
             $sql .= "{$this->tblJobLevel} as level, ";
-            $sql .= "{$this->tblLeaveType} as type ";
+            $sql .= "{$this->tblLeaveType} as type, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where ben.leave_benefits_job_level_id = level.job_level_aid ";
             $sql .= "and ben.leave_benefits_job_title_id = title.job_title_aid ";
             $sql .= "and ben.leave_benefits_leave_type_id = type.leave_type_aid ";
+            $sql .= "and ben.leave_benefits_subscriber = subscribers.subscribers_aid ";
             $sql .= "and (ben.leave_benefits_job_level_id = :leave_benefits_job_level_id ";
             $sql .= "or ben.leave_benefits_job_title_id = :leave_benefits_job_title_id ";
             $sql .= "or ben.leave_benefits_leave_type_id = :leave_benefits_leave_type_id ";
+            $sql .= "or ben.leave_benefits_subscriber = :leave_benefits_subscriber ";
             $sql .= "or ben.leave_benefits_is_active = :leave_benefits_is_active) ";
             $sql .= "order by ben.leave_benefits_is_active desc, ";
             $sql .= "ben.leave_benefits_job_level_id asc, ";
@@ -268,6 +280,7 @@ class LeaveBenefits
                 "leave_benefits_job_level_id" => $this->leave_benefits_job_level_id,
                 "leave_benefits_job_title_id" => $this->leave_benefits_job_title_id,
                 "leave_benefits_leave_type_id" => $this->leave_benefits_leave_type_id,
+                "leave_benefits_subscriber" => $this->leave_benefits_subscriber,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -288,7 +301,8 @@ class LeaveBenefits
             $sql .= "and ben.leave_benefits_job_level_id = level.job_level_aid ";
             $sql .= "and ben.leave_benefits_job_title_id = title.job_title_aid ";
             $sql .= "and ben.leave_benefits_leave_type_id = type.leave_type_aid ";
-            $sql .= "and (ben.leave_benefits_subscriber like :leave_benefits_subscriber ";
+            $sql .= "and ben.leave_benefits_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and (subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or level.job_level_level like :job_level_level ";
             $sql .= "or title.job_title_title like :job_title_title ";
             $sql .= "or type.leave_type_type like :leave_type_type ";
@@ -299,7 +313,7 @@ class LeaveBenefits
             $sql .= "ben.leave_benefits_leave_type_id asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "leave_benefits_subscriber" => "%{$this->leave_benefits_search}%",
+                "subscribers_code" => "%{$this->leave_benefits_search}%",
                 "job_level_level" => "%{$this->leave_benefits_search}%",
                 "job_title_title" => "%{$this->leave_benefits_search}%",
                 "leave_type_type" => "%{$this->leave_benefits_search}%",
@@ -325,6 +339,45 @@ class LeaveBenefits
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "job_title_job_level_id" => $this->job_title_job_level_id
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function filterJobLevel() //for job level filter, when subscriber is selected, the active in job level is get. kukunin ang job level mula sa subscriber. 
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from ";
+            $sql .= "{$this->tblJobLevel} ";
+            $sql .= "where job_level_subscriber = :job_level_subscriber ";
+            $sql .= "and job_level_is_active = 1 ";
+            $sql .= "order by ";
+            $sql .= "job_level_level asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "job_level_subscriber" => $this->job_level_subscriber
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function searchSubcribers() // for Subscribers debounce
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblSubscribers} ";
+            $sql .= "where subscribers_company_name like :subscribers_company_name ";
+            $sql .= "and subscribers_is_active = 1 ";
+            $sql .= "order by ";
+            $sql .= "subscribers_company_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "subscribers_company_name" => "%{$this->leave_benefits_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;

@@ -24,7 +24,15 @@ function checkFilterJobTitle($object)
     return $query;
 }
 
-// compare name
+// filter by filter Job Level
+function checkFilterJobLevel($object)
+{
+    $query = $object->filterJobLevel();
+    checkQuery($query, "Empty records. (filter by job level)");
+    return $query;
+}
+
+// compare name of job level, job title, and subscriber
 function compareIdName(
     $object,
     $jobLevelIdOld,
@@ -33,13 +41,25 @@ function compareIdName(
     $jobTitleId,
     $leaveTypeIdOld,
     $leaveTypeId,
+    $subscriberIdOld,
+    $subscriberId,
     $name
 ) {
     if (
         strtolower($jobLevelIdOld) !=  strtolower($jobLevelId) ||
         strtolower($jobTitleIdOld) !=  strtolower($jobTitleId) ||
-        strtolower($leaveTypeIdOld) !=  strtolower($leaveTypeId)
+        strtolower($leaveTypeIdOld) !=  strtolower($leaveTypeId) ||
+        strtolower($subscriberIdOld) !=  strtolower($subscriberId)
     ) {
         isNameExist($object, $name);
     }
+}
+
+
+// filter by search subscribers
+function checkSearchSubcribers($object)
+{
+    $query = $object->searchSubcribers();
+    checkQuery($query, "Empty records. (filter by search subscribers)");
+    return $query;
 }

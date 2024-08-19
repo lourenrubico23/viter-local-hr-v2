@@ -86,9 +86,9 @@ class Notification
             $sql .= "where notif.notification_employee_name_id = emp.employees_aid ";
             $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
             $sql .= "and (concat(emp.employees_fname, ' ', emp.employees_lname) like :full_name ";
+            $sql .= "or subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or notif.notification_purpose like :notification_purpose ";
-            $sql .= "or notif.notification_email like :notification_email ";
-            $sql .= "or or subscribers.subscribers_code like :subscribers_code) ";
+            $sql .= "or notif.notification_email like :notification_email) ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
             $sql .= "notif.notification_subscriber asc ";
@@ -224,6 +224,8 @@ class Notification
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where notif.notification_employee_name_id = emp.employees_aid ";
             $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and (notif.notification_employee_name_id = :notification_employee_name_id ";
+            $sql .= "or notif.notification_is_active = :notification_is_active) ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
             $sql .= "notif.notification_subscriber asc ";
@@ -244,16 +246,18 @@ class Notification
             $sql = "select * ";
             $sql .= "from ";
             $sql .= "{$this->tblNotification} as notif, ";
-            $sql .= "{$this->tblEmployees} as emp ";
-            $sql .= "where notif.notification_employee_name_id = emp.employees_aid ";
-            $sql .= "and notif.notification_is_active = :notification_is_active ";
+            $sql .= "{$this->tblEmployees} as emp, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
+            $sql .= "where notif.notification_is_active = :notification_is_active ";
+            $sql .= "and notif.notification_employee_name_id = emp.employees_aid ";
+            $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
             $sql .= "and (concat(emp.employees_fname, ' ', emp.employees_lname) like :full_name ";
+            $sql .= "or subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or notif.notification_purpose like :notification_purpose ";
-            $sql .= "or notif.notification_email like :notification_email ";
-            $sql .= "or subscribers.subscribers_code like :subscribers_code) ";
+            $sql .= "or notif.notification_email like :notification_email) ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
-            $sql .= "notif.notification_purpose asc ";
+            $sql .= "notif.notification_subscriber asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "subscribers_code" => "%{$this->notification_search}%",

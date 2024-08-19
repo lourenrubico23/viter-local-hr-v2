@@ -218,7 +218,7 @@ const LeaveBenefitsTable = ({ setItemEdit }) => {
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.leave_benefits_subscriber}</td>
+                    <td>{item.subscribers_code}</td>
                     <td className="uppercase">{item.job_level_level}</td>
                     <td className="uppercase">{item.job_title_title}</td>
                     <td className="uppercase">{item.leave_type_type}</td>

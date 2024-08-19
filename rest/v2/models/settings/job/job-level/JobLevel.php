@@ -4,7 +4,7 @@ class JobLevel
 {
     public $job_level_aid;
     public $job_level_is_active;
-    public $job_level_subscriber;
+    public $job_level_subscriber_id;
     public $job_level_level;
     public $job_level_created;
     public $job_level_datetime;
@@ -18,6 +18,7 @@ class JobLevel
     public $tblJobLevel;
     public $tblJobTitle;
     public $tblLeaveBenefits;
+    public $tblSubscribers;
 
     public function __construct($db)
     {
@@ -25,12 +26,17 @@ class JobLevel
         $this->tblJobLevel = "hris_job_job_level";
         $this->tblJobTitle = "hris_job_job_title";
         $this->tblLeaveBenefits = "hris_leave_leave_benefits";
+        $this->tblSubscribers = "hris_subscribers";
     }
 
     public function readAll()
     {
         try {
-            $sql = "select * from {$this->tblJobLevel} ";
+            $sql = "select * ";
+            $sql .= "from ";
+            $sql .= "{$this->tblJobLevel} as level, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
+            $sql .= "where level.job_level_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "order by job_level_is_active desc, ";
             $sql .= "job_level_level asc ";
             $query = $this->connection->query($sql);
@@ -45,7 +51,10 @@ class JobLevel
         try {
             $sql = "select * ";
             $sql .= "from ";
-            $sql .= "{$this->tblJobLevel} ";
+            $sql .= "{$this->tblJobLevel} as level, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
+            $sql .= "where level.job_level_subscriber_id = subscribers.subscribers_aid ";
+            $sql .= "and level.job_level_subscriber_id = job_level_subscriber_id ";
             $sql .= "order by job_level_is_active desc, ";
             $sql .= "job_level_level asc "; //para nasa baba ng table ang mga inactive or archived
             $sql .= "limit :start, ";
@@ -65,16 +74,18 @@ class JobLevel
     {
         try {
             $sql = "select * ";
-            $sql .= "from {$this->tblJobLevel} ";
-            $sql .= "where job_level_level = job_level_level ";
-            $sql .= "and (job_level_level like :job_level_level ";
-            $sql .= "or job_level_subscriber like :job_level_subscriber) ";
+            $sql .= "from ";
+            $sql .= "{$this->tblJobLevel} as level, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
+            $sql .= "where level.job_level_subscriber_id = subscribers.subscribers_aid ";
+            $sql .= "and (level.job_level_level like :job_level_level ";
+            $sql .= "or subscribers.subscribers_code like :subscribers_code) ";
             $sql .= "order by job_level_is_active desc, ";
             $sql .= "job_level_level asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "job_level_level" => "%{$this->job_level_search}%",
-                "job_level_subscriber" => "%{$this->job_level_search}%",
+                "subscribers_code" => "%{$this->job_level_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -88,19 +99,19 @@ class JobLevel
             $sql = "insert into {$this->tblJobLevel}";
             $sql .= "(job_level_is_active, ";
             $sql .= "job_level_level, ";
-            $sql .= "job_level_subscriber, ";
+            $sql .= "job_level_subscriber_id, ";
             $sql .= "job_level_created, ";
             $sql .= "job_level_datetime ) values ( ";
             $sql .= ":job_level_is_active, ";
             $sql .= ":job_level_level, ";
-            $sql .= ":job_level_subscriber, ";
+            $sql .= ":job_level_subscriber_id, ";
             $sql .= ":job_level_created, ";
             $sql .= ":job_level_datetime )";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "job_level_is_active" => $this->job_level_is_active,
                 "job_level_level" => $this->job_level_level,
-                "job_level_subscriber" => $this->job_level_subscriber,
+                "job_level_subscriber_id" => $this->job_level_subscriber_id,
                 "job_level_created" => $this->job_level_created,
                 "job_level_datetime" => $this->job_level_datetime,
             ]);
@@ -116,13 +127,13 @@ class JobLevel
         try {
             $sql = "update {$this->tblJobLevel} set ";
             $sql .= "job_level_level = :job_level_level, ";
-            $sql .= "job_level_subscriber = :job_level_subscriber, ";
+            $sql .= "job_level_subscriber_id = :job_level_subscriber_id, ";
             $sql .= "job_level_datetime = :job_level_datetime ";
             $sql .= "where job_level_aid = :job_level_aid";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "job_level_level" => $this->job_level_level,
-                "job_level_subscriber" => $this->job_level_subscriber,
+                "job_level_subscriber_id" => $this->job_level_subscriber_id,
                 "job_level_datetime" => $this->job_level_datetime,
                 "job_level_aid" => $this->job_level_aid,
             ]);
@@ -185,13 +196,18 @@ class JobLevel
     {
         try {
             $sql = "select * ";
-            $sql .= "from {$this->tblJobLevel} ";
-            $sql .= "where job_level_is_active = :job_level_is_active ";
+            $sql .= "from ";
+            $sql .= "{$this->tblJobLevel} as level, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
+            $sql .= "where level.job_level_is_active = :job_level_is_active ";
+            $sql .= "and level.job_level_subscriber_id = subscribers.subscribers_aid ";
+            $sql .= "and level.job_level_subscriber_id = :job_level_subscriber_id ";
             $sql .= "order by job_level_is_active desc, ";
             $sql .= "job_level_level asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "job_level_is_active" => $this->job_level_is_active,
+                "job_level_subscriber_id" => $this->job_level_subscriber_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -203,16 +219,19 @@ class JobLevel
     {
         try {
             $sql = "select * ";
-            $sql .= "from {$this->tblJobLevel} ";
-            $sql .= "where job_level_is_active = :job_level_is_active ";
-            $sql .= "and (job_level_level like :job_level_level ";
-            $sql .= "or job_level_subscriber like :job_level_subscriber) ";
+            $sql .= "from ";
+            $sql .= "{$this->tblJobLevel} as level, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
+            $sql .= "where level.job_level_is_active = :job_level_is_active ";
+            $sql .= "and level.job_level_subscriber_id = subscribers.subscribers_aid ";
+            $sql .= "and (level.job_level_level like :job_level_level ";
+            $sql .= "or subscribers.subscribers_code like :subscribers_code) ";
             $sql .= "order by job_level_is_active desc, ";
             $sql .= "job_level_level asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "job_level_level" => "%{$this->job_level_search}%",
-                "job_level_subscriber" => "%{$this->job_level_search}%",
+                "subscribers_code" => "%{$this->job_level_search}%",
                 "job_level_is_active" => $this->job_level_is_active,
             ]);
         } catch (PDOException $ex) {

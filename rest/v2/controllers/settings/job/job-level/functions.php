@@ -16,6 +16,14 @@ function checkFilterByStatusAndSearch($object)
     return $query;
 }
 
+// filter by search subscribers
+function checkSearchSubcribers($object)
+{
+    $query = $object->searchSubcribers();
+    checkQuery($query, "Empty records. (filter by search subscribers)");
+    return $query;
+}
+
 // association with job title 
 function isAssociatedJobTitleJobLevelName($object)
 {
