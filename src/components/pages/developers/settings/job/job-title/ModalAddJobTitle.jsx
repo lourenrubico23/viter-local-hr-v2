@@ -50,7 +50,7 @@ const ModalAddJobTitle = ({ itemEdit }) => {
     itemEdit ? itemEdit.subscribers_company_name : ""
   );
   const [subscriberId, setSubscriberId] = React.useState(
-    itemEdit ? itemEdit.job_title_subscriber : ""
+    itemEdit ? itemEdit.job_title_subscriber_id : ""
   );
   const [subscriberCode, setSubscriberCode] = React.useState(
     itemEdit ? itemEdit.subscribers_code : ""
@@ -78,10 +78,10 @@ const ModalAddJobTitle = ({ itemEdit }) => {
     {
       job_level_subscriber_id: subscriberId,
       searchValue: jobLevel,
-      job_level_subscribers_code: subscriberCode, // payload
+      job_title_subscriber_code: subscriberCode, // payload
     },
     {
-      job_level_subscriber: subscriberId, // id
+      job_level_subscriber_id: subscriberId, // id
       jobLevel,
     },
     true // refetchOnWindowFocus
@@ -265,7 +265,8 @@ const ModalAddJobTitle = ({ itemEdit }) => {
 
   const initVal = {
     job_title_aid: itemEdit ? itemEdit.job_title_aid : "",
-    job_title_subscriber: itemEdit ? itemEdit.job_title_subscriber : "",
+    job_title_subscriber_id: itemEdit ? itemEdit.job_title_subscriber_id : "",
+    job_title_subscriber_code: itemEdit ? itemEdit.job_title_subscriber_code : "",
     job_title_title: itemEdit ? itemEdit.job_title_title : "",
     job_title_job_level_id: itemEdit ? itemEdit.job_title_job_level_id : "",
 
@@ -310,7 +311,8 @@ const ModalAddJobTitle = ({ itemEdit }) => {
               const data = {
                 ...values,
                 job_title_job_level_id: jobLevelid,
-                job_title_subscriber: subscriberId,
+                job_title_subscriber_id: subscriberId,
+                job_title_subscriber_code: subscriberCode,
               };
               mutation.mutate(data);
             }}
@@ -324,7 +326,7 @@ const ModalAddJobTitle = ({ itemEdit }) => {
                         label="*Subscriber"
                         type="text"
                         value={subscriberValue}
-                        name="job_title_subscriber"
+                        name="job_title_subscriber_id"
                         disabled={mutation.isPending}
                         onFocus={() => setOnFocusSubscriber(true)}
                         onChange={handleOnChangeSubscriber}

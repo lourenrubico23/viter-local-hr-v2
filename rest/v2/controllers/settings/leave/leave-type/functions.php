@@ -23,3 +23,11 @@ function isAssociatedLeaveBenefitsLeaveTypeName($object)
     $count = $query->rowCount();
     checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
+
+// filter by search subscribers
+function checkSearchSubcribers($object)
+{
+    $query = $object->searchSubcribers();
+    checkQuery($query, "Empty records. (filter by search subscribers)");
+    return $query;
+}

@@ -209,7 +209,7 @@ const LeaveTypeTable = ({ setItemEdit }) => {
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.leave_type_subscriber}</td>
+                    <td>{item.leave_type_subscriber_code}</td>
                     <td className="uppercase">{item.leave_type_type}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
                       {item.leave_type_is_active ? (

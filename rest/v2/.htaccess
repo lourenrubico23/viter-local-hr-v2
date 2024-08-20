@@ -87,6 +87,7 @@ RewriteRule ^leave_type/([0-9]+)$ controllers/settings/leave/leave-type/leaveTyp
 RewriteRule ^leave_type/active/([0-9]+)$ controllers/settings/leave/leave-type/active.php?leave_typeid=$1 [L]
 RewriteRule ^leave_type/page/([0-9]+)$ controllers/settings/leave/leave-type/page.php?start=$1 [L]
 RewriteRule ^leave_type/search$ controllers/settings/leave/leave-type/search.php [L]
+RewriteRule ^leave_type/search-subscribers$ controllers/settings/leave/leave-type/search-subscribers.php [L]
 
 # SETTINGS LEAVE BENEFITS
 RewriteRule ^leave_benefits$ controllers/settings/leave/leave-benefits/leaveBenefits.php [L]

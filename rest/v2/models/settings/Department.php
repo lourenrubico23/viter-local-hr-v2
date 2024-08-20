@@ -6,6 +6,7 @@ class Department
     public $department_is_active;
     public $department_name;
     public $department_subscribers_id;
+    public $department_subscriber_code;
     public $department_created;
     public $department_datetime;
 
@@ -36,8 +37,7 @@ class Department
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where department.department_subscribers_id = subscribers.subscribers_aid ";
             $sql .= "order by department.department_is_active desc, ";
-            $sql .= "department.department_subscribers_id asc, ";
-            $sql .= "department.department_name asc ";
+            $sql .= "department.department_subscriber_code asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -54,8 +54,7 @@ class Department
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where department.department_subscribers_id = subscribers.subscribers_aid ";
             $sql .= "order by department.department_is_active desc, ";
-            $sql .= "department.department_subscribers_id asc, ";
-            $sql .= "department.department_name asc "; //para nasa baba ng table ang mga inactive or archived
+            $sql .= "department.department_subscriber_code asc "; //para nasa baba ng table ang mga inactive or archived
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -80,8 +79,7 @@ class Department
             $sql .= "and (subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or department.department_name like :department_name) ";
             $sql .= "order by department.department_is_active desc, ";
-            $sql .= "department.department_subscribers_id asc, ";
-            $sql .= "department.department_name asc ";
+            $sql .= "department.department_subscriber_code asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "subscribers_code" => "%{$this->department_search}%",
@@ -100,11 +98,13 @@ class Department
             $sql .= "(department_is_active, ";
             $sql .= "department_name, ";
             $sql .= "department_subscribers_id, ";
+            $sql .= "department_subscriber_code, ";
             $sql .= "department_created, ";
             $sql .= "department_datetime ) values ( ";
             $sql .= ":department_is_active, ";
             $sql .= ":department_name, ";
             $sql .= ":department_subscribers_id, ";
+            $sql .= ":department_subscriber_code, ";
             $sql .= ":department_created, ";
             $sql .= ":department_datetime )";
             $query = $this->connection->prepare($sql);
@@ -112,6 +112,7 @@ class Department
                 "department_is_active" => $this->department_is_active,
                 "department_name" => $this->department_name,
                 "department_subscribers_id" => $this->department_subscribers_id,
+                "department_subscriber_code" => $this->department_subscriber_code,
                 "department_created" => $this->department_created,
                 "department_datetime" => $this->department_datetime,
             ]);
@@ -127,12 +128,14 @@ class Department
         try {
             $sql = "update {$this->tblDepartment} set ";
             $sql .= "department_subscribers_id = :department_subscribers_id, ";
+            $sql .= "department_subscriber_code = :department_subscriber_code, ";
             $sql .= "department_name = :department_name, ";
             $sql .= "department_datetime = :department_datetime ";
             $sql .= "where department_aid = :department_aid";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "department_subscribers_id" => $this->department_subscribers_id,
+                "department_subscriber_code" => $this->department_subscriber_code,
                 "department_name" => $this->department_name,
                 "department_datetime" => $this->department_datetime,
                 "department_aid" => $this->department_aid,
@@ -203,8 +206,7 @@ class Department
             $sql .= "and (department.department_subscribers_id = :department_subscribers_id ";
             $sql .= "or department.department_is_active = :department_is_active) ";
             $sql .= "order by department.department_is_active desc, ";
-            $sql .= "department.department_subscribers_id asc, ";
-            $sql .= "department.department_name asc ";
+            $sql .= "department.department_subscriber_code asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "department_is_active" => $this->department_is_active,
@@ -228,8 +230,7 @@ class Department
             $sql .= "and (subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or department.department_name like :department_name) ";
             $sql .= "order by department.department_is_active desc, ";
-            $sql .= "department.department_subscribers_id asc, ";
-            $sql .= "department.department_name asc ";
+            $sql .= "department.department_subscriber_code asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "subscribers_code" => "%{$this->department_search}%",

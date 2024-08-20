@@ -35,6 +35,9 @@ const ModalAddDepartment = ({ itemEdit }) => {
   const [subscriberId, setSubscriberId] = React.useState(
     itemEdit ? itemEdit.department_subscribers_id : ""
   );
+  const [subscriberCode, setSubscriberCode] = React.useState(
+    itemEdit ? itemEdit.subscribers_code : ""
+  );
 
   const {
     isFetching: subscriberDataIsFetching,
@@ -59,6 +62,7 @@ const ModalAddDepartment = ({ itemEdit }) => {
       `${item.subscribers_company_name} (${item.subscribers_code})`
     );
     setSubscriberId(item.subscribers_aid);
+    setSubscriberCode(item.subscribers_code);
     setOnFocusSubscriber(false);
   };
 
@@ -84,13 +88,6 @@ const ModalAddDepartment = ({ itemEdit }) => {
     }, 500); // debounce seconds to fetch
   };
 
-  const handleClose = () => {
-    setAnimate("translate-x-full");
-    setTimeout(() => {
-      dispatch(setIsAdd(false));
-    }, 200);
-  };
-
   // to close the modal when clicking outside for Subscriber
   const refSubscriber = React.useRef();
 
@@ -102,6 +99,13 @@ const ModalAddDepartment = ({ itemEdit }) => {
     ) {
       setOnFocusSubscriber(false);
     }
+  };
+
+  const handleClose = () => {
+    setAnimate("translate-x-full");
+    setTimeout(() => {
+      dispatch(setIsAdd(false));
+    }, 200);
   };
 
   React.useEffect(() => {
@@ -142,7 +146,12 @@ const ModalAddDepartment = ({ itemEdit }) => {
   const initVal = {
     department_aid: itemEdit ? itemEdit.department_aid : "",
     department_name: itemEdit ? itemEdit.department_name : "",
-    department_subscribers_id: itemEdit ? itemEdit.department_subscribers_id : "",
+    department_subscribers_id: itemEdit
+      ? itemEdit.department_subscribers_id
+      : "",
+    department_subscriber_code: itemEdit
+      ? itemEdit.department_subscriber_code
+      : "",
 
     department_name_old: itemEdit ? itemEdit.department_name : "",
   };
@@ -177,6 +186,7 @@ const ModalAddDepartment = ({ itemEdit }) => {
             const data = {
               ...values,
               department_subscribers_id: subscriberId,
+              department_subscriber_code: subscriberCode,
             };
             mutation.mutate(data);
           }}
@@ -185,7 +195,7 @@ const ModalAddDepartment = ({ itemEdit }) => {
             return (
               <Form className="modal-form">
                 <div className="form-input">
-                <div className="input-wrapper">
+                  <div className="input-wrapper">
                     <InputText
                       label="*Subscriber"
                       type="text"

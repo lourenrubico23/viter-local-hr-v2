@@ -20,7 +20,12 @@ import * as Yup from "yup";
 import { getJobLevelName, getSubscriberCode } from "./functions";
 import NoData from "@/components/partials/NoData";
 
-const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type, subscribers }) => {
+const ModalAddLeaveBenefits = ({
+  itemEdit,
+  job_level,
+  leave_type,
+  subscribers,
+}) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [loading, setLoading] = React.useState(false);
@@ -29,11 +34,18 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type, subscribers })
       ? getJobLevelName(job_level, itemEdit.leave_benefits_job_level_id)
       : ""
   );
+  const [jobLevel, setJobLevel] = React.useState(
+    itemEdit ? itemEdit.job_level_level : ""
+  );
   const [jobLevelId, setJobLevelId] = React.useState(
     itemEdit ? itemEdit.leave_benefits_job_level_id : ""
   ); // para makuha nag lamn ng leave_benefits_job_level_id when update
 
-  const [subscriberName, setSubscriberName] = React.useState( itemEdit ? getSubscriberCode(subscribers, itemEdit.leave_benefits_subscriber) : "")
+  // const [subscriberName, setSubscriberName] = React.useState(
+  //   itemEdit
+  //     ? getSubscriberCode(subscribers, itemEdit.leave_benefits_subscriber)
+  //     : ""
+  // );
   const [onFocusSubscriber, setOnFocusSubscriber] = React.useState(false);
   const [subscriberValue, setSubscriberValue] = React.useState(
     itemEdit
@@ -44,7 +56,10 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type, subscribers })
     itemEdit ? itemEdit.subscribers_company_name : ""
   );
   const [subscriberId, setSubscriberId] = React.useState(
-    itemEdit ? itemEdit.announcement_subscriber : ""
+    itemEdit ? itemEdit.leave_benefits_subscriber_id : ""
+  );
+  const [subscriberCode, setSubscriberCode] = React.useState(
+    itemEdit ? itemEdit.subscribers_code : ""
   );
 
   const {
@@ -90,10 +105,13 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type, subscribers })
     "post", // method
     "leave_benefits/filter-job-level", // key
     {
-      job_level_subscriber: subscriberId, // payload
+      job_level_subscriber_id: subscriberId,
+      searchValue: jobLevel,
+      job_title_subscriber_code: subscriberCode, // payload
     },
     {
-      job_level_subscriber: subscriberId, // id
+      job_level_subscriber_id: subscriberId,
+      jobLevel, // id
     },
     true // refetchOnWindowFocus
   );
@@ -111,12 +129,13 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type, subscribers })
       `${item.subscribers_company_name} (${item.subscribers_code})`
     );
     setSubscriberId(item.subscribers_aid);
+    setSubscriberCode(item.subscribers_code);
     setOnFocusSubscriber(false);
   };
 
   const handleOnChangeSubscriber = (e) => {
-    setSubscriberId(e.target.value)
-    setSubscriberName( e.target.options[e.target.selectedIndex].text)
+    // setSubscriberId(e.target.value);
+    // setSubscriberName(e.target.options[e.target.selectedIndex].text);
 
     setSubscriberValue(e.target.value);
     setLoading(true);
@@ -137,7 +156,6 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type, subscribers })
       setSubscriber(val);
       setLoading(false);
     }, 500); // debounce seconds to fetch
-
   };
 
   // to close the modal when clicking outside for Subscriber
@@ -158,10 +176,10 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type, subscribers })
     return () => document.addEventListener("click", clickOutsideRefSubscriber);
   }, []);
 
-  //activeJobLevel will be an array containing only the elements from job_level.data where job_level_is_active is 1.
-  const activeJobLevel = job_level?.data.filter(
-    (item) => item.job_level_is_active === 1
-  );
+  // //activeJobLevel will be an array containing only the elements from job_level.data where job_level_is_active is 1.
+  // const activeJobLevel = job_level?.data.filter(
+  //   (item) => item.job_level_is_active === 1
+  // );
 
   //activeJobTitle will be an array containing only the elements from job_level.data where job_title_is_active is 1.
   // const activeJobTitle = job_title?.data.filter(
@@ -205,8 +223,11 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type, subscribers })
 
   const initVal = {
     leave_benefits_aid: itemEdit ? itemEdit.leave_benefits_aid : "",
-    leave_benefits_subscriber: itemEdit
-      ? itemEdit.leave_benefits_subscriber
+    leave_benefits_subscriber_id: itemEdit
+      ? itemEdit.leave_benefits_subscriber_id
+      : "",
+    leave_benefits_subscriber_code: itemEdit
+      ? itemEdit.leave_benefits_subscriber_code
       : "",
     leave_benefits_job_level_id: itemEdit
       ? itemEdit.leave_benefits_job_level_id
@@ -262,8 +283,8 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type, subscribers })
             const data = {
               ...values,
               jobLevelName: levelName,
-              subscriberCode: subscriberName,
-              leave_benefits_subscriber: subscriberId,
+              leave_benefits_subscriber_code: subscriberCode,
+              leave_benefits_subscriber_id: subscriberId,
             }; // para makuha ang text o nilalaman pag submit.
             console.log(data);
             mutation.mutate(data);
@@ -273,45 +294,45 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type, subscribers })
             return (
               <Form className="modal-form">
                 <div className="form-input">
-                <div className="input-wrapper">
-                      <InputText
-                        label="*Subscriber"
-                        type="text"
-                        value={subscriberValue}
-                        name="leave_benefits_subscriber"
-                        disabled={mutation.isPending}
-                        onFocus={() => setOnFocusSubscriber(true)}
-                        onChange={handleOnChangeSubscriber}
-                        refVal={refSubscriber}
-                      />
-                      {onFocusSubscriber && (
-                        <div className="w-full h-40 max-h-40 overflow-y-auto absolute top-[34px] bg-white shadow-md z-50 rounded-sm border border-gray-200 pt-1">
-                          {loading || subscriberDataIsFetching ? (
-                            <TableSpinner />
-                          ) : subscriberDataError ? (
-                            <div className="my-7">
-                              <ServerError />
+                  <div className="input-wrapper">
+                    <InputText
+                      label="*Subscriber"
+                      type="text"
+                      value={subscriberValue}
+                      name="leave_benefits_subscriber"
+                      disabled={mutation.isPending}
+                      onFocus={() => setOnFocusSubscriber(true)}
+                      onChange={handleOnChangeSubscriber}
+                      refVal={refSubscriber}
+                    />
+                    {onFocusSubscriber && (
+                      <div className="w-full h-40 max-h-40 overflow-y-auto absolute top-[34px] bg-white shadow-md z-50 rounded-sm border border-gray-200 pt-1">
+                        {loading || subscriberDataIsFetching ? (
+                          <TableSpinner />
+                        ) : subscriberDataError ? (
+                          <div className="my-7">
+                            <ServerError />
+                          </div>
+                        ) : subscriberData?.count > 0 ? (
+                          subscriberData?.data.map((item, key) => (
+                            <div
+                              className="cursor-pointer hover:bg-gray-100 px-2"
+                              value={item.subscribers_aid}
+                              key={key}
+                              onClick={() => handleClickSubscriber(item)}
+                            >
+                              {item.subscribers_company_name} (
+                              {item.subscribers_code})
                             </div>
-                          ) : subscriberData?.count > 0 ? (
-                            subscriberData?.data.map((item, key) => (
-                              <div
-                                className="cursor-pointer hover:bg-gray-100 px-2"
-                                value={item.subscribers_aid}
-                                key={key}
-                                onClick={() => handleClickSubscriber(item)}
-                              >
-                                {item.subscribers_company_name} (
-                                {item.subscribers_code})
-                              </div>
-                            ))
-                          ) : (
-                            <div className="my-7">
-                              <NoData />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
+                          ))
+                        ) : (
+                          <div className="my-7">
+                            <NoData />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                   <div className="input-wrapper">
                     <InputSelect
                       label="*Job Level"
@@ -328,10 +349,18 @@ const ModalAddLeaveBenefits = ({ itemEdit, job_level, leave_type, subscribers })
                     >
                       <option hidden></option>
                       <optgroup label="Select Job Level">
-                        {activeJobLevel.length === 0 ? (
+                        {loading || jobLevelDataIsFetching ? (
+                          <div>
+                            <TableSpinner />
+                          </div>
+                        ) : jobLevelDataError ? (
+                          <div className="my-7">
+                            <ServerError />
+                          </div>
+                        ) : jobLevelData?.count === 0 ? (
                           <option disabled>No Data</option>
                         ) : (
-                          activeJobLevel?.map((item, key) => (
+                          jobLevelData?.data.map((item, key) => (
                             <option
                               value={item.job_level_aid}
                               key={key}

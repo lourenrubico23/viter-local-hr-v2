@@ -207,7 +207,7 @@ const DepartmentTable = ({ setItemEdit }) => {
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.subscribers_code}</td>
+                    <td>{item.department_subscriber_code}</td>
                     <td className="uppercase">{item.department_name}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
                       {item.department_is_active ? (

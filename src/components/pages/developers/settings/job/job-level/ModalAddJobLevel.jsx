@@ -33,7 +33,10 @@ const ModalAddJobLevel = ({ itemEdit }) => {
     itemEdit ? itemEdit.subscribers_company_name : ""
   );
   const [subscriberId, setSubscriberId] = React.useState(
-    itemEdit ? itemEdit.announcement_subscriber : ""
+    itemEdit ? itemEdit.job_level_subscriber_id : ""
+  );
+  const [subscriberCode, setSubscriberCode] = React.useState(
+    itemEdit ? itemEdit.subscribers_code : ""
   );
 
   const {
@@ -66,6 +69,7 @@ const ModalAddJobLevel = ({ itemEdit }) => {
       `${item.subscribers_company_name} (${item.subscribers_code})`
     );
     setSubscriberId(item.subscribers_aid);
+    setSubscriberCode(item.subscribers_code);
     setOnFocusSubscriber(false);
   };
 
@@ -142,6 +146,9 @@ const ModalAddJobLevel = ({ itemEdit }) => {
   const initVal = {
     job_level_aid: itemEdit ? itemEdit.job_level_aid : "",
     job_level_subscriber_id: itemEdit ? itemEdit.job_level_subscriber_id : "",
+    job_level_subscribers_code: itemEdit
+      ? itemEdit.job_level_subscribers_code
+      : "",
     job_level_level: itemEdit ? itemEdit.job_level_level : "",
 
     job_level_level_old: itemEdit ? itemEdit.job_level_level : "",
@@ -176,8 +183,8 @@ const ModalAddJobLevel = ({ itemEdit }) => {
             const data = {
               ...values,
               job_level_subscriber_id: subscriberId,
+              job_level_subscribers_code: subscriberCode
             };
-            console.log(values);
             mutation.mutate(data);
           }}
         >
@@ -185,45 +192,45 @@ const ModalAddJobLevel = ({ itemEdit }) => {
             return (
               <Form className="modal-form">
                 <div className="form-input">
-                <div className="input-wrapper">
-                      <InputText
-                        label="*Subscriber"
-                        type="text"
-                        value={subscriberValue}
-                        name="job_level_subscriber_id"
-                        disabled={mutation.isPending}
-                        onFocus={() => setOnFocusSubscriber(true)}
-                        onChange={handleOnChangeSubscriber}
-                        refVal={refSubscriber}
-                      />
-                      {onFocusSubscriber && (
-                        <div className="w-full h-40 max-h-40 overflow-y-auto absolute top-[34px] bg-white shadow-md z-50 rounded-sm border border-gray-200 pt-1">
-                          {loading || subscriberDataIsFetching ? (
-                            <TableSpinner />
-                          ) : subscriberDataError ? (
-                            <div className="my-7">
-                              <ServerError />
+                  <div className="input-wrapper">
+                    <InputText
+                      label="*Subscriber"
+                      type="text"
+                      value={subscriberValue}
+                      name="job_level_subscriber_id"
+                      disabled={mutation.isPending}
+                      onFocus={() => setOnFocusSubscriber(true)}
+                      onChange={handleOnChangeSubscriber}
+                      refVal={refSubscriber}
+                    />
+                    {onFocusSubscriber && (
+                      <div className="w-full h-40 max-h-40 overflow-y-auto absolute top-[34px] bg-white shadow-md z-50 rounded-sm border border-gray-200 pt-1">
+                        {loading || subscriberDataIsFetching ? (
+                          <TableSpinner />
+                        ) : subscriberDataError ? (
+                          <div className="my-7">
+                            <ServerError />
+                          </div>
+                        ) : subscriberData?.count > 0 ? (
+                          subscriberData?.data.map((item, key) => (
+                            <div
+                              className="cursor-pointer hover:bg-gray-100 px-2"
+                              value={item.subscribers_aid}
+                              key={key}
+                              onClick={() => handleClickSubscriber(item)}
+                            >
+                              {item.subscribers_company_name} (
+                              {item.subscribers_code})
                             </div>
-                          ) : subscriberData?.count > 0 ? (
-                            subscriberData?.data.map((item, key) => (
-                              <div
-                                className="cursor-pointer hover:bg-gray-100 px-2"
-                                value={item.subscribers_aid}
-                                key={key}
-                                onClick={() => handleClickSubscriber(item)}
-                              >
-                                {item.subscribers_company_name} (
-                                {item.subscribers_code})
-                              </div>
-                            ))
-                          ) : (
-                            <div className="my-7">
-                              <NoData />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
+                          ))
+                        ) : (
+                          <div className="my-7">
+                            <NoData />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                   <div className="input-wrapper">
                     <InputText
                       label="*Entry Level Name"

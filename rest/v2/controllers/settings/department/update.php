@@ -15,6 +15,7 @@ if (array_key_exists("departmentid", $_GET)) {
   $department->department_aid = $_GET['departmentid'];
   $department->department_name = checkIndex($data, "department_name");
   $department->department_subscribers_id = checkIndex($data, "department_subscribers_id");
+  $department->department_subscriber_code = checkIndex($data, "department_subscriber_code");
 
   $department->department_datetime = date("Y-m-d H:i:s");
   checkId($department->department_aid);

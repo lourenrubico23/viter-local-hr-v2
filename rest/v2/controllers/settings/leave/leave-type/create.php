@@ -11,7 +11,8 @@ checkPayload($data);
 // get data
 $leave_type->leave_type_is_active = 1;
 $leave_type->leave_type_type = checkIndex($data, "leave_type_type");
-$leave_type->leave_type_subscriber = checkIndex($data, "leave_type_subscriber");
+$leave_type->leave_type_subscriber_id = checkIndex($data, "leave_type_subscriber_id");
+$leave_type->leave_type_subscriber_code = checkIndex($data, "leave_type_subscriber_code");
 $leave_type->leave_type_created = date("Y-m-d H:i:s");
 $leave_type->leave_type_datetime = date("Y-m-d H:i:s");
 

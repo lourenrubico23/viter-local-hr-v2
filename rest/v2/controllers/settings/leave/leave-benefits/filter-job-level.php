@@ -19,7 +19,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
     checkPayload($data);
     // get data
-    $leave_benefits->job_level_subscriber = $data["job_level_subscriber"];
+    $leave_benefits->job_level_subscriber_id = $data["job_level_subscriber_id"];
     
     // if search only
     $query = checkFilterJobLevel($leave_benefits);

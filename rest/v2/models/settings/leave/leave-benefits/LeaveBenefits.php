@@ -4,7 +4,8 @@ class LeaveBenefits
 {
     public $leave_benefits_aid;
     public $leave_benefits_is_active;
-    public $leave_benefits_subscriber;
+    public $leave_benefits_subscriber_id;
+    public $leave_benefits_subscriber_code;
     public $leave_benefits_job_level_id;
     public $leave_benefits_job_title_id;
     public $leave_benefits_leave_type_id;
@@ -13,7 +14,7 @@ class LeaveBenefits
     public $leave_benefits_datetime;
 
     public $job_title_job_level_id;
-    public $job_level_subscriber;
+    public $job_level_subscriber_id;
 
     public $connection;
     public $lastInsertedId;
@@ -50,7 +51,7 @@ class LeaveBenefits
             $sql .= "where ben.leave_benefits_job_level_id = level.job_level_aid ";
             $sql .= "and ben.leave_benefits_job_title_id = title.job_title_aid ";
             $sql .= "and ben.leave_benefits_leave_type_id = type.leave_type_aid ";
-            $sql .= "and ben.leave_benefits_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and ben.leave_benefits_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "order by ben.leave_benefits_is_active desc, ";
             $sql .= "ben.leave_benefits_job_level_id asc, ";
             $sql .= "ben.leave_benefits_job_title_id asc, ";
@@ -75,7 +76,7 @@ class LeaveBenefits
             $sql .= "where ben.leave_benefits_job_level_id = level.job_level_aid ";
             $sql .= "and ben.leave_benefits_job_title_id = title.job_title_aid ";
             $sql .= "and ben.leave_benefits_leave_type_id = type.leave_type_aid ";
-            $sql .= "and ben.leave_benefits_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and ben.leave_benefits_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "order by ben.leave_benefits_is_active desc, ";
             $sql .= "ben.leave_benefits_job_level_id asc, ";
             $sql .= "ben.leave_benefits_job_title_id asc, ";
@@ -106,7 +107,7 @@ class LeaveBenefits
             $sql .= "where ben.leave_benefits_job_level_id = level.job_level_aid ";
             $sql .= "and ben.leave_benefits_job_title_id = title.job_title_aid ";
             $sql .= "and ben.leave_benefits_leave_type_id = type.leave_type_aid ";
-            $sql .= "and ben.leave_benefits_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and ben.leave_benefits_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "and (subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or level.job_level_level like :job_level_level ";
             $sql .= "or title.job_title_title like :job_title_title ";
@@ -135,7 +136,8 @@ class LeaveBenefits
         try {
             $sql = "insert into {$this->tblLeaveBenefits}";
             $sql .= "(leave_benefits_is_active, ";
-            $sql .= "leave_benefits_subscriber, ";
+            $sql .= "leave_benefits_subscriber_id, ";
+            $sql .= "leave_benefits_subscriber_code, ";
             $sql .= "leave_benefits_job_level_id, ";
             $sql .= "leave_benefits_job_title_id, ";
             $sql .= "leave_benefits_leave_type_id, ";
@@ -143,7 +145,8 @@ class LeaveBenefits
             $sql .= "leave_benefits_created, ";
             $sql .= "leave_benefits_datetime ) values ( ";
             $sql .= ":leave_benefits_is_active, ";
-            $sql .= ":leave_benefits_subscriber, ";
+            $sql .= ":leave_benefits_subscriber_id, ";
+            $sql .= ":leave_benefits_subscriber_code, ";
             $sql .= ":leave_benefits_job_level_id, ";
             $sql .= ":leave_benefits_job_title_id, ";
             $sql .= ":leave_benefits_leave_type_id, ";
@@ -153,7 +156,8 @@ class LeaveBenefits
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "leave_benefits_is_active" => $this->leave_benefits_is_active,
-                "leave_benefits_subscriber" => $this->leave_benefits_subscriber,
+                "leave_benefits_subscriber_id" => $this->leave_benefits_subscriber_id,
+                "leave_benefits_subscriber_code" => $this->leave_benefits_subscriber_code,
                 "leave_benefits_job_level_id" => $this->leave_benefits_job_level_id,
                 "leave_benefits_job_title_id" => $this->leave_benefits_job_title_id,
                 "leave_benefits_leave_type_id" => $this->leave_benefits_leave_type_id,
@@ -172,7 +176,8 @@ class LeaveBenefits
     {
         try {
             $sql = "update {$this->tblLeaveBenefits} set ";
-            $sql .= "leave_benefits_subscriber = :leave_benefits_subscriber, ";
+            $sql .= "leave_benefits_subscriber_id = :leave_benefits_subscriber_id, ";
+            $sql .= "leave_benefits_subscriber_code = :leave_benefits_subscriber_code, ";
             $sql .= "leave_benefits_job_level_id = :leave_benefits_job_level_id, ";
             $sql .= "leave_benefits_job_title_id = :leave_benefits_job_title_id, ";
             $sql .= "leave_benefits_leave_type_id = :leave_benefits_leave_type_id, ";
@@ -181,7 +186,8 @@ class LeaveBenefits
             $sql .= "where leave_benefits_aid = :leave_benefits_aid";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "leave_benefits_subscriber" => $this->leave_benefits_subscriber,
+                "leave_benefits_subscriber_id" => $this->leave_benefits_subscriber_id,
+                "leave_benefits_subscriber_code" => $this->leave_benefits_subscriber_code,
                 "leave_benefits_job_level_id" => $this->leave_benefits_job_level_id,
                 "leave_benefits_job_title_id" => $this->leave_benefits_job_title_id,
                 "leave_benefits_leave_type_id" => $this->leave_benefits_leave_type_id,
@@ -264,11 +270,11 @@ class LeaveBenefits
             $sql .= "where ben.leave_benefits_job_level_id = level.job_level_aid ";
             $sql .= "and ben.leave_benefits_job_title_id = title.job_title_aid ";
             $sql .= "and ben.leave_benefits_leave_type_id = type.leave_type_aid ";
-            $sql .= "and ben.leave_benefits_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and ben.leave_benefits_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "and (ben.leave_benefits_job_level_id = :leave_benefits_job_level_id ";
             $sql .= "or ben.leave_benefits_job_title_id = :leave_benefits_job_title_id ";
             $sql .= "or ben.leave_benefits_leave_type_id = :leave_benefits_leave_type_id ";
-            $sql .= "or ben.leave_benefits_subscriber = :leave_benefits_subscriber ";
+            $sql .= "or ben.leave_benefits_subscriber_id = :leave_benefits_subscriber_id ";
             $sql .= "or ben.leave_benefits_is_active = :leave_benefits_is_active) ";
             $sql .= "order by ben.leave_benefits_is_active desc, ";
             $sql .= "ben.leave_benefits_job_level_id asc, ";
@@ -280,7 +286,7 @@ class LeaveBenefits
                 "leave_benefits_job_level_id" => $this->leave_benefits_job_level_id,
                 "leave_benefits_job_title_id" => $this->leave_benefits_job_title_id,
                 "leave_benefits_leave_type_id" => $this->leave_benefits_leave_type_id,
-                "leave_benefits_subscriber" => $this->leave_benefits_subscriber,
+                "leave_benefits_subscriber_id" => $this->leave_benefits_subscriber_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -296,12 +302,13 @@ class LeaveBenefits
             $sql .= "{$this->tblLeaveBenefits} as ben, ";
             $sql .= "{$this->tblJobTitle} as title, ";
             $sql .= "{$this->tblJobLevel} as level, ";
-            $sql .= "{$this->tblLeaveType} as type ";
+            $sql .= "{$this->tblLeaveType} as type, ";
+            $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where ben.leave_benefits_is_active = :leave_benefits_is_active ";
             $sql .= "and ben.leave_benefits_job_level_id = level.job_level_aid ";
             $sql .= "and ben.leave_benefits_job_title_id = title.job_title_aid ";
             $sql .= "and ben.leave_benefits_leave_type_id = type.leave_type_aid ";
-            $sql .= "and ben.leave_benefits_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and ben.leave_benefits_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "and (subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or level.job_level_level like :job_level_level ";
             $sql .= "or title.job_title_title like :job_title_title ";
@@ -352,13 +359,13 @@ class LeaveBenefits
             $sql = "select * ";
             $sql .= "from ";
             $sql .= "{$this->tblJobLevel} ";
-            $sql .= "where job_level_subscriber = :job_level_subscriber ";
+            $sql .= "where job_level_subscriber_id = :job_level_subscriber_id ";
             $sql .= "and job_level_is_active = 1 ";
             $sql .= "order by ";
             $sql .= "job_level_level asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "job_level_subscriber" => $this->job_level_subscriber
+                "job_level_subscriber_id" => $this->job_level_subscriber_id
             ]);
         } catch (PDOException $ex) {
             $query = false;

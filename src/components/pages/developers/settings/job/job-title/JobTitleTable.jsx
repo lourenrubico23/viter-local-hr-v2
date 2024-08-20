@@ -210,7 +210,7 @@ const JobTitleTable = ({ setItemEdit }) => {
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.job_level_subscribers_code}</td>
+                    <td>{item.job_title_subscriber_code}</td>
                     <td className="uppercase">{item.job_level_level}</td>
                     <td className="uppercase">{item.job_title_title}</td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">

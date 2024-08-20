@@ -13,7 +13,8 @@ if (array_key_exists("leave_benefitsid", $_GET)) {
   checkPayload($data);
   // get data
   $leave_benefits->leave_benefits_aid = $_GET['leave_benefitsid'];
-  $leave_benefits->leave_benefits_subscriber = checkIndex($data, "leave_benefits_subscriber");
+  $leave_benefits->leave_benefits_subscriber_id = checkIndex($data, "leave_benefits_subscriber_id");
+  $leave_benefits->leave_benefits_subscriber_code = checkIndex($data, "leave_benefits_subscriber_code");
   $leave_benefits->leave_benefits_job_level_id = checkIndex($data, "leave_benefits_job_level_id");
   $leave_benefits->leave_benefits_job_title_id = checkIndex($data, "leave_benefits_job_title_id");
   $leave_benefits->leave_benefits_leave_type_id = checkIndex($data, "leave_benefits_leave_type_id");
@@ -28,7 +29,7 @@ if (array_key_exists("leave_benefitsid", $_GET)) {
   $leave_benefits_job_level_id_old = checkIndex($data, 'leave_benefits_job_level_id_old');
   $leave_benefits_job_title_id_old = checkIndex($data, 'leave_benefits_job_title_id_old');
   $leave_benefits_leave_type_id_old = checkIndex($data, 'leave_benefits_leave_type_id_old');
-  $leave_leave_benefits_subscriber_old = checkIndex($data, 'leave_leave_benefits_subscriber_old');
+  $leave_leave_benefits_subscriber_id_old = checkIndex($data, 'leave_leave_benefits_subscriber_id_old');
 
   $jobLevelName = checkIndex($data, "jobLevelName");
   $subscriberCode = checkIndex($data, "subscriberCode"); // para maiwasan ma over right and id ng text
@@ -43,7 +44,7 @@ if (array_key_exists("leave_benefitsid", $_GET)) {
     $leave_benefits_leave_type_id_old,
     $leave_benefits->leave_benefits_leave_type_id,
     $leave_leave_benefits_subscriber_old,
-    $leave_benefits->leave_benefits_subscriber,
+    $leave_benefits->leave_benefits_subscriber_id,
     $jobLevelName, $subscriberCode
   );
 
