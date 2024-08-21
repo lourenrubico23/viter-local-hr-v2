@@ -210,7 +210,7 @@ const NotificationTable = ({ setItemEdit }) => {
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.subscribers_code}</td>
+                    <td>{item.notification_subscriber_code}</td>
                     <td>{item.employees_fname} {item.employees_lname}</td>
                     <td>{item.notification_purpose}</td>
                     <td>{item.notification_email}</td>

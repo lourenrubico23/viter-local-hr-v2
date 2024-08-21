@@ -205,7 +205,7 @@ const AddonsTable = ({ setItemEdit }) => {
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.subscribers_code}</td>
+                    <td>{item.addons_subscriber_code}</td>
                     <td>{item.subscribers_subscription_type}</td>
                     <td>{item.subscribers_company_name}</td>
                     <td>{item.features_code}</td>

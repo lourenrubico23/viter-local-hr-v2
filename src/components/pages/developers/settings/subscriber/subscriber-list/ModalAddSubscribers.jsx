@@ -252,9 +252,9 @@ const ModalAddSubscribers = ({ itemEdit }) => {
                       {mutation.isPending ? (
                         <ButtonSpinner />
                       ) : itemEdit ? (
-                        "Update"
-                      ) : (
                         "Save"
+                      ) : (
+                        "Add"
                       )}
                     </button>
                     <button

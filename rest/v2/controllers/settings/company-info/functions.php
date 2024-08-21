@@ -16,14 +16,6 @@ function checkFilterByStatusAndSearch($object)
     return $query;
 }
 
-// filter by search job level
-function checkSearchEmployeeName($object)
-{
-    $query = $object->searchEmployeeName();
-    checkQuery($query, "Empty records. (filter by search employees name)");
-    return $query;
-}
-
 // filter by search features
 function checkSearchSubcribers($object)
 {
@@ -32,27 +24,17 @@ function checkSearchSubcribers($object)
     return $query;
 }
 
-// filter by filter employee name
-function checkFilterEmployeeName($object)
-{
-    $query = $object->filterEmployeeName();
-    checkQuery($query, "Empty records. (filter by employee name)");
-    return $query;
-}
-
-// compare name of employee, and purpose
-function compareEmployeeIdPurpose(
+// compare name for subscriber, para ito sa update para text and ilalabas ng toast at hindi id
+function compareNameSubscriber(
     $object,
-    $employeeIdOld,
-    $employeeId,
-    $purposeIdOld,
-    $purposeId,
+    $subscriberIdOld,
+    $subscriberId,
     $name
 ) {
     if (
-        strtolower($employeeIdOld) !=  strtolower($employeeId) ||
-        strtolower($purposeIdOld) !=  strtolower($purposeId) 
+        strtolower($subscriberIdOld) !=  strtolower($subscriberId)
     ) {
         isNameExist($object, $name);
     }
 }
+

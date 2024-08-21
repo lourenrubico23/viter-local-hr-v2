@@ -33,17 +33,23 @@ const ModalAddNotification = ({ itemEdit }) => {
     itemEdit ? itemEdit.subscribers_company_name : ""
   );
   const [subscriberId, setSubscriberId] = React.useState(
-    itemEdit ? itemEdit.notification_subscriber : ""
+    itemEdit ? itemEdit.notification_subscriber_id : ""
   );
+
   const [onFocusEmployees, setOnFocusEmployees] = React.useState(false);
   const [employeesValue, setEmployeesValue] = React.useState(
-    (`${itemEdit ? itemEdit.employees_lname : ""} ${itemEdit ? itemEdit.employees_fname : ""}`)
+    `${itemEdit ? itemEdit.employees_lname : ""} ${
+      itemEdit ? itemEdit.employees_fname : ""
+    }`
   );
   const [employees, setEmployees] = React.useState(
     itemEdit ? itemEdit.employees_fname : ""
   );
   const [employeesId, setEmployeesId] = React.useState(
     itemEdit ? itemEdit.notification_employee_name_id : ""
+  );
+  const [subscriberCode, setSubscriberCode] = React.useState(
+    itemEdit ? itemEdit.subscribers_code : ""
   );
 
   const handleClose = () => {
@@ -53,22 +59,22 @@ const ModalAddNotification = ({ itemEdit }) => {
     }, 200);
   };
 
-  const {
-    isFetching: notificationDataIsFetching,
-    error: notificationDataError,
-    data: notificationData,
-  } = useQueryData(
-    `/v2/notification/search-employees`, // endpoint
-    "post", // method
-    "notification/search-employees", // key
-    {
-      searchValue: employees, // payload
-    },
-    {
-      searchValue: employees, // id
-    },
-    true // refetchOnWindowFocus
-  );
+  // const {
+  //   isFetching: notificationDataIsFetching,
+  //   error: notificationDataError,
+  //   data: notificationData,
+  // } = useQueryData(
+  //   `/v2/notification/search-employees`, // endpoint
+  //   "post", // method
+  //   "notification/search-employees", // key
+  //   {
+  //     searchValue: employees, // payload
+  //   },
+  //   {
+  //     searchValue: employees, // id
+  //   },
+  //   true // refetchOnWindowFocus
+  // );
 
   const {
     isFetching: subscriberDataIsFetching,
@@ -87,6 +93,25 @@ const ModalAddNotification = ({ itemEdit }) => {
     true // refetchOnWindowFocus
   );
 
+  const {
+    isFetching: employeesFilterDataIsFetching,
+    error: employeesFilterDataError,
+    data: employeesFilterData,
+  } = useQueryData(
+    `/v2/notification/filter-employee-name`, // endpoint
+    "post", // method
+    "notification/filter-employee-name", // key
+    {
+      employees_subscribers_id: subscriberId,
+      searchValue: employees,
+      notification_subscriber_code: subscriberCode, // payload
+    },
+    {
+      employees_subscribers_id: subscriberId, // id
+      employees,
+    },
+    true // refetchOnWindowFocus
+  );
 
   const handleClickSubscriber = (item) => {
     setSubscriber(item.subscribers_company_name);
@@ -94,6 +119,7 @@ const ModalAddNotification = ({ itemEdit }) => {
       `${item.subscribers_company_name} (${item.subscribers_code})`
     );
     setSubscriberId(item.subscribers_aid);
+    setSubscriberCode(item.subscribers_code);
     setOnFocusSubscriber(false);
   };
 
@@ -217,7 +243,12 @@ const ModalAddNotification = ({ itemEdit }) => {
 
   const initVal = {
     notification_aid: itemEdit ? itemEdit.notification_aid : "",
-    notification_subscriber: itemEdit ? itemEdit.notification_subscriber : "",
+    notification_subscriber_id: itemEdit
+      ? itemEdit.notification_subscriber_id
+      : "",
+    notification_subscriber_code: itemEdit
+      ? itemEdit.notification_subscriber_code
+      : "",
     notification_employee_name_id: itemEdit
       ? itemEdit.notification_employee_name_id
       : "",
@@ -227,6 +258,7 @@ const ModalAddNotification = ({ itemEdit }) => {
     notification_employee_name_id_old: itemEdit
       ? itemEdit.notification_employee_name_id
       : "",
+    notification_purpose_old: itemEdit ? itemEdit.notification_purpose : "",
   };
 
   const yupSchema = Yup.object({
@@ -257,8 +289,8 @@ const ModalAddNotification = ({ itemEdit }) => {
               dispatch(setMessage("Employee is Required."));
               return;
             }
-             // to set error message when the input of Subscriber doesnt have input or laman
-             if (subscriberId === "" || !subscriberId) {
+            // to set error message when the input of Subscriber doesnt have input or laman
+            if (subscriberId === "" || !subscriberId) {
               dispatch(setError(true));
               dispatch(setMessage("Subscriber is Required."));
               return;
@@ -267,7 +299,9 @@ const ModalAddNotification = ({ itemEdit }) => {
             const data = {
               ...values,
               notification_employee_name_id: employeesId,
-              notification_subscriber: subscriberId,
+              notification_subscriber_id: subscriberId,
+              notification_subscriber_code: subscriberCode,
+              employeeName: employees,
             };
             mutation.mutate(data);
           }}
@@ -276,12 +310,12 @@ const ModalAddNotification = ({ itemEdit }) => {
             return (
               <Form className="modal-form">
                 <div className="form-input">
-                <div className="input-wrapper">
+                  <div className="input-wrapper">
                     <InputText
                       label="*Subscriber"
                       type="text"
                       value={subscriberValue}
-                      name="notification_subscriber"
+                      name="notification_subscriber_id"
                       disabled={mutation.isPending}
                       onFocus={() => setOnFocusSubscriber(true)}
                       onChange={handleOnChangeSubscriber}
@@ -328,14 +362,14 @@ const ModalAddNotification = ({ itemEdit }) => {
                     />
                     {onFocusEmployees && (
                       <div className="w-full h-40 max-h-40 overflow-y-auto absolute top-[34px] bg-white shadow-md z-50 rounded-sm border border-gray-200 p-2 ">
-                        {loading || notificationDataIsFetching ? (
+                        {loading || employeesFilterDataIsFetching ? (
                           <TableSpinner />
-                        ) : notificationDataError ? (
+                        ) : employeesFilterDataError ? (
                           <div className="my-7">
                             <ServerError />
                           </div>
-                        ) : notificationData?.count > 0 ? (
-                          notificationData?.data.map((item, key) => (
+                        ) : employeesFilterData?.count > 0 ? (
+                          employeesFilterData?.data.map((item, key) => (
                             <div
                               className="cursor-pointer"
                               value={item.employees_aid}
@@ -386,9 +420,9 @@ const ModalAddNotification = ({ itemEdit }) => {
                       {mutation.isPending ? (
                         <ButtonSpinner />
                       ) : itemEdit ? (
-                        "Update"
-                      ) : (
                         "Save"
+                      ) : (
+                        "Add"
                       )}
                     </button>
                     <button

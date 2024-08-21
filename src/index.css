@@ -147,7 +147,7 @@
     @apply flex flex-col justify-between h-full;
   }
   .input-wrapper {
-    @apply mb-2 my-[18px] relative flex flex-col gap-2;
+    @apply mb-2 my-[20px] relative flex flex-col gap-2;
   }
   .form-btn {
     @apply flex gap-2 pt-4;

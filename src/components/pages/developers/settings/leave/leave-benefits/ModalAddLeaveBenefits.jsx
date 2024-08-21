@@ -240,14 +240,17 @@ const ModalAddLeaveBenefits = ({
       : "",
     leave_benefits_days: itemEdit ? itemEdit.leave_benefits_days : "",
 
-    leave_benefits_job_level_id_old: itemEdit
-      ? itemEdit.leave_benefits_job_level_id
-      : "",
     leave_benefits_job_title_id_old: itemEdit
       ? itemEdit.leave_benefits_job_title_id
       : "",
+    leave_benefits_job_level_id_old: itemEdit
+      ? itemEdit.leave_benefits_job_level_id
+      : "",
     leave_benefits_leave_type_id_old: itemEdit
       ? itemEdit.leave_benefits_leave_type_id
+      : "",
+    leave_benefits_subscriber_id_old: itemEdit
+      ? itemEdit.leave_benefits_subscriber_id
       : "",
   };
 
@@ -443,9 +446,9 @@ const ModalAddLeaveBenefits = ({
                       {mutation.isPending ? (
                         <ButtonSpinner />
                       ) : itemEdit ? (
-                        "Update"
-                      ) : (
                         "Save"
+                      ) : (
+                        "Add"
                       )}
                     </button>
                     <button

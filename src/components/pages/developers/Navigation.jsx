@@ -326,6 +326,21 @@ const Navigation = ({ menu, submenu }) => {
 
                     <Link
                       className="!p-0"
+                      to={`${devNavUrl}/settings/company-info`}
+                    >
+                      <li
+                        className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
+                          submenu === "company-info"
+                            ? "!border-accent text-accent"
+                            : "hover:border-white !text-white"
+                        }`}
+                      >
+                        Company Info
+                      </li>
+                    </Link>
+
+                    <Link
+                      className="!p-0"
                       to={`${devNavUrl}/settings/leave`}
                     >
                       <li

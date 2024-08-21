@@ -5,6 +5,7 @@ class Addons
     public $addons_aid;
     public $addons_is_active;
     public $addons_subscriber_id;
+    public $addons_subscriber_code;
     public $addons_feature_code_id;
     public $addons_created;
     public $addons_datetime;
@@ -106,11 +107,13 @@ class Addons
             $sql = "insert into {$this->tblAddons}";
             $sql .= "(addons_is_active, ";
             $sql .= "addons_subscriber_id, ";
+            $sql .= "addons_subscriber_code, ";
             $sql .= "addons_feature_code_id, ";
             $sql .= "addons_created, ";
             $sql .= "addons_datetime ) values ( ";
             $sql .= ":addons_is_active, ";
             $sql .= ":addons_subscriber_id, ";
+            $sql .= ":addons_subscriber_code, ";
             $sql .= ":addons_feature_code_id, ";
             $sql .= ":addons_created, ";
             $sql .= ":addons_datetime )";
@@ -118,6 +121,7 @@ class Addons
             $query->execute([
                 "addons_is_active" => $this->addons_is_active,
                 "addons_subscriber_id" => $this->addons_subscriber_id,
+                "addons_subscriber_code" => $this->addons_subscriber_code,
                 "addons_feature_code_id" => $this->addons_feature_code_id,
                 "addons_created" => $this->addons_created,
                 "addons_datetime" => $this->addons_datetime,
@@ -134,12 +138,14 @@ class Addons
         try {
             $sql = "update {$this->tblAddons} set ";
             $sql .= "addons_subscriber_id = :addons_subscriber_id, ";
+            $sql .= "addons_subscriber_code = :addons_subscriber_code, ";
             $sql .= "addons_feature_code_id = :addons_feature_code_id, ";
             $sql .= "addons_datetime = :addons_datetime ";
             $sql .= "where addons_aid = :addons_aid";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "addons_subscriber_id" => $this->addons_subscriber_id,
+                "addons_subscriber_code" => $this->addons_subscriber_code,
                 "addons_feature_code_id" => $this->addons_feature_code_id,
                 "addons_datetime" => $this->addons_datetime,
                 "addons_aid" => $this->addons_aid,

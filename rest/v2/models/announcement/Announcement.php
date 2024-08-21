@@ -4,7 +4,8 @@ class Announcement
 {
     public $announcement_aid;
     public $announcement_is_active;
-    public $announcement_subscriber;
+    public $announcement_subscriber_id;
+    public $announcement_subscriber_code;
     public $announcement_date;
     public $announcement_title;
     public $announcement_description;
@@ -34,9 +35,9 @@ class Announcement
             $sql .= "from ";
             $sql .= "{$this->tblAnnouncement} as announcement, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
-            $sql .= "where announcement.announcement_subscriber = subscribers.subscribers_aid ";
+            $sql .= "where announcement.announcement_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "order by announcement.announcement_is_active desc, ";
-            $sql .= "announcement.announcement_subscriber asc, ";
+            $sql .= "announcement.announcement_subscriber_id asc, ";
             $sql .= "announcement.announcement_date asc, ";
             $sql .= "announcement.announcement_title asc ";
             $query = $this->connection->query($sql);
@@ -53,9 +54,9 @@ class Announcement
             $sql .= "from ";
             $sql .= "{$this->tblAnnouncement} as announcement, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
-            $sql .= "where announcement.announcement_subscriber = subscribers.subscribers_aid ";
+            $sql .= "where announcement.announcement_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "order by announcement.announcement_is_active desc, ";
-            $sql .= "announcement.announcement_subscriber asc, ";
+            $sql .= "announcement.announcement_subscriber_id asc, ";
             $sql .= "announcement.announcement_date asc, ";
             $sql .= "announcement.announcement_title asc ";//para nasa baba ng table ang mga inactive or archived
             $sql .= "limit :start, ";
@@ -78,7 +79,7 @@ class Announcement
             $sql .= "from ";
             $sql .= "{$this->tblAnnouncement} as announcement, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
-            $sql .= "where announcement.announcement_subscriber = subscribers.subscribers_aid ";
+            $sql .= "where announcement.announcement_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "and (announcement.announcement_title like :announcement_title ";
             $sql .= "or subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or DATE_FORMAT(announcement.announcement_date, '%M %e, %Y') LIKE :announcement_date ";
@@ -104,14 +105,16 @@ class Announcement
         try {
             $sql = "insert into {$this->tblAnnouncement}";
             $sql .= "(announcement_is_active, ";
-            $sql .= "announcement_subscriber, ";
+            $sql .= "announcement_subscriber_id, ";
+            $sql .= "announcement_subscriber_code, ";
             $sql .= "announcement_date, ";
             $sql .= "announcement_title, ";
             $sql .= "announcement_description, ";
             $sql .= "announcement_created, ";
             $sql .= "announcement_datetime ) values ( ";
             $sql .= ":announcement_is_active, ";
-            $sql .= ":announcement_subscriber, ";
+            $sql .= ":announcement_subscriber_id, ";
+            $sql .= ":announcement_subscriber_code, ";
             $sql .= ":announcement_date, ";
             $sql .= ":announcement_title, ";
             $sql .= ":announcement_description, ";
@@ -120,7 +123,8 @@ class Announcement
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "announcement_is_active" => $this->announcement_is_active,
-                "announcement_subscriber" => $this->announcement_subscriber,
+                "announcement_subscriber_id" => $this->announcement_subscriber_id,
+                "announcement_subscriber_code" => $this->announcement_subscriber_code,
                 "announcement_date" => $this->announcement_date,
                 "announcement_title" => $this->announcement_title,
                 "announcement_description" => $this->announcement_description,
@@ -138,7 +142,8 @@ class Announcement
     {
         try {
             $sql = "update {$this->tblAnnouncement} set ";
-            $sql .= "announcement_subscriber = :announcement_subscriber, ";
+            $sql .= "announcement_subscriber_id = :announcement_subscriber_id, ";
+            $sql .= "announcement_subscriber_code = :announcement_subscriber_code, ";
             $sql .= "announcement_date = :announcement_date, ";
             $sql .= "announcement_title = :announcement_title, ";
             $sql .= "announcement_description = :announcement_description, ";
@@ -146,7 +151,8 @@ class Announcement
             $sql .= "where announcement_aid = :announcement_aid";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "announcement_subscriber" => $this->announcement_subscriber,
+                "announcement_subscriber_id" => $this->announcement_subscriber_id,
+                "announcement_subscriber_code" => $this->announcement_subscriber_code,
                 "announcement_date" => $this->announcement_date,
                 "announcement_title" => $this->announcement_title,
                 "announcement_description" => $this->announcement_description,
@@ -196,11 +202,13 @@ class Announcement
     public function checkName()
     {
         try {
-            $sql = "select announcement_title from {$this->tblAnnouncement} ";
+            $sql = "select announcement_aid from {$this->tblAnnouncement} ";
             $sql .= "where announcement_title = :announcement_title ";
+            $sql .= "and announcement_date = :announcement_date ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "announcement_title" => "{$this->announcement_title}",
+                "announcement_date" => "{$this->announcement_date}",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -215,17 +223,17 @@ class Announcement
             $sql .= "from ";
             $sql .= "{$this->tblAnnouncement} as announcement, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
-            $sql .= "where announcement.announcement_subscriber = subscribers.subscribers_aid ";
-            $sql .= "and (announcement.announcement_subscriber = :announcement_subscriber ";
+            $sql .= "where announcement.announcement_subscriber_id = subscribers.subscribers_aid ";
+            $sql .= "and (announcement.announcement_subscriber_id = :announcement_subscriber_id ";
             $sql .= "or announcement.announcement_is_active = :announcement_is_active) ";
             $sql .= "order by announcement.announcement_is_active desc, ";
-            $sql .= "announcement.announcement_subscriber asc, ";
+            $sql .= "announcement.announcement_subscriber_id asc, ";
             $sql .= "announcement.announcement_date asc, ";
             $sql .= "announcement.announcement_title asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "announcement_is_active" => $this->announcement_is_active,
-                "announcement_subscriber" => $this->announcement_subscriber,
+                "announcement_subscriber_id" => $this->announcement_subscriber_id,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -241,7 +249,7 @@ class Announcement
             $sql .= "{$this->tblAnnouncement} as announcement, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where announcement.announcement_is_active = :announcement_is_active ";
-            $sql .= "and announcement.announcement_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and announcement.announcement_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "and (announcement.announcement_title like :announcement_title ";
             $sql .= "or subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or DATE_FORMAT(announcement.announcement_date, '%M %e, %Y') LIKE :announcement_date ";

@@ -160,9 +160,9 @@ const ModalAddSystem = ({ itemEdit, role }) => {
                       {mutation.isPending ? (
                         <ButtonSpinner />
                       ) : itemEdit ? (
-                        "Update"
-                      ) : (
                         "Save"
+                      ) : (
+                        "Add"
                       )}
                     </button>
                     <button

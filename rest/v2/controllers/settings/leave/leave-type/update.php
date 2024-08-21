@@ -23,8 +23,8 @@ if (array_key_exists("leave_typeid", $_GET)) {
 
 
   //checks current data to avoid same entries from being updated
-  $leave_type_level_old = checkIndex($data, 'leave_type_level_old');
-  compareName($leave_type, $leave_type_level_old, $leave_type->leave_type_type);
+  $leave_type_type_old = checkIndex($data, 'leave_type_type_old');
+  compareName($leave_type, $leave_type_type_old, $leave_type->leave_type_type);
 
   // update
   $query = checkUpdate($leave_type);

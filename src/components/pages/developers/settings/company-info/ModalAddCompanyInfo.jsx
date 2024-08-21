@@ -1,7 +1,11 @@
+import useQueryData from "@/components/custom-hooks/useQueryData";
 import { InputText } from "@/components/helpers/FormInputs";
 import { queryData } from "@/components/helpers/queryData";
-import ButtonSpinner from "@/components/partials/spinner/ButtonSpinner";
 import ModalWrapper from "@/components/partials/modals/ModalWrapper";
+import NoData from "@/components/partials/NoData";
+import ServerError from "@/components/partials/ServerError";
+import ButtonSpinner from "@/components/partials/spinner/ButtonSpinner";
+import TableSpinner from "@/components/partials/spinner/TableSpinner";
 import {
   setError,
   setIsAdd,
@@ -12,14 +16,11 @@ import { StoreContext } from "@/store/StoreContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import React from "react";
+import { FaRegImage } from "react-icons/fa6";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
-import useQueryData from "@/components/custom-hooks/useQueryData";
-import TableSpinner from "@/components/partials/spinner/TableSpinner";
-import ServerError from "@/components/partials/ServerError";
-import NoData from "@/components/partials/NoData";
 
-const ModalAddLeaveType = ({ itemEdit }) => {
+const ModalAddCompanyInfo = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [loading, setLoading] = React.useState(false);
@@ -33,10 +34,13 @@ const ModalAddLeaveType = ({ itemEdit }) => {
     itemEdit ? itemEdit.subscribers_company_name : ""
   );
   const [subscriberId, setSubscriberId] = React.useState(
-    itemEdit ? itemEdit.leave_type_subscriber_id : ""
+    itemEdit ? itemEdit.company_info_subscriber_id : ""
   );
   const [subscriberCode, setSubscriberCode] = React.useState(
     itemEdit ? itemEdit.subscribers_code : ""
+  );
+  const [subscriberCompany, setSubscriberCompany] = React.useState(
+    itemEdit ? itemEdit.subscribers_company_name : ""
   );
 
   const {
@@ -44,9 +48,9 @@ const ModalAddLeaveType = ({ itemEdit }) => {
     error: subscriberDataError,
     data: subscriberData,
   } = useQueryData(
-    `/v2/leave_type/search-subscribers`, // endpoint
+    `/v2/company-info/search-subscribers`, // endpoint
     "post", // method
-    "leave_type/search-subscribers", // key
+    "company-info/search-subscribers", // key
     {
       searchValue: subscriber, // payload
     },
@@ -63,6 +67,7 @@ const ModalAddLeaveType = ({ itemEdit }) => {
     );
     setSubscriberId(item.subscribers_aid);
     setSubscriberCode(item.subscribers_code);
+    setSubscriberCompany(item.subscribers_company_name);
     setOnFocusSubscriber(false);
   };
 
@@ -101,11 +106,6 @@ const ModalAddLeaveType = ({ itemEdit }) => {
     }
   };
 
-  React.useEffect(() => {
-    document.addEventListener("click", clickOutsideRefSubscriber);
-    return () => document.addEventListener("click", clickOutsideRefSubscriber);
-  }, []);
-
   const handleClose = () => {
     setAnimate("translate-x-full");
     setTimeout(() => {
@@ -113,19 +113,24 @@ const ModalAddLeaveType = ({ itemEdit }) => {
     }, 200);
   };
 
+  React.useEffect(() => {
+    document.addEventListener("click", clickOutsideRefSubscriber);
+    return () => document.addEventListener("click", clickOutsideRefSubscriber);
+  }, []);
+
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `/v2/leave_type/${itemEdit.leave_type_aid}` // update
-          : `/v2/leave_type`, // create
+          ? `/v2/company-info/${itemEdit.company_info_aid}` // update
+          : `/v2/company-info`, // create
         itemEdit ? "put" : "post",
         values
       ),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["leave_type"] });
+      queryClient.invalidateQueries({ queryKey: ["company-info"] });
       if (!data.success) {
         dispatch(setError(true));
         dispatch(setMessage(data.error));
@@ -144,18 +149,40 @@ const ModalAddLeaveType = ({ itemEdit }) => {
   }, []);
 
   const initVal = {
-    leave_type_aid: itemEdit ? itemEdit.leave_type_aid : "",
-    leave_type_subscriber_id: itemEdit ? itemEdit.leave_type_subscriber_id : "",
-    leave_type_subscriber_code: itemEdit
-      ? itemEdit.leave_type_subscriber_code
+    company_info_aid: itemEdit ? itemEdit.company_info_aid : "",
+    company_info_subscriber_id: itemEdit
+      ? itemEdit.company_info_subscriber_id
       : "",
-    leave_type_type: itemEdit ? itemEdit.leave_type_type : "",
+    company_info_subscriber_code: itemEdit
+      ? itemEdit.company_info_subscriber_code
+      : "",
+    company_info_subscriber_company_name: itemEdit
+      ? itemEdit.company_info_subscriber_company_name
+      : "",
+    company_info_phone: itemEdit ? itemEdit.company_info_phone : "",
+    company_info_email: itemEdit ? itemEdit.company_info_email : "",
+    company_info_street: itemEdit ? itemEdit.company_info_street : "",
+    company_info_city: itemEdit ? itemEdit.company_info_city : "",
+    company_info_province: itemEdit ? itemEdit.company_info_province : "",
+    company_info_postal: itemEdit ? itemEdit.company_info_postal : "",
+    company_info_country: itemEdit ? itemEdit.company_info_country : "",
+    company_info_primary_color: itemEdit
+      ? itemEdit.company_info_primary_color
+      : "",
+    company_info_secondary_color: itemEdit
+      ? itemEdit.company_info_secondary_color
+      : "",
+    company_info_accent_color: itemEdit
+      ? itemEdit.company_info_accent_color
+      : "",
 
-    leave_type_type_old: itemEdit ? itemEdit.leave_type_type : "",
+    company_info_subscriber_id_old: itemEdit
+      ? itemEdit.company_info_subscriber_id
+      : "",
   };
 
   const yupSchema = Yup.object({
-    leave_type_type: Yup.string().required("Required"),
+    company_info_phone: Yup.string().required("Required"),
   });
 
   return (
@@ -164,11 +191,12 @@ const ModalAddLeaveType = ({ itemEdit }) => {
       handleClose={handleClose}
     >
       <div className="modal-title">
-        <h2>{itemEdit ? "Update" : "Add"} Leave Type</h2>
+        <h2>{itemEdit ? "Edit" : "Add"} Company Info</h2>
         <button onClick={handleClose}>
           <GrFormClose className="text-[25px]" />
         </button>
       </div>
+
       <div className="modal-content">
         <Formik
           initialValues={initVal}
@@ -180,10 +208,13 @@ const ModalAddLeaveType = ({ itemEdit }) => {
               dispatch(setMessage("Subscriber is Required."));
               return;
             }
+            // to get all of the data including department_subscribers_id
             const data = {
               ...values,
-              leave_type_subscriber_id: subscriberId,
-              leave_type_subscriber_code: subscriberCode,
+              company_info_subscriber_id: subscriberId,
+              company_info_subscriber_code: subscriberCode,
+              company_info_subscriber_company_name: subscriberCompany,
+              subscriberName: subscriber,
             };
             mutation.mutate(data);
           }}
@@ -193,11 +224,17 @@ const ModalAddLeaveType = ({ itemEdit }) => {
               <Form className="modal-form">
                 <div className="form-input">
                   <div className="input-wrapper">
+                    <span className="mx-auto flex items-center gap-2 font-semibold border-[1px] rounded-md p-2">
+                      <FaRegImage className="size-6" />
+                      Upload Photo
+                    </span>
+                  </div>
+                  <div className="input-wrapper">
                     <InputText
                       label="*Subscriber"
                       type="text"
                       value={subscriberValue}
-                      name="leave_type_subscriber_id"
+                      name="company_info_subscriber_id"
                       disabled={mutation.isPending}
                       onFocus={() => setOnFocusSubscriber(true)}
                       onChange={handleOnChangeSubscriber}
@@ -233,9 +270,81 @@ const ModalAddLeaveType = ({ itemEdit }) => {
                   </div>
                   <div className="input-wrapper">
                     <InputText
-                      label="*Type Name"
+                      label="*Company Phone"
                       type="text"
-                      name="leave_type_type"
+                      name="company_info_phone"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="input-wrapper">
+                    <InputText
+                      label="Company Email"
+                      type="text"
+                      name="company_info_email"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="input-wrapper">
+                    <InputText
+                      label="Street"
+                      type="text"
+                      name="company_info_street"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="input-wrapper">
+                    <InputText
+                      label="City"
+                      type="text"
+                      name="company_info_city"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="input-wrapper">
+                    <InputText
+                      label="Province"
+                      type="text"
+                      name="company_info_province"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="input-wrapper">
+                    <InputText
+                      label="Postal"
+                      type="text"
+                      name="company_info_postal"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="input-wrapper">
+                    <InputText
+                      label="Country"
+                      type="text"
+                      name="company_info_country"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="input-wrapper">
+                    <InputText
+                      label="Navigation Background Color"
+                      type="color"
+                      name="company_info_primary_color"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="input-wrapper">
+                    <InputText
+                      label="Sub Menu Color"
+                      type="color"
+                      name="company_info_secondary_color"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="input-wrapper">
+                    <InputText
+                      label="Accent Color"
+                      type="color"
+                      name="company_info_accent_color"
                       disabled={mutation.isPending}
                     />
                   </div>
@@ -274,4 +383,4 @@ const ModalAddLeaveType = ({ itemEdit }) => {
   );
 };
 
-export default ModalAddLeaveType;
+export default ModalAddCompanyInfo;

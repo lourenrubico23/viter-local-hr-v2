@@ -27,6 +27,7 @@ import Subscribers from "@/components/pages/developers/settings/subscriber/Subsc
 import SubscribersList from "@/components/pages/developers/settings/subscriber/subscriber-list/SubscribersList";
 import Features from "@/components/pages/developers/settings/subscriber/features/Features";
 import Addons from "@/components/pages/developers/settings/subscriber/addons/Addons";
+import CompanyInfo from "@/components/pages/developers/settings/company-info/CompanyInfo";
 
 
 export const routesDeveloper = [
@@ -97,6 +98,10 @@ export const routesDeveloper = [
   {
     path: `${devNavUrl}/settings/department`,
     element: <Department />,
+  },
+  {
+    path: `${devNavUrl}/settings/company-info`,
+    element: <CompanyInfo />,
   },
   {
     path: `${devNavUrl}/settings/notification`,

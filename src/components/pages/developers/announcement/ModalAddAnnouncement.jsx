@@ -33,7 +33,10 @@ const ModalAddAnnouncement = ({ itemEdit }) => {
     itemEdit ? itemEdit.subscribers_company_name : ""
   );
   const [subscriberId, setSubscriberId] = React.useState(
-    itemEdit ? itemEdit.announcement_subscriber : ""
+    itemEdit ? itemEdit.announcement_subscriber_id : ""
+  );
+  const [subscriberCode, setSubscriberCode] = React.useState(
+    itemEdit ? itemEdit.subscribers_code : ""
   );
 
   const {
@@ -59,6 +62,7 @@ const ModalAddAnnouncement = ({ itemEdit }) => {
       `${item.subscribers_company_name} (${item.subscribers_code})`
     );
     setSubscriberId(item.subscribers_aid);
+    setSubscriberCode(item.subscribers_code);
     setOnFocusSubscriber(false);
   };
 
@@ -141,11 +145,17 @@ const ModalAddAnnouncement = ({ itemEdit }) => {
 
   const initVal = {
     announcement_aid: itemEdit ? itemEdit.announcement_aid : "",
-    announcement_subscriber: itemEdit ? itemEdit.announcement_subscriber : "",
+    announcement_subscriber_id: itemEdit
+      ? itemEdit.announcement_subscriber_id
+      : "",
+    announcement_subscriber_code: itemEdit
+      ? itemEdit.announcement_subscriber_code
+      : "",
     announcement_date: itemEdit ? itemEdit.announcement_date : "",
     announcement_title: itemEdit ? itemEdit.announcement_title : "",
     announcement_description: itemEdit ? itemEdit.announcement_description : "",
 
+    announcement_date_old: itemEdit ? itemEdit.announcement_date : "",
     announcement_title_old: itemEdit ? itemEdit.announcement_title : "",
   };
 
@@ -180,7 +190,8 @@ const ModalAddAnnouncement = ({ itemEdit }) => {
             // to get all of the data including announcement_subscriber
             const data = {
               ...values,
-              announcement_subscriber: subscriberId,
+              announcement_subscriber_id: subscriberId,
+              announcement_subscriber_code: subscriberCode,
             };
             mutation.mutate(data);
           }}
@@ -189,12 +200,12 @@ const ModalAddAnnouncement = ({ itemEdit }) => {
             return (
               <Form className="modal-form">
                 <div className="form-input">
-                <div className="input-wrapper">
+                  <div className="input-wrapper">
                     <InputText
                       label="*Subscriber"
                       type="text"
                       value={subscriberValue}
-                      name="announcement_subscriber"
+                      name="announcement_subscriber_id"
                       disabled={mutation.isPending}
                       onFocus={() => setOnFocusSubscriber(true)}
                       onChange={handleOnChangeSubscriber}
@@ -261,7 +272,7 @@ const ModalAddAnnouncement = ({ itemEdit }) => {
                       type="submit"
                       disabled={mutation.isPending || !props.dirty}
                     >
-                      {mutation.isPending ? <ButtonSpinner /> : "Add"}
+                      {mutation.isPending ? <ButtonSpinner /> : itemEdit ? "Save" : "Add"}
                     </button>
                     <button
                       className="btn-modal-cancel"

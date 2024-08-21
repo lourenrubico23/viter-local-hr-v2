@@ -4,12 +4,15 @@ class Notification
 {
     public $notification_aid;
     public $notification_is_active;
-    public $notification_subscriber;
+    public $notification_subscriber_id;
+    public $notification_subscriber_code;
     public $notification_employee_name_id;
     public $notification_purpose;
     public $notification_email;
     public $notification_created;
     public $notification_datetime;
+
+    public $employees_subscribers_id;
 
     public $connection;
     public $lastInsertedId;
@@ -38,10 +41,10 @@ class Notification
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where notif.notification_employee_name_id = emp.employees_aid ";
-            $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and notif.notification_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
-            $sql .= "notif.notification_subscriber asc ";
+            $sql .= "notif.notification_subscriber_id asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
@@ -58,10 +61,10 @@ class Notification
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where notif.notification_employee_name_id = emp.employees_aid ";
-            $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and notif.notification_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
-            $sql .= "notif.notification_subscriber asc ";
+            $sql .= "notif.notification_subscriber_id asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -84,14 +87,14 @@ class Notification
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where notif.notification_employee_name_id = emp.employees_aid ";
-            $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and notif.notification_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "and (concat(emp.employees_fname, ' ', emp.employees_lname) like :full_name ";
             $sql .= "or subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or notif.notification_purpose like :notification_purpose ";
             $sql .= "or notif.notification_email like :notification_email) ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
-            $sql .= "notif.notification_subscriber asc ";
+            $sql .= "notif.notification_subscriber_id asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "subscribers_code" => "%{$this->notification_search}%",
@@ -110,14 +113,16 @@ class Notification
         try {
             $sql = "insert into {$this->tblNotification}";
             $sql .= "(notification_is_active, ";
-            $sql .= "notification_subscriber, ";
+            $sql .= "notification_subscriber_id, ";
+            $sql .= "notification_subscriber_code, ";
             $sql .= "notification_employee_name_id, ";
             $sql .= "notification_purpose, ";
             $sql .= "notification_email, ";
             $sql .= "notification_created, ";
             $sql .= "notification_datetime ) values ( ";
             $sql .= ":notification_is_active, ";
-            $sql .= ":notification_subscriber, ";
+            $sql .= ":notification_subscriber_id, ";
+            $sql .= ":notification_subscriber_code, ";
             $sql .= ":notification_employee_name_id, ";
             $sql .= ":notification_purpose, ";
             $sql .= ":notification_email, ";
@@ -126,7 +131,8 @@ class Notification
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "notification_is_active" => $this->notification_is_active,
-                "notification_subscriber" => $this->notification_subscriber,
+                "notification_subscriber_id" => $this->notification_subscriber_id,
+                "notification_subscriber_code" => $this->notification_subscriber_code,
                 "notification_employee_name_id" => $this->notification_employee_name_id,
                 "notification_purpose" => $this->notification_purpose,
                 "notification_email" => $this->notification_email,
@@ -144,7 +150,8 @@ class Notification
     {
         try {
             $sql = "update {$this->tblNotification} set ";
-            $sql .= "notification_subscriber = :notification_subscriber, ";
+            $sql .= "notification_subscriber_id = :notification_subscriber_id, ";
+            $sql .= "notification_subscriber_code = :notification_subscriber_code, ";
             $sql .= "notification_employee_name_id = :notification_employee_name_id, ";
             $sql .= "notification_purpose = :notification_purpose, ";
             $sql .= "notification_email = :notification_email, ";
@@ -152,7 +159,8 @@ class Notification
             $sql .= "where notification_aid = :notification_aid";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "notification_subscriber" => $this->notification_subscriber,
+                "notification_subscriber_id" => $this->notification_subscriber_id,
+                "notification_subscriber_code" => $this->notification_subscriber_code,
                 "notification_employee_name_id" => $this->notification_employee_name_id,
                 "notification_purpose" => $this->notification_purpose,
                 "notification_email" => $this->notification_email,
@@ -202,11 +210,13 @@ class Notification
     public function checkName()
     {
         try {
-            $sql = "select notification_employee_name_id from {$this->tblNotification} ";
+            $sql = "select notification_aid from {$this->tblNotification} ";
             $sql .= "where notification_employee_name_id = :notification_employee_name_id ";
+            $sql .= "and notification_purpose = :notification_purpose ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "notification_employee_name_id" => "{$this->notification_employee_name_id}",
+                "notification_purpose" => "{$this->notification_purpose}",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -223,12 +233,12 @@ class Notification
             $sql .= "{$this->tblEmployees} as emp, ";
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where notif.notification_employee_name_id = emp.employees_aid ";
-            $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and notif.notification_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "and (notif.notification_employee_name_id = :notification_employee_name_id ";
             $sql .= "or notif.notification_is_active = :notification_is_active) ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
-            $sql .= "notif.notification_subscriber asc ";
+            $sql .= "notif.notification_subscriber_id asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "notification_is_active" => $this->notification_is_active,
@@ -250,14 +260,14 @@ class Notification
             $sql .= "{$this->tblSubscribers} as subscribers ";
             $sql .= "where notif.notification_is_active = :notification_is_active ";
             $sql .= "and notif.notification_employee_name_id = emp.employees_aid ";
-            $sql .= "and notif.notification_subscriber = subscribers.subscribers_aid ";
+            $sql .= "and notif.notification_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "and (concat(emp.employees_fname, ' ', emp.employees_lname) like :full_name ";
             $sql .= "or subscribers.subscribers_code like :subscribers_code ";
             $sql .= "or notif.notification_purpose like :notification_purpose ";
             $sql .= "or notif.notification_email like :notification_email) ";
             $sql .= "order by notif.notification_is_active desc, ";
             $sql .= "notif.notification_employee_name_id asc, ";
-            $sql .= "notif.notification_subscriber asc ";
+            $sql .= "notif.notification_subscriber_id asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "subscribers_code" => "%{$this->notification_search}%",
@@ -304,6 +314,26 @@ class Notification
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "subscribers_company_name" => "%{$this->notification_search}%",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function filterEmployeeName() //for employee name filter, when subscriber is selected, the active in employee name is get. kukunin ang employee name mula sa subscriber. 
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from ";
+            $sql .= "{$this->tblEmployees} ";
+            $sql .= "where employees_subscribers_id = :employees_subscribers_id ";
+            $sql .= "and employees_is_active = 1 ";
+            $sql .= "order by ";
+            $sql .= "employees_fname asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "employees_subscribers_id" => $this->employees_subscribers_id
             ]);
         } catch (PDOException $ex) {
             $query = false;

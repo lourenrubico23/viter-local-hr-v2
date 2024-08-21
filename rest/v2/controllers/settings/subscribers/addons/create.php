@@ -12,13 +12,14 @@ checkPayload($data);
 $addons->addons_is_active = 1;
 $addons->addons_feature_code_id = checkIndex($data, "addons_feature_code_id");
 $addons->addons_subscriber_id = checkIndex($data, "addons_subscriber_id");
+$addons->addons_subscriber_code = checkIndex($data, "addons_subscriber_code");
 $addons->addons_created = date("Y-m-d H:i:s");
 $addons->addons_datetime = date("Y-m-d H:i:s");
 
-// id to text convertion
+// id to text convertion of employees name
 $featuresName = checkIndex($data, "featuresName");
 //checks newly added data if it already exists
-isNameExist($addons, $featuresName);
+isNameExist($addons, $featuresName, );
 
 $query = checkCreate($addons);
 

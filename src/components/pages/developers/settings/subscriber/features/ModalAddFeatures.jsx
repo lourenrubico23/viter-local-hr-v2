@@ -116,7 +116,7 @@ const ModalAddFeatures = ({itemEdit}) => {
                       type="submit"
                       disabled={mutation.isPending || !props.dirty}
                     >
-                      {mutation.isPending ? <ButtonSpinner /> : itemEdit ? "Update" : "Save"}
+                      {mutation.isPending ? <ButtonSpinner /> : itemEdit ? "Save" : "Add"}
                     </button>
                     <button
                       className="btn-modal-cancel"

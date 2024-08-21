@@ -1,15 +1,15 @@
 import { queryDataInfinite } from "@/components/helpers/queryDataInfinite";
-import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
-import Loadmore from "@/components/partials/LoadMore";
+import LoadMore from "@/components/partials/LoadMore";
 import ModalArchive from "@/components/partials/modals/ModalArchive";
 import ModalDelete from "@/components/partials/modals/ModalDelete";
 import ModalRestore from "@/components/partials/modals/ModalRestore";
 import NoData from "@/components/partials/NoData";
 import SearchBar from "@/components/partials/SearchBar";
 import ServerError from "@/components/partials/ServerError";
+import FetchingSpinner from "@/components/partials/spinner/FetchingSpinner";
+import TableSpinner from "@/components/partials/spinner/TableSpinner";
 import Status from "@/components/partials/Status";
 import TableLoading from "@/components/partials/TableLoading";
-import TableSpinner from "@/components/partials/spinner/TableSpinner";
 import {
   setIsAdd,
   setIsArchive,
@@ -20,12 +20,12 @@ import {
 import { StoreContext } from "@/store/StoreContext";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
-import { FaArchive, FaEdit, FaUserAltSlash } from "react-icons/fa";
-import { FaKey, FaUserGroup } from "react-icons/fa6";
+import { FaArchive, FaEdit } from "react-icons/fa";
+import { FaUserGroup } from "react-icons/fa6";
 import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
 
-const DepartmentTable = ({ setItemEdit }) => {
+const CompanyInfoTable = ({ setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
@@ -51,17 +51,17 @@ const DepartmentTable = ({ setItemEdit }) => {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ["department", onSearch, store.isSearch, isFilter, statusData],
+    queryKey: ["company-info", onSearch, store.isSearch, isFilter, statusData],
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `/v2/department/search`, // search endpoint
-        `/v2/department/page/${pageParam}`, // list endpoint
+        `/v2/company-info/search`, // search endpoint
+        `/v2/company-info/page/${pageParam}`, // list endpoint
         store.isSearch || isFilter, // search boolean
         {
           searchValue: search.current.value,
           id: "",
           isFilter,
-          department_is_active: statusData === "all" ? "" : statusData,
+          company_info_is_active: statusData === "all" ? "" : statusData,
         } // search value
       ),
     getNextPageParam: (lastPage) => {
@@ -92,24 +92,24 @@ const DepartmentTable = ({ setItemEdit }) => {
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(item.department_name);
-    setIsId(item.department_aid);
+    setIsData(item.company_info_subscriber_company_name);
+    setIsId(item.company_info_aid);
     setIsArchiving(true);
     setIsRestore(false);
   };
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(item.department_name);
-    setIsId(item.department_aid);
+    setIsData(item.company_info_subscriber_company_name);
+    setIsId(item.company_info_aid);
     setIsArchiving(false);
     setIsRestore(true);
   };
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(item.department_name);
-    setIsId(item.department_aid);
+    setIsData(item.company_info_subscriber_company_name);
+    setIsId(item.company_info_aid);
   };
 
   React.useEffect(() => {
@@ -118,6 +118,7 @@ const DepartmentTable = ({ setItemEdit }) => {
       fetchNextPage();
     }
   }, [inView]);
+
   return (
     <>
       <div className="flex items-center gap-3 w-full">
@@ -159,18 +160,20 @@ const DepartmentTable = ({ setItemEdit }) => {
         </div>
       </div>
 
-
       <div className="shadow-md rounded-md overflow-y-auto min-h-full md:min-h-[calc(100vh-30px)] lg:max-h-[calc(100vh-250px)] mb-10 lg:mb-0 lg:min-h-0 relative">
-      {isFetching && !isFetchingNextPage && status !== "loading" && (
-        <FetchingSpinner />
-      )}
+        {isFetching && !isFetchingNextPage && status !== "loading" && (
+          <FetchingSpinner />
+        )}
         <table>
           <thead>
             <tr>
               <th className="pl-2 w-[1rem]">#</th>
               <th className="w-[1rem]">Status</th>
               <th>Code</th>
-              <th>Department Name</th>
+              <th>Company Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Address</th>
               <th className="text-right">Actions</th>
             </tr>
           </thead>
@@ -200,16 +203,23 @@ const DepartmentTable = ({ setItemEdit }) => {
                   <tr key={key}>
                     <td className="pl-2">{counter++}</td>
                     <td>
-                      {item.department_is_active === 1 ? (
+                      {item.company_info_is_active === 1 ? (
                         <Status text="Active" />
                       ) : (
                         <Status text="Inactive" />
                       )}
                     </td>
-                    <td>{item.department_subscriber_code}</td>
-                    <td className="uppercase">{item.department_name}</td>
+                    <td>{item.company_info_subscriber_code}</td>
+                    <td>{item.company_info_subscriber_company_name}</td>
+                    <td>{item.company_info_phone}</td>
+                    <td>{item.company_info_email}</td>
+                    <td>
+                      {item.company_info_street} {item.company_info_city}{" "}
+                      {item.company_info_province} {item.company_info_postal}{" "}
+                      {item.company_info_country}
+                    </td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
-                      {item.department_is_active ? (
+                      {item.company_info_is_active ? (
                         <>
                           <button
                             className="tooltip-action-table"
@@ -251,7 +261,7 @@ const DepartmentTable = ({ setItemEdit }) => {
             ))}
           </tbody>
         </table>
-        <Loadmore
+        <LoadMore
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
           hasNextPage={hasNextPage}
@@ -265,8 +275,8 @@ const DepartmentTable = ({ setItemEdit }) => {
       {store.isArchive && (
         <ModalArchive
           setIsArchive={setIsArchive}
-          queryKey={"department"}
-          mysqlEndpoint={`/v2/department/active/${id}`}
+          queryKey={"company-info"}
+          mysqlEndpoint={`/v2/company-info/active/${id}`}
           item={isData}
           archive={isArchiving}
         />
@@ -274,16 +284,16 @@ const DepartmentTable = ({ setItemEdit }) => {
       {store.isDelete && (
         <ModalDelete
           setIsDelete={setIsDelete}
-          queryKey={"department"}
-          mysqlEndpoint={`/v2/department/${id}`}
+          queryKey={"company-info"}
+          mysqlEndpoint={`/v2/company-info/${id}`}
           item={isData}
         />
       )}
       {store.isRestore && (
         <ModalRestore
           setIsRestore={setIsRestore}
-          queryKey={"department"}
-          mysqlEndpoint={`/v2/department/active/${id}`}
+          queryKey={"company-info"}
+          mysqlEndpoint={`/v2/company-info/active/${id}`}
           item={isData}
         />
       )}
@@ -291,4 +301,4 @@ const DepartmentTable = ({ setItemEdit }) => {
   );
 };
 
-export default DepartmentTable;
+export default CompanyInfoTable;

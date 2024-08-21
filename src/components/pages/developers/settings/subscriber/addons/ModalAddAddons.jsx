@@ -29,7 +29,9 @@ const ModalAddAddons = ({ itemEdit }) => {
     itemEdit ? `${itemEdit.features_name} (${itemEdit.features_code})` : ""
   ); // to get the data from table when update
   const [subscriberValue, setSubscriberValue] = React.useState(
-    itemEdit ? `${itemEdit.subscribers_company_name} (${itemEdit.subscribers_code})` : ""
+    itemEdit
+      ? `${itemEdit.subscribers_company_name} (${itemEdit.subscribers_code})`
+      : ""
   ); // to get the data from table when update
   const [features, setFeatures] = React.useState(
     itemEdit ? itemEdit.features_name : ""
@@ -42,6 +44,9 @@ const ModalAddAddons = ({ itemEdit }) => {
   );
   const [subscriberId, setSubscriberId] = React.useState(
     itemEdit ? itemEdit.addons_subscriber_id : ""
+  );
+  const [subscriberCode, setSubscriberCode] = React.useState(
+    itemEdit ? itemEdit.subscribers_code : ""
   );
 
   const {
@@ -98,6 +103,7 @@ const ModalAddAddons = ({ itemEdit }) => {
       `${item.subscribers_company_name} (${item.subscribers_code})`
     );
     setSubscriberId(item.subscribers_aid);
+    setSubscriberCode(item.subscribers_code);
     setOnFocusSubscriber(false);
   };
 
@@ -215,6 +221,7 @@ const ModalAddAddons = ({ itemEdit }) => {
   const initVal = {
     addons_aid: itemEdit ? itemEdit.addons_aid : "",
     addons_subscriber_id: itemEdit ? itemEdit.addons_subscriber_id : "",
+    addons_subscriber_code: itemEdit ? itemEdit.addons_subscriber_code : "",
     addons_feature_code_id: itemEdit ? itemEdit.addons_feature_code_id : "",
 
     addons_feature_code_id_old: itemEdit ? itemEdit.addons_feature_code_id : "",
@@ -255,6 +262,7 @@ const ModalAddAddons = ({ itemEdit }) => {
               ...values,
               addons_feature_code_id: featuresId,
               addons_subscriber_id: subscriberId,
+              addons_subscriber_code: subscriberCode,
               featuresName: features,
             };
             mutation.mutate(data);

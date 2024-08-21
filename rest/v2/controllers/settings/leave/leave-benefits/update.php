@@ -29,10 +29,10 @@ if (array_key_exists("leave_benefitsid", $_GET)) {
   $leave_benefits_job_level_id_old = checkIndex($data, 'leave_benefits_job_level_id_old');
   $leave_benefits_job_title_id_old = checkIndex($data, 'leave_benefits_job_title_id_old');
   $leave_benefits_leave_type_id_old = checkIndex($data, 'leave_benefits_leave_type_id_old');
-  $leave_leave_benefits_subscriber_id_old = checkIndex($data, 'leave_leave_benefits_subscriber_id_old');
+  $leave_benefits_subscriber_id_old = checkIndex($data, 'leave_benefits_subscriber_id_old');
 
   $jobLevelName = checkIndex($data, "jobLevelName");
-  $subscriberCode = checkIndex($data, "subscriberCode"); // para maiwasan ma over right and id ng text
+  // $subscriberCode = checkIndex($data, "subscriberCode"); // para maiwasan ma over right and id ng text
   //checks current data to avoid same entries from being updated
   // para maiwasan ang pag kakapareho ng input ng job level, job title, and leave type
   compareIdName(
@@ -43,9 +43,9 @@ if (array_key_exists("leave_benefitsid", $_GET)) {
     $leave_benefits->leave_benefits_job_title_id,
     $leave_benefits_leave_type_id_old,
     $leave_benefits->leave_benefits_leave_type_id,
-    $leave_leave_benefits_subscriber_old,
+    $leave_benefits_subscriber_id_old,
     $leave_benefits->leave_benefits_subscriber_id,
-    $jobLevelName, $subscriberCode
+    $jobLevelName
   );
 
   // update

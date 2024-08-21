@@ -107,6 +107,7 @@ RewriteRule ^notification/page/([0-9]+)$ controllers/settings/notification/page.
 RewriteRule ^notification/search$ controllers/settings/notification/search.php [L]
 RewriteRule ^notification/search-employees$ controllers/settings/notification/search-employees.php [L]
 RewriteRule ^notification/search-subscribers$ controllers/settings/notification/search-subscribers.php [L]
+RewriteRule ^notification/filter-employee-name$ controllers/settings/notification/filter-employee-name.php [L]
 
 # SETTINGS SUBSCRIBERS
 RewriteRule ^subscribers$ controllers/settings/subscribers/subscribers-list/subscribers.php [L]
@@ -131,3 +132,11 @@ RewriteRule ^addons/page/([0-9]+)$ controllers/settings/subscribers/addons/page.
 RewriteRule ^addons/search$ controllers/settings/subscribers/addons/search.php [L]
 RewriteRule ^addons/search-features$ controllers/settings/subscribers/addons/search-features.php [L]
 RewriteRule ^addons/search-subscribers$ controllers/settings/subscribers/addons/search-subscribers.php [L]
+
+# SETTINGS COMPANY INFO
+RewriteRule ^company-info$ controllers/settings/company-info/companyInfo.php [L]
+RewriteRule ^company-info/([0-9]+)$ controllers/settings/company-info/companyInfo.php?companyinfoid=$1 [L]
+RewriteRule ^company-info/active/([0-9]+)$ controllers/settings/company-info/active.php?companyinfoid=$1 [L]
+RewriteRule ^company-info/page/([0-9]+)$ controllers/settings/company-info/page.php?start=$1 [L]
+RewriteRule ^company-info/search$ controllers/settings/company-info/search.php [L]
+RewriteRule ^company-info/search-subscribers$ controllers/settings/company-info/search-subscribers.php [L]

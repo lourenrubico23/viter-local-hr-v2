@@ -23,3 +23,20 @@ function checkSearchSubcribers($object)
     checkQuery($query, "Empty records. (filter by search subscribers)");
     return $query;
 }
+
+// //compare name of date and title
+// function compareDateTitle(
+//     $object,
+//     $dateIdOld,
+//     $dateId,
+//     $titleIdOld,
+//     $titleId,
+//     $name
+// ) {
+//     if (
+//         strtolower($dateIdOld) != strtolower($dateId) ||
+//         strtolower($titleIdOld) != strtolower($titleId)
+//     ) {
+//         isNameExist($object, $name);
+//     }
+// }
