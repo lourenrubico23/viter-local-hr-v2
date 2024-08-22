@@ -11,6 +11,7 @@ checkPayload($data);
 // get data
 $employees->employees_is_active = 1;
 $employees->employees_subscribers_id = checkIndex($data, "employees_subscribers_id");
+$employees->employees_subscriber_code = checkIndex($data, "employees_subscriber_code");
 $employees->employees_fname = checkIndex($data, "employees_fname");
 $employees->employees_lname = checkIndex($data, "employees_lname");
 $employees->employees_mname = $data["employees_mname"];

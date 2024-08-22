@@ -5,6 +5,7 @@ class Employees
     public $employees_aid;
     public $employees_is_active;
     public $employees_subscribers_id;
+    public $employees_subscriber_code;
     public $employees_fname;
     public $employees_lname;
     public $employees_mname;
@@ -46,11 +47,7 @@ class Employees
         try {
             $sql = "select * ";
             $sql .= "from ";
-            $sql .= "{$this->tblEmployees} as emp, ";
-            $sql .= "{$this->tblDepartment} as dept, ";
-            $sql .= "{$this->tblSubscribers} as subscribers ";
-            $sql .= "where emp.employees_department_id = dept.department_aid ";
-            $sql .= "and emp.employees_subscribers_id = subscribers.subscribers_aid ";
+            $sql .= "{$this->tblEmployees} as emp ";
             $sql .= "order by emp.employees_is_active desc, ";
             $sql .= "emp.employees_subscribers_id asc, ";
             $sql .= "emp.employees_fname asc, ";
@@ -67,13 +64,7 @@ class Employees
         try {
             $sql = "select * ";
             $sql .= "from ";
-            $sql .= "{$this->tblEmployees} as emp, ";
-            $sql .= "{$this->tblDepartment} as dept, ";
-            $sql .= "{$this->tblSubscribers} as subscribers ";
-            $sql .= "where emp.employees_department_id = dept.department_aid ";
-            $sql .= "and emp.employees_subscribers_id = subscribers.subscribers_aid ";
-            $sql .= "and emp.employees_department_id = employees_department_id ";
-            $sql .= "and emp.employees_subscribers_id = employees_subscribers_id ";
+            $sql .= "{$this->tblEmployees} as emp ";
             $sql .= "order by emp.employees_is_active desc, ";
             $sql .= "emp.employees_subscribers_id asc, ";
             $sql .= "emp.employees_fname asc, ";
@@ -151,6 +142,7 @@ class Employees
             $sql = "insert into {$this->tblEmployees}";
             $sql .= "(employees_is_active, ";
             $sql .= "employees_subscribers_id, ";
+            $sql .= "employees_subscriber_code, ";
             $sql .= "employees_fname, ";
             $sql .= "employees_lname, ";
             $sql .= "employees_mname, ";
@@ -166,6 +158,7 @@ class Employees
             $sql .= "employees_datetime ) values ( ";
             $sql .= ":employees_is_active, ";
             $sql .= ":employees_subscribers_id, ";
+            $sql .= ":employees_subscriber_code, ";
             $sql .= ":employees_fname, ";
             $sql .= ":employees_lname, ";
             $sql .= ":employees_mname, ";
@@ -183,6 +176,7 @@ class Employees
             $query->execute([
                 "employees_is_active" => $this->employees_is_active,
                 "employees_subscribers_id" => $this->employees_subscribers_id,
+                "employees_subscriber_code" => $this->employees_subscriber_code,
                 "employees_fname" => $this->employees_fname,
                 "employees_lname" => $this->employees_lname,
                 "employees_mname" => $this->employees_mname,

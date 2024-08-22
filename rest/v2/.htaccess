@@ -7,6 +7,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 
 Header set Access-Control-Allow-Origin *
 
+RewriteRule ^upload-photo$ core/upload-photo.php [L]
+
 # USER ROLE
 RewriteRule ^role$ controllers/settings/user/role/role.php [L]
 RewriteRule ^role/([0-9]+)$ controllers/settings/user/role/role.php?roleid=$1 [L]

@@ -99,3 +99,16 @@ export const InputTextArea = ({
     </>
   );
 };
+
+//upload photo
+export const InputPhotoUpload = ({ label, ...props }) => {
+  const [field, meta] = useField(props);
+  return (
+    <>
+      <input {...field} {...props} />
+      {meta.touched && meta.error ? (
+        <span className="error--msg">{meta.error}</span>
+      ) : null}
+    </>
+  );
+};

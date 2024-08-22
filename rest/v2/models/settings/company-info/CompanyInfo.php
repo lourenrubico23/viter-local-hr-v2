@@ -17,6 +17,7 @@ class CompanyInfo
     public $company_info_primary_color;
     public $company_info_secondary_color;
     public $company_info_accent_color;
+    public $company_info_image;
     public $company_info_created;
     public $company_info_datetime;
 
@@ -123,6 +124,7 @@ class CompanyInfo
             $sql .= "company_info_primary_color, ";
             $sql .= "company_info_secondary_color, ";
             $sql .= "company_info_accent_color, ";
+            $sql .= "company_info_image, ";
             $sql .= "company_info_created, ";
             $sql .= "company_info_datetime ) values ( ";
             $sql .= ":company_info_is_active, ";
@@ -139,6 +141,7 @@ class CompanyInfo
             $sql .= ":company_info_primary_color, ";
             $sql .= ":company_info_secondary_color, ";
             $sql .= ":company_info_accent_color, ";
+            $sql .= ":company_info_image, ";
             $sql .= ":company_info_created, ";
             $sql .= ":company_info_datetime )";
             $query = $this->connection->prepare($sql);
@@ -157,6 +160,7 @@ class CompanyInfo
                 "company_info_primary_color" => $this->company_info_primary_color,
                 "company_info_secondary_color" => $this->company_info_secondary_color,
                 "company_info_accent_color" => $this->company_info_accent_color,
+                "company_info_image" => $this->company_info_image,
                 "company_info_created" => $this->company_info_created,
                 "company_info_datetime" => $this->company_info_datetime,
             ]);
@@ -184,6 +188,7 @@ class CompanyInfo
             $sql .= "company_info_primary_color = :company_info_primary_color, ";
             $sql .= "company_info_secondary_color = :company_info_secondary_color, ";
             $sql .= "company_info_accent_color = :company_info_accent_color, ";
+            $sql .= "company_info_image = :company_info_image, ";
             $sql .= "company_info_datetime = :company_info_datetime ";
             $sql .= "where company_info_aid = :company_info_aid";
             $query = $this->connection->prepare($sql);
@@ -201,6 +206,7 @@ class CompanyInfo
                 "company_info_primary_color" => $this->company_info_primary_color,
                 "company_info_secondary_color" => $this->company_info_secondary_color,
                 "company_info_accent_color" => $this->company_info_accent_color,
+                "company_info_image" => $this->company_info_image,
                 "company_info_datetime" => $this->company_info_datetime,
                 "company_info_aid" => $this->company_info_aid,
             ]);

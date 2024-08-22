@@ -26,6 +26,7 @@ if (array_key_exists("companyinfoid", $_GET)) {
   $companyInfo->company_info_primary_color = $data["company_info_primary_color"];
   $companyInfo->company_info_secondary_color = $data["company_info_secondary_color"];
   $companyInfo->company_info_accent_color = $data["company_info_accent_color"];
+  $companyInfo->company_info_image = $data["company_info_image"];
 
 
   $companyInfo->company_info_datetime = date("Y-m-d H:i:s");

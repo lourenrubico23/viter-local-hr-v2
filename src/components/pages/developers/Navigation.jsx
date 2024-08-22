@@ -341,6 +341,21 @@ const Navigation = ({ menu, submenu }) => {
 
                     <Link
                       className="!p-0"
+                      to={`${devNavUrl}/settings/direct-info`}
+                    >
+                      <li
+                        className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
+                          submenu === "direct-info"
+                            ? "!border-accent text-accent"
+                            : "hover:border-white !text-white"
+                        }`}
+                      >
+                        Direct Info
+                      </li>
+                    </Link>
+
+                    <Link
+                      className="!p-0"
                       to={`${devNavUrl}/settings/leave`}
                     >
                       <li

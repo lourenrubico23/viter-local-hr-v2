@@ -35,6 +35,9 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
   const [subscriberId, setSubscriberId] = React.useState(
     itemEdit ? itemEdit.employees_subscribers_id : ""
   );
+  const [subscriberCode, setSubscriberCode] = React.useState(
+    itemEdit ? itemEdit.subscribers_code : ""
+  );
 
   const {
     isFetching: subscriberDataIsFetching,
@@ -59,6 +62,7 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
       `${item.subscribers_company_name} (${item.subscribers_code})`
     );
     setSubscriberId(item.subscribers_aid);
+    setSubscriberCode(item.subscribers_code);
     setOnFocusSubscriber(false);
   };
 
@@ -205,6 +209,7 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
             const data = {
               ...values,
               employees_subscribers_id: subscriberId,
+              employees_subscriber_code: subscriberCode,
             };
             mutation.mutate(data);
           }}
@@ -213,7 +218,7 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
             return (
               <Form className="modal-form">
                 <div className="form-input">
-                <div className="input-wrapper">
+                  <div className="input-wrapper">
                     <InputText
                       label="*Subscriber"
                       type="text"
@@ -367,7 +372,13 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
                       type="submit"
                       disabled={mutation.isPending || !props.dirty}
                     >
-                      {mutation.isPending ? <ButtonSpinner /> : itemEdit ? "Save" : "Add"}
+                      {mutation.isPending ? (
+                        <ButtonSpinner />
+                      ) : itemEdit ? (
+                        "Save"
+                      ) : (
+                        "Add"
+                      )}
                     </button>
                     <button
                       className="btn-modal-cancel"

@@ -1,5 +1,11 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
-import { InputText } from "@/components/helpers/FormInputs";
+import useUploadPhoto from "@/components/custom-hooks/useUploadPhoto";
+import { InputPhotoUpload, InputText } from "@/components/helpers/FormInputs";
+import {
+  apiVersion,
+  devBaseImgUrl,
+  hexToRgb,
+} from "@/components/helpers/functions-general";
 import { queryData } from "@/components/helpers/queryData";
 import ModalWrapper from "@/components/partials/modals/ModalWrapper";
 import NoData from "@/components/partials/NoData";
@@ -16,7 +22,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import React from "react";
-import { FaRegImage } from "react-icons/fa6";
+import { FaRegImage, FaUpload } from "react-icons/fa6";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
 
@@ -43,6 +49,11 @@ const ModalAddCompanyInfo = ({ itemEdit }) => {
     itemEdit ? itemEdit.subscribers_company_name : ""
   );
 
+  const { uploadPhoto, handleChangePhoto, photo } = useUploadPhoto(
+    `${apiVersion}/upload-photo`,
+    dispatch
+  );
+
   const {
     isFetching: subscriberDataIsFetching,
     error: subscriberDataError,
@@ -60,7 +71,7 @@ const ModalAddCompanyInfo = ({ itemEdit }) => {
     true // refetchOnWindowFocus
   );
 
-  const handleClickSubscriber = (item) => {
+  const handleClickSubscriber = (item, props) => {
     setSubscriber(item.subscribers_company_name);
     setSubscriberValue(
       `${item.subscribers_company_name} (${item.subscribers_code})`
@@ -69,6 +80,7 @@ const ModalAddCompanyInfo = ({ itemEdit }) => {
     setSubscriberCode(item.subscribers_code);
     setSubscriberCompany(item.subscribers_company_name);
     setOnFocusSubscriber(false);
+    props.values.company_info_email = item.subscribers_contact_email;
   };
 
   const handleOnChangeSubscriber = (e) => {
@@ -166,15 +178,19 @@ const ModalAddCompanyInfo = ({ itemEdit }) => {
     company_info_province: itemEdit ? itemEdit.company_info_province : "",
     company_info_postal: itemEdit ? itemEdit.company_info_postal : "",
     company_info_country: itemEdit ? itemEdit.company_info_country : "",
+    company_info_image: itemEdit ? itemEdit.company_info_image : "",
     company_info_primary_color: itemEdit
-      ? itemEdit.company_info_primary_color
-      : "",
+      ? // ? hexToRgb(itemEdit.company_info_primary_color)
+        itemEdit.company_info_primary_color
+      : "#000000",
     company_info_secondary_color: itemEdit
-      ? itemEdit.company_info_secondary_color
-      : "",
+      ? // ? hexToRgb(itemEdit.company_info_secondary_color)
+        itemEdit.company_info_secondary_color
+      : "#000000",
     company_info_accent_color: itemEdit
-      ? itemEdit.company_info_accent_color
-      : "",
+      ? // ? hexToRgb(itemEdit.company_info_accent_color)
+        itemEdit.company_info_accent_color
+      : "#000000",
 
     company_info_subscriber_id_old: itemEdit
       ? itemEdit.company_info_subscriber_id
@@ -215,19 +231,84 @@ const ModalAddCompanyInfo = ({ itemEdit }) => {
               company_info_subscriber_code: subscriberCode,
               company_info_subscriber_company_name: subscriberCompany,
               subscriberName: subscriber,
+              company_info_image: photo?.name || "",
             };
+            uploadPhoto(); // to save the photo when submit
             mutation.mutate(data);
+
+            // to change the color when submitted 
+            document
+              .querySelector(":root")
+              .style.setProperty(
+                "--primary-color",
+                hexToRgb(values.company_info_primary_color)
+              );
+            document
+              .querySelector(":root")
+              .style.setProperty(
+                "--secondary-color",
+                hexToRgb(values.company_info_secondary_color)
+              );
+            document
+              .querySelector(":root")
+              .style.setProperty(
+                "--accent-color",
+                hexToRgb(values.company_info_accent_color)
+              );
           }}
         >
           {(props) => {
             return (
               <Form className="modal-form">
                 <div className="form-input">
-                  <div className="input-wrapper">
-                    <span className="mx-auto flex items-center gap-2 font-semibold border-[1px] rounded-md p-2">
+                  <div>
+                    {/* <span className="mx-auto flex items-center gap-2 font-semibold border-[1px] rounded-md p-2">
                       <FaRegImage className="size-6" />
                       Upload Photo
-                    </span>
+                    </span> */}
+                    <div className="relative w-fit m-auto pb-2 mt-5 group">
+                      {itemEdit === null && photo === null ? (
+                        <div className="group-hover:opacity-20 mb-4 flex items-center gap-2 min-h-[44px] min-w-[170px] max-h-[44px] max-w-[170px] border rounded-md p-2">
+                          <FaRegImage className="w-12 h-8" />
+                          <h1 className="mb-0 leading-tight">Company Logo</h1>
+                        </div>
+                      ) : (itemEdit?.company_info_image === "" &&
+                          photo === null) ||
+                        photo === "" ? (
+                        <div className="group-hover:opacity-20 mb-4 flex items-center gap-2 min-h-[44px] min-w-[170px] max-h-[44px] max-w-[170px] border rounded-md p-2">
+                          <FaRegImage className="w-12 h-8" />
+                          <h1 className="mb-0 leading-tight">Company Logo</h1>
+                        </div>
+                      ) : (
+                        <img
+                          src={
+                            photo
+                              ? URL.createObjectURL(photo) // preview
+                              : devBaseImgUrl +
+                                "/" +
+                                itemEdit?.company_info_image // check db
+                          }
+                          alt="Company Logo"
+                          className="group-hover:opacity-30 duration-200 relative min-h-[44px] min-w-[170px] max-h-[44px] max-w-[170px] object-fill object-[50%,50%] m-auto"
+                        />
+                      )}
+
+                      <FaUpload className="opacity-0 duration-200 group-hover:opacity-100 fill-dark/90 absolute top-0 right-0 bottom-0 left-0 min-w-[1.2rem] min-h-[1.2rem] max-w-[1.2rem] max-h-[1.2rem] m-auto cursor-pointer" />
+                      <InputPhotoUpload
+                        name="photo"
+                        type="file"
+                        id="myFile"
+                        accept="image/*"
+                        title="Upload Logo"
+                        onChange={(e) =>
+                          handleChangePhoto(
+                            e,
+                            initVal.company_info_subscriber_code
+                          )
+                        }
+                        className="opacity-0 absolute right-0 bottom-0 left-0 m-auto cursor-pointer"
+                      />
+                    </div>
                   </div>
                   <div className="input-wrapper">
                     <InputText
@@ -254,7 +335,7 @@ const ModalAddCompanyInfo = ({ itemEdit }) => {
                               className="cursor-pointer hover:bg-gray-100 px-2"
                               value={item.subscribers_aid}
                               key={key}
-                              onClick={() => handleClickSubscriber(item)}
+                              onClick={() => handleClickSubscriber(item, props)}
                             >
                               {item.subscribers_company_name} (
                               {item.subscribers_code})
@@ -349,13 +430,17 @@ const ModalAddCompanyInfo = ({ itemEdit }) => {
                     />
                   </div>
                 </div>
-
+                {console.log(photo)}
                 <div className="form-action">
                   <div className="form-btn">
                     <button
                       className="btn-modal-submit"
                       type="submit"
-                      disabled={mutation.isPending || !props.dirty}
+                      disabled={
+                        (mutation.isPending || !props.dirty) &&
+                        (photo === null || photo === "")
+                        // initVal.company_info_image === photo?.name
+                      }
                     >
                       {mutation.isPending ? (
                         <ButtonSpinner />

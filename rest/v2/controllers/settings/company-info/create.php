@@ -23,6 +23,7 @@ $companyInfo->company_info_country = $data["company_info_country"];
 $companyInfo->company_info_primary_color = $data["company_info_primary_color"];
 $companyInfo->company_info_secondary_color = $data["company_info_secondary_color"];
 $companyInfo->company_info_accent_color = $data["company_info_accent_color"];
+$companyInfo->company_info_image = $data["company_info_image"];
 $companyInfo->company_info_created = date("Y-m-d H:i:s");
 $companyInfo->company_info_datetime = date("Y-m-d H:i:s");
 
