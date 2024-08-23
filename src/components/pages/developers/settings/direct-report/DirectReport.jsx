@@ -8,6 +8,7 @@ import DirectReportTable from './DirectReportTable';
 import ModalAddDirectReport from './ModalAddDirectReport';
 import ModalSuccess from '@/components/partials/modals/ModalSuccess';
 import ModalError from '@/components/partials/modals/ModalError';
+import Footer from '@/components/partials/Footer';
 
 const DirectReport = () => {
   const { store, dispatch } = React.useContext(StoreContext);

@@ -56,16 +56,16 @@ const ModalAddJobTitle = ({ itemEdit }) => {
     itemEdit ? itemEdit.subscribers_code : ""
   );
 
-  const {
-    isLoading: subscribersIsLoading,
-    isFetching: subscribersIsFetching,
-    error: subscribersError,
-    data: subscribers,
-  } = useQueryData(
-    `/v2/subscribers`, // endpoint
-    "get", // method
-    "subscribers" // key
-  );
+  // const {
+  //   isLoading: subscribersIsLoading,
+  //   isFetching: subscribersIsFetching,
+  //   error: subscribersError,
+  //   data: subscribers,
+  // } = useQueryData(
+  //   `/v2/subscribers`, // endpoint
+  //   "get", // method
+  //   "subscribers" // key
+  // );
 
   const {
     isFetching: jobLevelFilterDataIsFetching,
@@ -170,6 +170,12 @@ const ModalAddJobTitle = ({ itemEdit }) => {
     }
   };
 
+React.useEffect(() => {
+    document.addEventListener("click", clickOutsideRef);
+    return () => document.addEventListener("click", clickOutsideRef);
+  }, []);
+
+  
   const handleClickSubscriber = (item) => {
     setSubscriber(item.subscribers_company_name);
     setSubscriberValue(
@@ -223,10 +229,7 @@ const ModalAddJobTitle = ({ itemEdit }) => {
     return () => document.addEventListener("click", clickOutsideRefSubscriber);
   }, []);
 
-  React.useEffect(() => {
-    document.addEventListener("click", clickOutsideRef);
-    return () => document.addEventListener("click", clickOutsideRef);
-  }, []);
+  
 
   //activeJobTitle will be an array containing only the elements from job_level.data where user_role_is_active is 1.
   // const activeJobLevel = job_level?.data.filter(

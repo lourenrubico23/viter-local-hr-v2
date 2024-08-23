@@ -341,16 +341,16 @@ const Navigation = ({ menu, submenu }) => {
 
                     <Link
                       className="!p-0"
-                      to={`${devNavUrl}/settings/direct-info`}
+                      to={`${devNavUrl}/settings/direct-report`}
                     >
                       <li
                         className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
-                          submenu === "direct-info"
+                          submenu === "direct-report"
                             ? "!border-accent text-accent"
                             : "hover:border-white !text-white"
                         }`}
                       >
-                        Direct Info
+                        Direct Report
                       </li>
                     </Link>
 

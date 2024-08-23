@@ -142,3 +142,12 @@ RewriteRule ^company-info/active/([0-9]+)$ controllers/settings/company-info/act
 RewriteRule ^company-info/page/([0-9]+)$ controllers/settings/company-info/page.php?start=$1 [L]
 RewriteRule ^company-info/search$ controllers/settings/company-info/search.php [L]
 RewriteRule ^company-info/search-subscribers$ controllers/settings/company-info/search-subscribers.php [L]
+
+# SETTINGS DIRECT REPORT
+RewriteRule ^direct-report$ controllers/settings/direct-report/directReport.php [L]
+RewriteRule ^direct-report/([0-9]+)$ controllers/settings/direct-report/directReport.php?direct_reportid=$1 [L]
+RewriteRule ^direct-report/active/([0-9]+)$ controllers/settings/direct-report/active.php?direct_reportid=$1 [L]
+RewriteRule ^direct-report/page/([0-9]+)$ controllers/settings/direct-report/page.php?start=$1 [L]
+RewriteRule ^direct-report/search$ controllers/settings/direct-report/search.php [L]
+RewriteRule ^direct-report/search-subscribers$ controllers/settings/direct-report/search-subscribers.php [L]
+RewriteRule ^direct-report/filter-employee-name$ controllers/settings/direct-report/filter-employee-name.php [L]
