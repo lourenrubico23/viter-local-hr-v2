@@ -19,7 +19,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
     checkPayload($data);
     // get data
-    $directReport->employees_subscribers_id = $data["employees_subscribers_id"];
+    $directReport->employees_subscribers_id = $data['employees_subscribers_id'];
     $directReport->direct_report_search = $data["searchValue"];
 
 

@@ -12,7 +12,7 @@ if (array_key_exists("direct_reportid", $_GET)) {
   // check data
   checkPayload($data);
   // get data
-  $directReport->direct_report_is_active = 1;
+  $directReport->direct_report_aid = $_GET['direct_reportid'];
   $directReport->direct_report_subscriber_id = $data["direct_report_subscriber_id"];
   $directReport->direct_report_subscriber_code = $data["direct_report_subscriber_code"];
   $directReport->direct_report_supervisor_id = $data["direct_report_supervisor_id"];

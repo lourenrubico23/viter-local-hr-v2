@@ -66,6 +66,7 @@ const ModalAddDirectReport = ({ itemEdit }) => {
     itemEdit ? `${itemEdit.employees_lname}, ${itemEdit.employees_fname}` : ""
   );
 
+  
   const {
     isFetching: subscriberDataIsFetching,
     error: subscriberDataError,
@@ -102,7 +103,7 @@ const ModalAddDirectReport = ({ itemEdit }) => {
     },
     true // refetchOnWindowFocus
   );
-  console.log(supervisor);
+
   const {
     isFetching: subordinateFilterDataIsFetching,
     error: subordinateFilterDataError,
@@ -120,7 +121,7 @@ const ModalAddDirectReport = ({ itemEdit }) => {
       employees_subscribers_id: subscriberId, // id
       subordinate,
     },
-    true // refetchOnWindowFocus
+    true // refetchOnWindowFocus  
   );
 
   const handleClose = () => {
@@ -334,6 +335,7 @@ const ModalAddDirectReport = ({ itemEdit }) => {
       ? itemEdit.direct_report_subordinate_id
       : "",
   };
+  console.log(initVal)
 
   return (
     <>
@@ -352,19 +354,19 @@ const ModalAddDirectReport = ({ itemEdit }) => {
           <Formik
             initialValues={initVal}
             onSubmit={async (values) => {
-              // to set error message when the input of job level doesnt have input or laman
+              // to set error message when the input of supervisor doesnt have input or laman
               if (supervisorId === "" || !supervisorId) {
                 dispatch(setError(true));
                 dispatch(setMessage("Supervisor is Required."));
                 return;
               }
-              // to set error message when the input of job level doesnt have input or laman
+              // to set error message when the input of subordinate doesnt have input or laman
               if (subordinateId === "" || !subordinateId) {
                 dispatch(setError(true));
                 dispatch(setMessage("Subordinate is Required."));
                 return;
               }
-              // to set error message when the input of job level doesnt have input or laman
+              // to set error message when the input of supervisor and subordinate is the same
               if (subordinateId === supervisorId) {
                 dispatch(setError(true));
                 dispatch(
@@ -378,7 +380,7 @@ const ModalAddDirectReport = ({ itemEdit }) => {
                 dispatch(setMessage("Subscriber is Required."));
                 return;
               }
-              // to get all of the data including job_title_job_level_id
+              // to get all of the data
               const data = {
                 ...values,
                 direct_report_supervisor_id: supervisorId,
@@ -500,7 +502,7 @@ const ModalAddDirectReport = ({ itemEdit }) => {
                                 key={key}
                                 onClick={() => handleClickSubordinate(item)}
                               >
-                                {item.employees_lname} {item.employees_fname}
+                                {item.employees_lname}, {item.employees_fname}
                               </div>
                             ))
                           ) : (

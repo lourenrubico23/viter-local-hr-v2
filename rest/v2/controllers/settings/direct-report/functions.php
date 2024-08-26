@@ -24,7 +24,7 @@ function checkFilterByStatusAndSearch($object)
 //     return $query;
 // }
 
-// filter by search features
+// filter by search subscriber
 function checkSearchSubcribers($object)
 {
     $query = $object->searchSubcribers();
