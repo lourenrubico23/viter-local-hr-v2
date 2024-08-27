@@ -48,7 +48,9 @@ if (array_key_exists("direct_reportid", $_GET)) {
     $direct_report_supervisor_name_old,
     $directReport->direct_report_supervisor_name,
     $direct_report_subordinate_name_old,
-    $directReport->direct_report_subordinate_name
+    $directReport->direct_report_subordinate_name,
+    $supervior,
+    $subordinate
   );
 
   // update
