@@ -23,8 +23,12 @@ import { FaArchive, FaEdit } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { MdDelete, MdRestore } from "react-icons/md";
 import { useInView } from "react-intersection-observer";
+import {
+  getSubordinateName,
+  getSuperviorName,
+} from "./functions-direct-report";
 
-const DirectReportTable = ({ setItemEdit }) => {
+const DirectReportTable = ({ setItemEdit, employees }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [isArchiving, setIsArchiving] = React.useState(false);
   const [id, setIsId] = React.useState("");
@@ -87,11 +91,20 @@ const DirectReportTable = ({ setItemEdit }) => {
   const handleEdit = (item) => {
     dispatch(setIsAdd(true));
     setItemEdit(item);
+    // setItemEdit({
+    //   ...item,
+    //   subordinateName: getSubordinateName(
+    //     item.direct_report_subordinate_id,
+    //     employees
+    //   ),
+    // });
   };
 
   const handleArchive = (item) => {
     dispatch(setIsArchive(true));
-    setIsData(`${item.direct_report_supervisor_name}, ${item.direct_report_subordinate_name}`);
+    setIsData(
+      `${item.direct_report_supervisor_name} and ${item.direct_report_subordinate_name}`
+    );
     setIsId(item.direct_report_aid);
     setIsArchiving(true);
     setIsRestore(false);
@@ -99,7 +112,9 @@ const DirectReportTable = ({ setItemEdit }) => {
 
   const handleRestore = (item) => {
     dispatch(setIsRestore(true));
-    setIsData(`${item.direct_report_supervisor_name}, ${item.direct_report_subordinate_name}`);
+    setIsData(
+      `${item.direct_report_supervisor_name} and ${item.direct_report_subordinate_name}`
+    );
     setIsId(item.direct_report_aid);
     setIsArchiving(false);
     setIsRestore(true);
@@ -107,7 +122,9 @@ const DirectReportTable = ({ setItemEdit }) => {
 
   const handleDelete = (item) => {
     dispatch(setIsDelete(true));
-    setIsData(`${item.direct_report_supervisor_name}, ${item.direct_report_subordinate_name}`);
+    setIsData(
+      `${item.direct_report_supervisor_name} and ${item.direct_report_subordinate_name}`
+    );
     setIsId(item.direct_report_aid);
   };
 
@@ -206,8 +223,18 @@ const DirectReportTable = ({ setItemEdit }) => {
                       )}
                     </td>
                     <td>{item.direct_report_subscriber_code}</td>
-                    <td >{item.direct_report_supervisor_name}</td>
-                    <td >{item.direct_report_subordinate_name}</td>
+                    <td>
+                      {getSuperviorName(
+                        item.direct_report_supervisor_id,
+                        employees
+                      )}
+                    </td>
+                    <td>
+                      {getSubordinateName(
+                        item.direct_report_subordinate_id,
+                        employees
+                      )}
+                    </td>
                     <td className="flex items-center gap-3 justify-end mt-2 lg:mt-0">
                       {item.direct_report_is_active ? (
                         <>

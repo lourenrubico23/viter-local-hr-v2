@@ -40,7 +40,7 @@ function checkFilterEmployeeName($object)
     return $query;
 }
 
-// compare name of employee, and purpose
+// compare name of supervisor id and subordinate id
 function compareEmployeeIdSupervisorSubordinate(
     $object,
     $supervisorIdOld,
@@ -56,3 +56,18 @@ function compareEmployeeIdSupervisorSubordinate(
         isNameExist($object, $name);
     }
 }
+
+// subordinate and supervisor cannot be the same
+function compareSupervisorSubordinate(
+    $object,
+    $supervisorName,
+    $subordinadeName,
+    $name
+) {
+    if (
+        strtolower($supervisorName) != strtolower($subordinadeName)
+    ) {
+        isNameExist($object, $name);
+    }
+}
+

@@ -9,6 +9,7 @@ import ModalAddDirectReport from './ModalAddDirectReport';
 import ModalSuccess from '@/components/partials/modals/ModalSuccess';
 import ModalError from '@/components/partials/modals/ModalError';
 import Footer from '@/components/partials/Footer';
+import useQueryData from '@/components/custom-hooks/useQueryData';
 
 const DirectReport = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -18,6 +19,17 @@ const DirectReport = () => {
     dispatch(setIsAdd(true));
     setItemEdit(null);
   };
+
+  const {
+    isLoading:employeesIsLoading,
+    isFetching:employeesIsFetching,
+    error:employeesError,
+    data: employees,
+  } = useQueryData(
+    `/v2/employees`, // endpoint
+    "get", // method
+    "employees" // key
+  );
 
   React.useEffect(() => {
     dispatch(setIsSettingsOpen(true));
@@ -41,12 +53,12 @@ const DirectReport = () => {
           </button>
         </div>
         <div className="pb-4">
-          <DirectReportTable setItemEdit={setItemEdit} />
+          <DirectReportTable setItemEdit={setItemEdit} employees={employees} />
         </div>
         <Footer />
       </div>
 
-      {store.isAdd && <ModalAddDirectReport itemEdit={itemEdit} />}
+      {store.isAdd && <ModalAddDirectReport itemEdit={itemEdit} employees={employees}/>}
       {store.success && <ModalSuccess />}
       {store.error && <ModalError />}
     </>

@@ -20,9 +20,11 @@ $directReport->direct_report_created = date("Y-m-d H:i:s");
 $directReport->direct_report_datetime = date("Y-m-d H:i:s");
 
 // id to text convertion
-$employeeName = checkIndex($data, "employeeName");
+$supervior = checkIndex($data, "supervior");
+$subordinate = checkIndex($data, "subordinate");
 //checks newly added data if it already exists
-isNameExist($directReport, $employeeName);
+isNameExist($directReport, $supervior, $subordinate);
+
 
 $query = checkCreate($directReport);
 

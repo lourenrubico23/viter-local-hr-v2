@@ -208,10 +208,14 @@ class DirectReport
             $sql = "select direct_report_aid from {$this->tblDirectReport} ";
             $sql .= "where direct_report_supervisor_id = :direct_report_supervisor_id ";
             $sql .= "and direct_report_subordinate_id = :direct_report_subordinate_id ";
+            $sql .= "and direct_report_subscriber_code = :direct_report_subscriber_code ";
+            $sql .= "or direct_report_supervisor_id = :direct_report_subordinate_id_1 ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "direct_report_supervisor_id" => "{$this->direct_report_supervisor_id}",
                 "direct_report_subordinate_id" => "{$this->direct_report_subordinate_id}",
+                "direct_report_subscriber_code" => "{$this->direct_report_subscriber_code}",
+                "direct_report_subordinate_id_1" => "{$this->direct_report_subordinate_id}",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -252,15 +256,15 @@ class DirectReport
             $sql .= "where direct.direct_report_is_active = :direct_report_is_active ";
             $sql .= "and direct.direct_report_subscriber_id = subscribers.subscribers_aid ";
             $sql .= "and (subscribers.subscribers_code like :subscribers_code ";
-            $sql .= "or direct.direct_report_supervisor_id like :direct_report_supervisor_id ";
-            $sql .= "or direct.direct_report_subordinate_id like :direct_report_subordinate_id) ";
+            $sql .= "or direct.direct_report_supervisor_name like :direct_report_supervisor_name ";
+            $sql .= "or direct.direct_report_subordinate_name like :direct_report_subordinate_name) ";
             $sql .= "order by direct.direct_report_is_active desc, ";
             $sql .= "direct.direct_report_subscriber_code asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "subscribers_code" => "%{$this->direct_report_search}%",
-                "direct_report_supervisor_id" => "%{$this->direct_report_search}%",
-                "direct_report_subordinate_id" => "%{$this->direct_report_search}%",
+                "direct_report_supervisor_name" => "%{$this->direct_report_search}%",
+                "direct_report_subordinate_name" => "%{$this->direct_report_search}%",
                 "direct_report_is_active" => $this->direct_report_is_active,
             ]);
         } catch (PDOException $ex) {
@@ -288,25 +292,7 @@ class DirectReport
         return $query;
     }
 
-    // public function searchEmployee() // for Job level debounce
-    // {
-    //     try {
-    //         $sql = "select * ";
-    //         $sql .= "from {$this->tblEmployees} ";
-    //         $sql .= "where employees_fname = employees_fname ";
-    //         $sql .= "and concat(employees_fname, ' ',employees_lname) like :full_name ";
-    //         $sql .= "and employees_is_active = 1 ";
-    //         $sql .= "order by ";
-    //         $sql .= "employees_lname asc ";
-    //         $query = $this->connection->prepare($sql);
-    //         $query->execute([
-    //             "full_name" => "%{$this->direct_report_search}%",
-    //         ]);
-    //     } catch (PDOException $ex) {
-    //         $query = false;
-    //     }
-    //     return $query;
-    // }
+
 
     // public function filterEmployees() //for employees filter, when subscriber is selected, the active in employees is get. kukunin ang employees mula sa subscriber. this is combination of filter and search
     // {
@@ -329,79 +315,73 @@ class DirectReport
     //     return $query;
     // }
 
-//     public function filterEmployees()
-// {
-//     try {
-//         $sql = "select * ";
-//         $sql .= "from {$this->tblEmployees} ";
-//         $sql .= "where employees_is_active = 1 "; // common condition
+    //     public function filterEmployees()
+    // {
+    //     try {
+    //         $sql = "select * ";
+    //         $sql .= "from {$this->tblEmployees} ";
+    //         $sql .= "where employees_is_active = 1 "; // common condition
 
-//         // Check if a search term is provided
-//         if (!empty($this->direct_report_search)) {
-//             $sql .= "and concat(employees_fname, ' ',employees_lname) like :full_name ";
-//         }
+    //         // Check if a search term is provided
+    //         if (!empty($this->direct_report_search)) {
+    //             $sql .= "and concat(employees_fname, ' ',employees_lname) like :full_name ";
+    //         }
 
-//         // Check if a subscriber ID is provided
-//         if (!empty($this->employees_subscribers_id)) {
-//             $sql .= "and employees_subscribers_id = :employees_subscribers_id ";
-//         }
+    //         // Check if a subscriber ID is provided
+    //         if (!empty($this->employees_subscribers_id)) {
+    //             $sql .= "and employees_subscribers_id = :employees_subscribers_id ";
+    //         }
 
-//         $sql .= "order by employees_lname asc ";
+    //         $sql .= "order by employees_lname asc ";
 
-//         $query = $this->connection->prepare($sql);
+    //         $query = $this->connection->prepare($sql);
 
-//         // Prepare the parameters for the query
-//         $params = [];
-//         if (!empty($this->direct_report_search)) {
-//             $params['full_name'] = "%{$this->direct_report_search}%";
-//         }
-//         if (!empty($this->employees_subscribers_id)) {
-//             $params['employees_subscribers_id'] = $this->employees_subscribers_id;
-//         }
+    //         // Prepare the parameters for the query
+    //         $params = [];
+    //         if (!empty($this->direct_report_search)) {
+    //             $params['full_name'] = "%{$this->direct_report_search}%";
+    //         }
+    //         if (!empty($this->employees_subscribers_id)) {
+    //             $params['employees_subscribers_id'] = $this->employees_subscribers_id;
+    //         }
 
-//         $query->execute($params);
-//     } catch (PDOException $ex) {
-//         $query = false;
-//     }
+    //         $query->execute($params);
+    //     } catch (PDOException $ex) {
+    //         $query = false;
+    //     }
 
-//     return $query;
-// }
+    //     return $query;
+    // }
 
-public function filterEmployees()
-{
-    try {
-        $sql = "select *, concat(employees_lname, ', ', employees_fname) as full_name_display ";
-        $sql .= "from {$this->tblEmployees} ";
-        $sql .= "where employees_is_active = 1 "; // common condition
-
-        // Check if a search term is provided
-        if (!empty($this->direct_report_search)) {
-            $sql .= "and concat(employees_lname, ', ', employees_fname) like :full_name ";
+    public function filterEmployees()
+    {
+        try {
+            $sql = "select *, concat(employees_lname, ', ', employees_fname) as full_name_display ";
+            $sql .= "from {$this->tblEmployees} ";
+            $sql .= "where employees_is_active = 1 "; // common condition
+            // Check if a search term is provided
+            if (!empty($this->direct_report_search)) {
+                $sql .= "and concat(employees_lname, ', ', employees_fname) like :full_name ";
+            }
+            // Check if a subscriber ID is provided
+            if (!empty($this->employees_subscribers_id)) {
+                $sql .= "and employees_subscribers_id = :employees_subscribers_id ";
+            }
+            $sql .= "order by employees_lname asc ";
+            $query = $this->connection->prepare($sql);
+            // Prepare the parameters for the query
+            $params = [];
+            if (!empty($this->direct_report_search)) {
+                $params['full_name'] = "%{$this->direct_report_search}%";
+            }
+            if (!empty($this->employees_subscribers_id)) {
+                $params['employees_subscribers_id'] = $this->employees_subscribers_id;
+            }
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            $query = false;
         }
 
-        // Check if a subscriber ID is provided
-        if (!empty($this->employees_subscribers_id)) {
-            $sql .= "and employees_subscribers_id = :employees_subscribers_id ";
-        }
-
-        $sql .= "order by employees_lname asc ";
-
-        $query = $this->connection->prepare($sql);
-
-        // Prepare the parameters for the query
-        $params = [];
-        if (!empty($this->direct_report_search)) {
-            $params['full_name'] = "%{$this->direct_report_search}%";
-        }
-        if (!empty($this->employees_subscribers_id)) {
-            $params['employees_subscribers_id'] = $this->employees_subscribers_id;
-        }
-
-        $query->execute($params);
-    } catch (PDOException $ex) {
-        $query = false;
+        return $query;
     }
-
-    return $query;
-}
 }

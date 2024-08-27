@@ -49,7 +49,7 @@ const ModalAddDirectReport = ({ itemEdit }) => {
     itemEdit ? itemEdit.direct_report_supervisor_id : ""
   );
   const [supervisorName, setSupervisorName] = React.useState(
-    itemEdit ? `${itemEdit.employees_lname}, ${itemEdit.employees_fname}` : ""
+    itemEdit ? itemEdit.direct_report_supervisor_name : ""
   );
 
   const [onFocusSubordinate, setOnFocusSubordinate] = React.useState(false);
@@ -63,10 +63,13 @@ const ModalAddDirectReport = ({ itemEdit }) => {
     itemEdit ? itemEdit.direct_report_subordinate_id : ""
   );
   const [subordinateName, setSubordinateName] = React.useState(
-    itemEdit ? `${itemEdit.employees_lname}, ${itemEdit.employees_fname}` : ""
+    itemEdit ? itemEdit.direct_report_subordinate_name : ""
   );
 
-  
+  const [isSubordinateASupervisor, setIsSubordinateASupervisor] =
+    React.useState(itemEdit ? itemEdit.direct_report_supervisor_id : "");
+console.log(isSubordinateASupervisor)
+
   const {
     isFetching: subscriberDataIsFetching,
     error: subscriberDataError,
@@ -121,7 +124,7 @@ const ModalAddDirectReport = ({ itemEdit }) => {
       employees_subscribers_id: subscriberId, // id
       subordinate,
     },
-    true // refetchOnWindowFocus  
+    true // refetchOnWindowFocus
   );
 
   const handleClose = () => {
@@ -142,7 +145,7 @@ const ModalAddDirectReport = ({ itemEdit }) => {
   };
 
   const handleClickSupervisor = (item) => {
-    setSupervisor(item.employees_lname);
+    setSupervisor(`${item.employees_lname}, ${item.employees_fname}`);
     setSupervisorValue(`${item.employees_lname}, ${item.employees_fname}`);
     setSupervisorId(item.employees_aid);
     setSupervisorName(`${item.employees_lname}, ${item.employees_fname}`);
@@ -150,10 +153,11 @@ const ModalAddDirectReport = ({ itemEdit }) => {
   };
 
   const handleClickSubordinate = (item) => {
-    setSubordinate(item.employees_lname);
+    setSubordinate(`${item.employees_lname}, ${item.employees_fname}`);
     setSubordinateValue(`${item.employees_lname}, ${item.employees_fname}`);
     setSubordinateId(item.employees_aid);
     setSubordinateName(`${item.employees_lname}, ${item.employees_fname}`);
+    setIsSubordinateASupervisor(item.direct_report_supervisor_id)
     setOnFocusSubordinate(false);
   };
 
@@ -334,8 +338,13 @@ const ModalAddDirectReport = ({ itemEdit }) => {
     direct_report_subordinate_id_old: itemEdit
       ? itemEdit.direct_report_subordinate_id
       : "",
+    direct_report_supervisor_name_old: itemEdit
+      ? itemEdit.direct_report_supervisor_name
+      : "",
+    direct_report_subordinate_name_old: itemEdit
+      ? itemEdit.direct_report_subordinate_name
+      : "",
   };
-  console.log(initVal)
 
   return (
     <>
@@ -380,6 +389,16 @@ const ModalAddDirectReport = ({ itemEdit }) => {
                 dispatch(setMessage("Subscriber is Required."));
                 return;
               }
+              // // to set error message when the subordinate that entered is already a supervisor
+              // if (supervisorId === subordinateId) {
+              //   dispatch(setError(true));
+              //   dispatch(
+              //     setMessage(
+              //       "Subordinate you have enter is already a supervisor."
+              //     )
+              //   );
+              //   return;
+              // }
               // to get all of the data
               const data = {
                 ...values,
@@ -389,7 +408,8 @@ const ModalAddDirectReport = ({ itemEdit }) => {
                 direct_report_subordinate_name: subordinateName,
                 direct_report_subscriber_id: subscriberId,
                 direct_report_subscriber_code: subscriberCode,
-                employeeName: supervisor,
+                supervior: supervisor,
+                subordinate: subordinate,
               };
               mutation.mutate(data);
             }}
@@ -443,7 +463,7 @@ const ModalAddDirectReport = ({ itemEdit }) => {
                         type="text"
                         value={supervisorValue}
                         name="direct_report_supervisor_id"
-                        disabled={mutation.isPending}
+                        disabled={mutation.isPending || !subscriberValue}
                         onFocus={() => setOnFocusSupervisor(true)}
                         onChange={handleOnChangeSupervisor}
                         refVal={refSupervisor}
@@ -481,7 +501,7 @@ const ModalAddDirectReport = ({ itemEdit }) => {
                         type="text"
                         value={subordinateValue}
                         name="direct_report_subordinate_id"
-                        disabled={mutation.isPending}
+                        disabled={mutation.isPending || !subscriberValue}
                         onFocus={() => setOnFocusSubordinate(true)}
                         onChange={handleOnChangeSubordinate}
                         refVal={refSubordinate}

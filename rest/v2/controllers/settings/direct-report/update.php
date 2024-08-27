@@ -26,17 +26,29 @@ if (array_key_exists("direct_reportid", $_GET)) {
 
 
   // //checks current data to avoid same entries from being updated
-  $directReport_supervisor_old = $data['direct_report_supervisor_id_old'];
-  $directReport_subordinate_old = $data['direct_report_subordinate_id_old'];
-  $employeeName = checkIndex($data, "employeeName");
+  $directReport_supervisor_id_old = $data["direct_report_supervisor_id_old"];
+  $directReport_subordinate_id_old = $data["direct_report_subordinate_id_old"];
+  $direct_report_supervisor_name_old = $data["direct_report_supervisor_name_old"];
+  $direct_report_subordinate_name_old = $data["direct_report_subordinate_name_old"];
+  $supervior = checkIndex($data, "supervior");
+  $subordinate = checkIndex($data, "subordinate");
 
   compareEmployeeIdSupervisorSubordinate(
     $directReport,
-    $directReport_supervisor_old,
+    $directReport_supervisor_id_old,
     $directReport->direct_report_supervisor_id,
-    $directReport_subordinate_old,
+    $directReport_subordinate_id_old,
     $directReport->direct_report_subordinate_id,
-    $employeeName
+    $supervior,
+    $subordinate
+  );
+// subordinate and supervisor cannot be the same
+  compareTwoValues(
+    $directReport,
+    $direct_report_supervisor_name_old,
+    $directReport->direct_report_supervisor_name,
+    $direct_report_subordinate_name_old,
+    $directReport->direct_report_subordinate_name
   );
 
   // update
