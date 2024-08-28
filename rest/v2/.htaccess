@@ -151,3 +151,11 @@ RewriteRule ^direct-report/page/([0-9]+)$ controllers/settings/direct-report/pag
 RewriteRule ^direct-report/search$ controllers/settings/direct-report/search.php [L]
 RewriteRule ^direct-report/search-subscribers$ controllers/settings/direct-report/search-subscribers.php [L]
 RewriteRule ^direct-report/filter-employee-name$ controllers/settings/direct-report/filter-employee-name.php [L]
+
+# SETTINGS COMPANY LOCATION
+RewriteRule ^company-location$ controllers/settings/company-location/companyLocation.php [L]
+RewriteRule ^company-location/([0-9]+)$ controllers/settings/company-location/companyLocation.php?company_locationid=$1 [L]
+RewriteRule ^company-location/active/([0-9]+)$ controllers/settings/company-location/active.php?company_locationid=$1 [L]
+RewriteRule ^company-location/page/([0-9]+)$ controllers/settings/company-location/page.php?start=$1 [L]
+RewriteRule ^company-location/search$ controllers/settings/company-location/search.php [L]
+RewriteRule ^company-location/search-subscribers$ controllers/settings/company-location/search-subscribers.php [L]

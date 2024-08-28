@@ -341,21 +341,6 @@ const Navigation = ({ menu, submenu }) => {
 
                     <Link
                       className="!p-0"
-                      to={`${devNavUrl}/settings/direct-report`}
-                    >
-                      <li
-                        className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
-                          submenu === "direct-report"
-                            ? "!border-accent text-accent"
-                            : "hover:border-white !text-white"
-                        }`}
-                      >
-                        Direct Report
-                      </li>
-                    </Link>
-
-                    <Link
-                      className="!p-0"
                       to={`${devNavUrl}/settings/leave`}
                     >
                       <li
@@ -381,6 +366,36 @@ const Navigation = ({ menu, submenu }) => {
                         }`}
                       >
                         Notification
+                      </li>
+                    </Link>
+
+                    <Link
+                      className="!p-0"
+                      to={`${devNavUrl}/settings/direct-report`}
+                    >
+                      <li
+                        className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
+                          submenu === "direct-report"
+                            ? "!border-accent text-accent"
+                            : "hover:border-white !text-white"
+                        }`}
+                      >
+                        Direct Report
+                      </li>
+                    </Link>
+
+                    <Link
+                      className="!p-0"
+                      to={`${devNavUrl}/settings/company-location`}
+                    >
+                      <li
+                        className={`pl-2 mb-1 my-px border-l-2 border-transparent ${
+                          submenu === "company-location"
+                            ? "!border-accent text-accent"
+                            : "hover:border-white !text-white"
+                        }`}
+                      >
+                        Company Location
                       </li>
                     </Link>
                   </ul>

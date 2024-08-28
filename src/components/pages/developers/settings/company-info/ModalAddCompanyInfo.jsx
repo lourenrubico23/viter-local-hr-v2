@@ -71,6 +71,13 @@ const ModalAddCompanyInfo = ({ itemEdit }) => {
     true // refetchOnWindowFocus
   );
 
+  const handleClose = () => {
+    setAnimate("translate-x-full");
+    setTimeout(() => {
+      dispatch(setIsAdd(false));
+    }, 200);
+  };
+
   const handleClickSubscriber = (item, props) => {
     setSubscriber(item.subscribers_company_name);
     setSubscriberValue(
@@ -116,13 +123,6 @@ const ModalAddCompanyInfo = ({ itemEdit }) => {
     ) {
       setOnFocusSubscriber(false);
     }
-  };
-
-  const handleClose = () => {
-    setAnimate("translate-x-full");
-    setTimeout(() => {
-      dispatch(setIsAdd(false));
-    }, 200);
   };
 
   React.useEffect(() => {

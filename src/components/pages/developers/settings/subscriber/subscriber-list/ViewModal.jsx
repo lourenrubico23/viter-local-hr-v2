@@ -1,5 +1,8 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
-import { formatDate, getTimeFormat } from "@/components/helpers/functions-general";
+import {
+  formatDate,
+  getTimeFormat,
+} from "@/components/helpers/functions-general";
 import ModalWrapper from "@/components/partials/modals/ModalWrapper";
 import React from "react";
 import { GoDotFill } from "react-icons/go";
@@ -43,34 +46,66 @@ const ViewModal = ({ setIsView, itemEdit }) => {
       handleClose={handleClose}
     >
       <div className="modal-title">
-        <h2>View Total Employees Log</h2>
+        <h2>View Log</h2>
         <button onClick={handleClose}>
           <GrFormClose className="text-[25px]" />
         </button>
       </div>
 
-      {subscribers?.data.map((item, key) => (
-        <div
-          className="mt-3 grid grid-cols-[100px,20px,220px] gap-3 text-gray-500"
-          key={key}
-        >
-          <ul className="text-right">
-            <li>{formatDate(item.subscribers_log_datetime)}</li>
-            <li>{getTimeFormat(item.subscribers_log_datetime)}</li>
-          </ul>
-          <span>
-            <GoDotFill className="size-6 text-gray-400" />
-          </span>
-          <ul>
-            <li>
-              {item.subscribers_log_subscriber_changes}
-              <div className="text-gray-500 font-bold">
-                [{item.subscribers_log_lname}, {item.subscribers_log_fname}]
+      <ol>
+        {subscribers?.data.map((item, key, arr) => (
+          <li
+            key={key}
+            className={`grid grid-cols-[150px_1fr] m-0 gap-2 align-top relative h-fit group:`}
+          >
+            <div className="flex justify-center gap-2 items-start relative h-full overflow-hidden pb-12 ">
+              <div className="flex flex-col items-end">
+                <span>{formatDate(item.subscribers_log_created)}</span>
+                <span>{getTimeFormat(item.subscribers_log_created)}</span>
               </div>
-            </li>
-          </ul>
-        </div>
-      ))}
+              <span
+                className={`relative mt-2 z-20 h-4 w-4 rounded-full bg-gray-400 group:before:hidden before:absolute before:left-[.47rem] before:top-1 before:h-screen
+                ${arr?.length - 1 === key ? "" : "before:px-[.1px]"}
+                before:bg-slate-300  before:self-start before:-translate-x-1/2 before:translate-y-3 before:z-10
+
+                group:after:hidden after:absolute after:left-[.47rem] after:bottom-1 after:h-screen
+                ${
+                  key === 0 ? "" : "after:px-[.1px]"
+                } after:bg-slate-300  after:self-start after:-translate-x-1/2 after:-translate-y-3 before:z-10
+                ${key === 0 && "bg-green-600"}
+        `}
+              ></span>
+            </div>
+            <div className="flex justify-between">
+              <div>
+                {/* <h4 className="font-normal text-xs">
+              Item Updated.
+            </h4> */}
+                <p className="text-gray-500 text-[11px] whitespace-pre-wrap m-0">
+                  {item.subscribers_log_subscriber_changes.trim() === ""
+                    ? "N/A"
+                    : item.subscribers_log_subscriber_changes}{" "}
+                </p>
+                <span className="text-[11px] font-bold">
+                  [{item.subscribers_log_lname}, {item.subscribers_log_fname}]
+                </span>
+              </div>
+              {/* {store.credentials.data.role_is_developer === 1 && (
+              <div className="pt-1">
+                <button
+                  type="button"
+                  className="btn-action-table tooltip-action-table"
+                  data-tooltip="Delete"
+                  onClick={() => handleDelete(item)}
+                >
+                  <FaTrash  />
+                </button>
+              </div>
+            )} */}
+            </div>
+          </li>
+        ))}
+      </ol>
     </ModalWrapper>
   );
 };

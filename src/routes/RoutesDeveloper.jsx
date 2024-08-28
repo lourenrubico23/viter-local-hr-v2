@@ -29,6 +29,7 @@ import Features from "@/components/pages/developers/settings/subscriber/features
 import Addons from "@/components/pages/developers/settings/subscriber/addons/Addons";
 import CompanyInfo from "@/components/pages/developers/settings/company-info/CompanyInfo";
 import DirectReport from "@/components/pages/developers/settings/direct-report/DirectReport";
+import CompanyLocation from "@/components/pages/developers/settings/company-location/CompanyLocation";
 
 
 export const routesDeveloper = [
@@ -107,6 +108,10 @@ export const routesDeveloper = [
   {
     path: `${devNavUrl}/settings/direct-report`,
     element: <DirectReport />,
+  },
+  {
+    path: `${devNavUrl}/settings/company-location`,
+    element: <CompanyLocation />,
   },
   {
     path: `${devNavUrl}/settings/notification`,
