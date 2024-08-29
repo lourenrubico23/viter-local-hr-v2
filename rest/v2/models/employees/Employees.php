@@ -11,6 +11,7 @@ class Employees
     public $employees_mname;
     public $employees_gender;
     public $employees_department_id;
+    public $employees_department_name;
     public $employees_personal_email;
     public $employees_birth_date;
     public $employees_marital_status;
@@ -148,6 +149,7 @@ class Employees
             $sql .= "employees_mname, ";
             $sql .= "employees_gender, ";
             $sql .= "employees_department_id, ";
+            $sql .= "employees_department_name, ";
             $sql .= "employees_personal_email, ";
             $sql .= "employees_birth_date, ";
             $sql .= "employees_marital_status, ";
@@ -164,6 +166,7 @@ class Employees
             $sql .= ":employees_mname, ";
             $sql .= ":employees_gender, ";
             $sql .= ":employees_department_id, ";
+            $sql .= ":employees_department_name, ";
             $sql .= ":employees_personal_email, ";
             $sql .= ":employees_birth_date, ";
             $sql .= ":employees_marital_status, ";
@@ -182,6 +185,7 @@ class Employees
                 "employees_mname" => $this->employees_mname,
                 "employees_gender" => $this->employees_gender,
                 "employees_department_id" => $this->employees_department_id,
+                "employees_department_name" => $this->employees_department_name,
                 "employees_personal_email" => $this->employees_personal_email,
                 "employees_birth_date" => $this->employees_birth_date,
                 "employees_marital_status" => $this->employees_marital_status,

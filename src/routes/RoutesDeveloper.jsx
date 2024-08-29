@@ -30,6 +30,7 @@ import Addons from "@/components/pages/developers/settings/subscriber/addons/Add
 import CompanyInfo from "@/components/pages/developers/settings/company-info/CompanyInfo";
 import DirectReport from "@/components/pages/developers/settings/direct-report/DirectReport";
 import CompanyLocation from "@/components/pages/developers/settings/company-location/CompanyLocation";
+import JobAndPay from "@/components/pages/developers/employees/employees-info/job-and-pay/JobAndPay";
 
 
 export const routesDeveloper = [
@@ -60,6 +61,10 @@ export const routesDeveloper = [
   {
     path: `${devNavUrl}/employees/view/info`,
     element: <PersonalInfo />,
+  },
+  {
+    path: `${devNavUrl}/employees/view/daily-job-pay`,
+    element: <JobAndPay />,
   },
   {
     path: `${devNavUrl}/client`,

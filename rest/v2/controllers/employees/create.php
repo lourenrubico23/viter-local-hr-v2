@@ -17,6 +17,7 @@ $employees->employees_lname = checkIndex($data, "employees_lname");
 $employees->employees_mname = $data["employees_mname"];
 $employees->employees_gender = checkIndex($data, "employees_gender");
 $employees->employees_department_id = checkIndex($data, "employees_department_id");
+$employees->employees_department_name = checkIndex($data, "employees_department_name");
 $employees->employees_personal_email = checkIndex($data, "employees_personal_email");
 $employees->employees_birth_date = checkIndex($data, "employees_birth_date");
 $employees->employees_marital_status = checkIndex($data, "employees_marital_status");

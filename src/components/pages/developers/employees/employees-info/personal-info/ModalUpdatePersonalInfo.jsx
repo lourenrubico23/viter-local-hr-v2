@@ -127,15 +127,6 @@ const ModalUpdatePersonalInfo = ({ itemEdit }) => {
                     />
                     <span className="mx-auto">Upload Photo</span>
                   </div>
-
-                  <div className="input-wrapper">
-                    <InputText
-                      label="*Subscriber"
-                      type="text"
-                      name="employees_number"
-                      disabled={mutation.isPending}
-                    />
-                  </div>
                   <div className="input-wrapper">
                     <InputText
                       label="*First Name"

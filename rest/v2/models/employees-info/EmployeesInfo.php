@@ -102,7 +102,7 @@ class EmployeesInfo
       $sql .= "employees_telephone_number = :employees_telephone_number, ";
       $sql .= "employees_personal_email = :employees_personal_email, ";
       $sql .= "employees_datetime = :employees_datetime ";
-      $sql .= "where employees_aid = :employees_aid";
+      $sql .= "where employees_aid = :employees_aid ";
       $query = $this->connection->prepare($sql);
       $query->execute([
         "employees_fname" => $this->employees_fname,
@@ -120,7 +120,7 @@ class EmployeesInfo
         "employees_telephone_number" => $this->employees_telephone_number,
         "employees_personal_email" => $this->employees_personal_email,
         "employees_datetime" => $this->employees_datetime,
-        "employees_aid" => $this->employees_aid
+        "employees_aid" => $this->employees_aid,
       ]);
     } catch (PDOException $ex) {
       $query = false;

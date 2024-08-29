@@ -57,6 +57,13 @@ RewriteRule ^employeesInfo$ controllers/employees-info/employeesInfo.php [L]
 RewriteRule ^employeesInfo/([0-9]+)$ controllers/employees-info/employeesInfo.php?employeesInfoid=$1 [L]
 RewriteRule ^employeesInfo/family-info/([0-9]+)$ controllers/employees-info/update-family.php?employeesInfoid=$1 [L]
 
+# SETTINGS EMPLOYEES JOB AND PAY
+RewriteRule ^job-pay$ controllers/employees-job-pay/employeesJobAndPay.php [L]
+RewriteRule ^job-pay/([0-9]+)$ controllers/employees-job-pay/employeesJobAndPay.php?employeesJobAndPayid=$1 [L]
+RewriteRule ^job-pay/filter-job-level$ controllers/employees-job-pay/filter-job-level.php [L]
+RewriteRule ^job-pay/filter-job-title$ controllers/employees-job-pay/filter-job-title.php [L]
+RewriteRule ^job-pay/filter-department$ controllers/employees-job-pay/filter-department.php [L]
+
 # SETTINGS ANNOUNCEMENT
 RewriteRule ^announcement$ controllers/announcement/announcement.php [L]
 RewriteRule ^announcement/([0-9]+)$ controllers/announcement/announcement.php?announcementid=$1 [L]

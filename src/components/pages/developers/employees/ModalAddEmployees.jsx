@@ -39,6 +39,10 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
     itemEdit ? itemEdit.subscribers_code : ""
   );
 
+  const [departmentName, setDepartmentName] = React.useState(
+    itemEdit ? itemEdit.department_name : ""
+  );
+
   const {
     isFetching: subscriberDataIsFetching,
     error: subscriberDataError,
@@ -64,6 +68,10 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
     setSubscriberId(item.subscribers_aid);
     setSubscriberCode(item.subscribers_code);
     setOnFocusSubscriber(false);
+  };
+
+  const handleClickDepartment = (item) => {
+    setDepartmentName(item.department_name);
   };
 
   const handleOnChangeSubscriber = (e) => {
@@ -156,6 +164,9 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
     employees_mname: itemEdit ? itemEdit.employees_mname : "",
     employees_gender: itemEdit ? itemEdit.employees_gender : "",
     employees_department_id: itemEdit ? itemEdit.employees_department_id : "",
+    employees_department_name: itemEdit
+      ? itemEdit.employees_department_name
+      : "",
     employees_personal_email: itemEdit ? itemEdit.employees_personal_email : "",
     employees_birth_date: itemEdit ? itemEdit.employees_birth_date : "",
     employees_marital_status: itemEdit ? itemEdit.employees_marital_status : "",
@@ -210,6 +221,7 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
               ...values,
               employees_subscribers_id: subscriberId,
               employees_subscriber_code: subscriberCode,
+              employees_department_name: departmentName,
             };
             mutation.mutate(data);
           }}
@@ -298,13 +310,14 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
                       type="text"
                       name="employees_department_id"
                       disabled={mutation.isPending}
+                      
                     >
                       <option hidden></option>
                       {activeDepartment?.length === 0 ? (
                         <option>No Data</option>
                       ) : (
                         activeDepartment?.map((item, key) => (
-                          <option value={item.department_aid} key={key}>
+                          <option value={item.department_aid} key={key} onClick={handleClickDepartment(item)}>
                             {item.department_name}
                           </option>
                         ))

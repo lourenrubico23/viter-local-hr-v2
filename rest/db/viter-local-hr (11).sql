@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 23, 2024 at 09:33 AM
+-- Generation Time: Aug 29, 2024 at 09:42 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -109,8 +109,33 @@ CREATE TABLE `hris_company_info` (
 
 INSERT INTO `hris_company_info` (`company_info_aid`, `company_info_is_active`, `company_info_subscriber_id`, `company_info_subscriber_code`, `company_info_subscriber_company_name`, `company_info_phone`, `company_info_email`, `company_info_street`, `company_info_city`, `company_info_province`, `company_info_postal`, `company_info_country`, `company_info_primary_color`, `company_info_secondary_color`, `company_info_accent_color`, `company_info_image`, `company_info_created`, `company_info_datetime`) VALUES
 (2, 1, '11', 'FBS002', 'Manalo', '09121212121', 'manalo@gmail.com', 'Brgy. Bulakin 1', 'Dolores', 'Quezon', '4326', 'Philippines', '#b6ca4e', '#d25151', '#768ed5', 'fbs-logo (1).png', '2024-08-21 14:18:40', '2024-08-22 15:46:47'),
-(5, 1, '14', 'FBS003', 'mmm', 'asda', 'mmm@gmail.com', '', '', '', '', '', '#000000', '#000000', '#000000', '', '2024-08-22 12:49:20', '2024-08-22 12:49:20'),
-(6, 1, '10', 'FBS001', 'Louren222', '678678', 'louren@gmail.com', 'Brgy. Bulakin 1', 'Dolores', 'Quezon', '', '', '#054c70', '#0c63c0', '#d5e8ec', '', '2024-08-22 13:32:42', '2024-08-22 15:59:52');
+(6, 1, '10', 'FBS001', 'Louren222', '678679', 'louren@gmail.com', 'Brgy. Bulakin 1', 'Dolores', 'Quezon', '', '', '#054c70', '#0c63c0', '#d5e8ec', '', '2024-08-22 13:32:42', '2024-08-29 13:46:27'),
+(7, 1, '14', 'FBS003', 'mmm', '78787', 'mmm@gmail.com', '', '', '', '', '', '#000000', '#000000', '#000000', 'fbs-logo.png', '2024-08-29 13:45:58', '2024-08-29 13:45:58');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hris_company_location`
+--
+
+CREATE TABLE `hris_company_location` (
+  `company_location_aid` int(11) NOT NULL,
+  `company_location_is_active` tinyint(1) NOT NULL,
+  `company_location_subscriber_id` varchar(20) NOT NULL,
+  `company_location_subscriber_code` varchar(50) NOT NULL,
+  `company_location_company_name` varchar(100) NOT NULL,
+  `company_location_name` varchar(100) NOT NULL,
+  `company_location_created` datetime NOT NULL,
+  `company_location_datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hris_company_location`
+--
+
+INSERT INTO `hris_company_location` (`company_location_aid`, `company_location_is_active`, `company_location_subscriber_id`, `company_location_subscriber_code`, `company_location_company_name`, `company_location_name`, `company_location_created`, `company_location_datetime`) VALUES
+(1, 1, '14', 'FBS003', 'Frontline Business Solutions', 'Balok Road San Ignacio San Pablo City', '2024-08-28 13:23:04', '2024-08-28 14:38:46'),
+(2, 1, '11', 'FBS002', 'Shoe Mart', 'San Pablo City', '2024-08-28 15:00:24', '2024-08-28 15:00:24');
 
 -- --------------------------------------------------------
 
@@ -160,11 +185,9 @@ CREATE TABLE `hris_direct_report` (
 --
 
 INSERT INTO `hris_direct_report` (`direct_report_aid`, `direct_report_is_active`, `direct_report_subscriber_id`, `direct_report_subscriber_code`, `direct_report_supervisor_id`, `direct_report_subordinate_id`, `direct_report_supervisor_name`, `direct_report_subordinate_name`, `direct_report_created`, `direct_report_datetime`) VALUES
-(7, 1, '10', 'FBS001', '41', '37', 'Acevedo, Reily', 'Manalo, Rona', '2024-08-23 12:49:22', '2024-08-23 12:49:22'),
-(8, 1, '10', 'FBS001', '37', '41', 'Manalo, Rona', 'Acevedo, Reily', '2024-08-23 12:51:44', '2024-08-23 12:51:44'),
-(9, 1, '10', 'FBS001', '36', '37', 'Rubico, Louren Isobel', 'Manalo, Rona', '2024-08-23 13:07:43', '2024-08-23 13:07:43'),
-(10, 1, '11', 'FBS002', '39', '38', 'Aagaard, Ally', 'Dela Cruz, Juan', '2024-08-23 13:16:50', '2024-08-23 13:16:50'),
-(11, 1, '10', 'FBS001', '37', '36', 'Manalo, Rona', 'Rubico, Louren Isobel', '2024-08-23 14:05:21', '2024-08-23 14:05:21');
+(24, 1, '11', 'FBS002', '39', '38', 'Aagaard, Ally', 'Dela Cruz, Juan', '2024-08-27 12:33:58', '2024-08-27 12:33:58'),
+(33, 0, '10', 'FBS001', '37', '41', 'Manalo, Rona', 'Acevedo, Reily', '2024-08-27 14:57:58', '2024-08-28 07:45:47'),
+(46, 1, '10', 'FBS001', '36', '37', 'Rubico, Louren Isobel', 'Manalo, Rona', '2024-08-27 16:02:19', '2024-08-28 07:43:09');
 
 -- --------------------------------------------------------
 
@@ -177,11 +200,13 @@ CREATE TABLE `hris_employees` (
   `employees_is_active` tinyint(1) NOT NULL,
   `employees_subscribers_id` varchar(20) NOT NULL,
   `employees_subscriber_code` varchar(20) NOT NULL,
+  `employees_number` varchar(20) NOT NULL,
   `employees_lname` varchar(100) NOT NULL,
   `employees_fname` varchar(100) NOT NULL,
   `employees_mname` varchar(100) NOT NULL,
   `employees_gender` varchar(20) NOT NULL,
   `employees_department_id` varchar(20) NOT NULL,
+  `employees_department_name` varchar(100) NOT NULL,
   `employees_personal_email` varchar(100) NOT NULL,
   `employees_birth_date` varchar(20) NOT NULL,
   `employees_marital_status` varchar(20) NOT NULL,
@@ -206,6 +231,20 @@ CREATE TABLE `hris_employees` (
   `employees_emergency_contact_relationship` varchar(100) NOT NULL,
   `employees_emergency_contact_number` varchar(100) NOT NULL,
   `employees_emergency_contact_address` varchar(100) NOT NULL,
+  `employees_job_level_id` varchar(20) NOT NULL,
+  `employees_job_level_name` varchar(100) NOT NULL,
+  `employees_job_title_id` varchar(20) NOT NULL,
+  `employees_job_title_name` varchar(100) NOT NULL,
+  `employees_date_hire` varchar(20) NOT NULL,
+  `employees_regularized_date` varchar(20) NOT NULL,
+  `employees_separated_date` varchar(20) NOT NULL,
+  `employees_tin_number` varchar(20) NOT NULL,
+  `employees_sss_number` varchar(20) NOT NULL,
+  `employees_pagibig_number` varchar(20) NOT NULL,
+  `employees_philhealth_number` varchar(20) NOT NULL,
+  `employees_supervisor_name` varchar(100) NOT NULL,
+  `employees_drive_link` varchar(50) NOT NULL,
+  `employees_comment` varchar(100) NOT NULL,
   `employees_created` datetime NOT NULL,
   `employees_datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -214,13 +253,16 @@ CREATE TABLE `hris_employees` (
 -- Dumping data for table `hris_employees`
 --
 
-INSERT INTO `hris_employees` (`employees_aid`, `employees_is_active`, `employees_subscribers_id`, `employees_subscriber_code`, `employees_lname`, `employees_fname`, `employees_mname`, `employees_gender`, `employees_department_id`, `employees_personal_email`, `employees_birth_date`, `employees_marital_status`, `employees_date_employed`, `employees_mobile_number`, `employees_work_email`, `employees_street`, `employees_city`, `employees_province`, `employees_country`, `employees_postal_code`, `employees_telephone_number`, `employees_mother_maiden`, `employees_mother_fname`, `employees_mother_mname`, `employees_father_lname`, `employees_father_fname`, `employees_father_mname`, `employees_family_contact`, `employees_family_address`, `employees_emergency_contact_name`, `employees_emergency_contact_relationship`, `employees_emergency_contact_number`, `employees_emergency_contact_address`, `employees_created`, `employees_datetime`) VALUES
-(36, 1, '10', 'FBS001', 'Rubico', 'Louren Isobel', 'Macandili', 'female', '24', 'louren@gmail.com', '2024-08-22', 'single', '2024-08-22', '932424', 'louren.rubico@frontline.business.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-22 15:22:50', '2024-08-22 15:22:50'),
-(37, 1, '10', 'FBS001', 'Manalo', 'Rona', '', 'female', '25', 'manalo@gmail.com', '2024-08-22', 'single', '2023-12-07', '564564654', 'rona.manalo@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-22 15:40:31', '2024-08-22 15:40:31'),
-(38, 1, '11', 'FBS002', 'Dela Cruz', 'Juan', '', 'male', '24', 'delacruz@gmail.com', '2024-02-14', 'married', '2022-06-07', '786876876', 'juan.delacruz@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-22 15:42:25', '2024-08-22 15:42:25'),
-(39, 1, '11', 'FBS002', 'Aagaard', 'Ally', '', 'female', '25', 'ally@gmail.com', '2024-08-23', 'single', '2024-08-23', '435353', 'ally@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-23 12:06:08', '2024-08-23 12:06:08'),
-(40, 1, '14', 'FBS003', 'Abbatiello', 'Nicole', 'Lyla', 'female', '24', 'nicole@gmail.com', '2024-08-23', 'married', '2024-08-23', '98762834', 'nicole@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-23 12:07:07', '2024-08-23 12:07:07'),
-(41, 1, '10', 'FBS001', 'Acevedo', 'Reily', '', 'male', '24', 'reily@gmail.com', '2024-02-07', 'widow', '2024-08-23', '67567567', 'reily@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-23 12:08:12', '2024-08-23 12:08:12');
+INSERT INTO `hris_employees` (`employees_aid`, `employees_is_active`, `employees_subscribers_id`, `employees_subscriber_code`, `employees_number`, `employees_lname`, `employees_fname`, `employees_mname`, `employees_gender`, `employees_department_id`, `employees_department_name`, `employees_personal_email`, `employees_birth_date`, `employees_marital_status`, `employees_date_employed`, `employees_mobile_number`, `employees_work_email`, `employees_street`, `employees_city`, `employees_province`, `employees_country`, `employees_postal_code`, `employees_telephone_number`, `employees_mother_maiden`, `employees_mother_fname`, `employees_mother_mname`, `employees_father_lname`, `employees_father_fname`, `employees_father_mname`, `employees_family_contact`, `employees_family_address`, `employees_emergency_contact_name`, `employees_emergency_contact_relationship`, `employees_emergency_contact_number`, `employees_emergency_contact_address`, `employees_job_level_id`, `employees_job_level_name`, `employees_job_title_id`, `employees_job_title_name`, `employees_date_hire`, `employees_regularized_date`, `employees_separated_date`, `employees_tin_number`, `employees_sss_number`, `employees_pagibig_number`, `employees_philhealth_number`, `employees_supervisor_name`, `employees_drive_link`, `employees_comment`, `employees_created`, `employees_datetime`) VALUES
+(36, 1, '10', 'FBS001', '001', 'Rubico', 'Louren Isobel', 'Macandili', 'female', '24', '', 'louren@gmail.com', '2024-08-22', 'single', '2024-08-22', '932424', 'louren.rubico@frontline.business.com', 'Brgy. Bulakin 1', 'Dolores', 'Quezon', 'Philippines', '4326', '65765756', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-22 15:22:50', '2024-08-29 08:59:50'),
+(37, 1, '10', 'FBS001', '0002', 'Manalo', 'Rona', '', 'female', '24', 'APIL- MESA LIPAfff', 'manalo@gmail.com', '2024-08-22', 'single', '2023-12-07', '564564654', 'rona.manalo@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '15', 'Entry-level', '25', 'Utility', '2023-11-01', '2024-12-29', '2026-07-29', '1313131313', '1313131313', '131313131', '999999', '', 'GFGFGFGF', 'FGFGFGFG', '2024-08-22 15:40:31', '2024-08-29 14:08:45'),
+(38, 1, '11', 'FBS002', '', 'Dela Cruz', 'Juan', '', 'male', '24', '', 'delacruz@gmail.com', '2024-02-14', 'married', '2022-06-07', '786876876', 'juan.delacruz@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-22 15:42:25', '2024-08-22 15:42:25'),
+(39, 1, '11', 'FBS002', '', 'Aagaard', 'Ally', '', 'female', '25', '', 'ally@gmail.com', '2024-08-23', 'single', '2024-08-23', '435353', 'ally@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-23 12:06:08', '2024-08-23 12:06:08'),
+(40, 1, '14', 'FBS003', '', 'Abbatiello', 'Nicole', 'Lyla', 'female', '24', '', 'nicole@gmail.com', '2024-08-23', 'married', '2024-08-23', '98762834', 'nicole@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-23 12:07:07', '2024-08-23 12:07:07'),
+(41, 1, '10', 'FBS001', '', 'Acevedo', 'Reily', '', 'male', '24', '', 'reily@gmail.com', '2024-02-07', 'widow', '2024-08-23', '67567567', 'reily@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-23 12:08:12', '2024-08-23 12:08:12'),
+(42, 1, '14', 'FBS003', '', 'Banks', 'Madison', '', 'female', '25', '', 'madison@gmail.com', '2024-08-01', 'married', '2024-08-27', '435353', 'banks.madison@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-27 08:06:13', '2024-08-27 08:06:13'),
+(43, 1, '14', 'FBS003', '', 'Barber', 'Lane', '', 'male', '24', '', 'lane@gmail.com', '2024-04-10', 'widow', '2024-08-27', '45345', 'lane.barber@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-27 08:07:08', '2024-08-27 08:07:08'),
+(44, 1, '10', 'FBS001', '', 'xxxx', 'xxxxx', 'xxxxx', 'male', '24', 'ENEB- MESA CALAMBA', 'xxxxx@xxxxx', '2024-08-29', 'single', '2024-08-29', '5345435345', 'xxxx@xxxxx', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2024-08-29 10:44:56', '2024-08-29 10:44:56');
 
 -- --------------------------------------------------------
 
@@ -296,7 +338,7 @@ CREATE TABLE `hris_job_job_title` (
 INSERT INTO `hris_job_job_title` (`job_title_aid`, `job_title_is_active`, `job_title_subscriber_id`, `job_title_subscriber_code`, `job_title_job_level_id`, `job_title_title`, `job_title_created`, `job_title_datetime`) VALUES
 (25, 1, '10', 'FBS001', '15', 'Utility', '2024-08-20 13:27:16', '2024-08-20 13:27:16'),
 (26, 1, '11', 'FBS002', '16', 'Stockman', '2024-08-20 15:06:28', '2024-08-20 15:06:28'),
-(27, 1, '14', 'FBS003', '13', 'HR Assistant', '2024-08-20 15:06:48', '2024-08-20 15:06:48');
+(27, 1, '14', 'FBS003', '13', 'HR', '2024-08-20 15:06:48', '2024-08-27 07:50:19');
 
 -- --------------------------------------------------------
 
@@ -573,6 +615,12 @@ ALTER TABLE `hris_company_info`
   ADD PRIMARY KEY (`company_info_aid`);
 
 --
+-- Indexes for table `hris_company_location`
+--
+ALTER TABLE `hris_company_location`
+  ADD PRIMARY KEY (`company_location_aid`);
+
+--
 -- Indexes for table `hris_department`
 --
 ALTER TABLE `hris_department`
@@ -676,7 +724,13 @@ ALTER TABLE `hris_announcement`
 -- AUTO_INCREMENT for table `hris_company_info`
 --
 ALTER TABLE `hris_company_info`
-  MODIFY `company_info_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `company_info_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `hris_company_location`
+--
+ALTER TABLE `hris_company_location`
+  MODIFY `company_location_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `hris_department`
@@ -688,13 +742,13 @@ ALTER TABLE `hris_department`
 -- AUTO_INCREMENT for table `hris_direct_report`
 --
 ALTER TABLE `hris_direct_report`
-  MODIFY `direct_report_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `direct_report_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `hris_employees`
 --
 ALTER TABLE `hris_employees`
-  MODIFY `employees_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `employees_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `hris_features`

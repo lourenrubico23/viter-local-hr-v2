@@ -36,7 +36,7 @@ const PersonalInfoTable = ({ setItemEdit, setEditShow }) => {
   };
 
   return (
-    <div className="pt-2 lg:pt-4 lg:w-[600px] pb-16 relative">
+    <div className="pt-2 lg:pt-2 lg:w-[600px] pb-16 relative">
       {isFetching && status !== "loading" && <FetchingSpinner />}
 
       <div className="relative">
@@ -88,7 +88,7 @@ const PersonalInfoTable = ({ setItemEdit, setEditShow }) => {
                 <div className=" py-5 mb-2 lg:py-3 lg:indent-4">
                   <ul className="grid grid-cols-[160px_1fr] lg:grid-cols-[220px_1fr] gap-y-4 lg:gap-y-2 text-pretty">
                     <li className="font-bold">Code:</li>
-                    <li>{item.employees_number}</li>
+                    <li>{item.employees_subscriber_code}</li>
                     <li className="font-bold">First Name:</li>
                     <li>{item.employees_fname}</li>
                     <li className="font-bold">Middle Name:</li>

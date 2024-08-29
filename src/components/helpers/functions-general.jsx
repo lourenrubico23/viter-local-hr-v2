@@ -35,6 +35,8 @@ export const getUrlParam = (id) => {
   return urlParams;
 };
 
+
+// formatting date and time
 export const setTimeZone = "Asia/Taipei";
 
 export const formatDate = (dateVal, val = "", format = "") => {
@@ -48,7 +50,7 @@ export const formatDate = (dateVal, val = "", format = "") => {
   return formatedDate;
 };
 
-// formatting date and time
+
 export const options = (format) => {
   const options =
     format === "with-weeks"
@@ -122,6 +124,7 @@ export const options = (format) => {
   return options;
 };
 
+//time format
 export const getTimeFormat = (time) => {
   let result = "";
 
