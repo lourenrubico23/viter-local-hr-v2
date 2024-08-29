@@ -2,11 +2,7 @@ import { InputSelect, InputText } from "@/components/helpers/FormInputs";
 import { queryData } from "@/components/helpers/queryData";
 import ModalWrapper from "@/components/partials/modals/ModalWrapper";
 import ButtonSpinner from "@/components/partials/spinner/ButtonSpinner";
-import {
-  setError,
-  setMessage,
-  setSuccess
-} from "@/store/StoreAction";
+import { setError, setMessage, setSuccess } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
@@ -17,12 +13,21 @@ import * as Yup from "yup";
 const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
+  const [isCheck, setIsCheck] = React.useState(false);
 
   const handleClose = () => {
     setAnimate("translate-x-full");
     setTimeout(() => {
       setEditShow(false);
     }, 200);
+  };
+
+  const handleClickCheck = () => {
+    if (isCheck) {
+      setIsCheck(false);
+    } else {
+      setIsCheck(true);
+    }
   };
 
   const queryClient = useQueryClient();
@@ -205,31 +210,37 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                         type="checkbox"
                         name="employees_working_hours_start"
                         disabled={mutation.isPending}
+                        onClick={handleClickCheck}
                       />
                     </div>
                   </div>
-                  <div className="input-wrapper mt-0 pt-0">
-                    <span htmlFor="" className="mt-0 text-primary font-bold">
-                      Working Hours
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="input-wrapper w-[160px] mt-2">
-                      <InputText
-                        label="*Start"
-                        type="time"
-                        name="employees_working_hours_start"
-                        disabled={mutation.isPending}
-                      />
+                  <div className={isCheck ? "hidden" : "" }>
+                    <div className="input-wrapper mt-0 pt-0">
+                      <span htmlFor="" className="mt-0 text-primary font-bold">
+                        Working Hours
+                      </span>
                     </div>
-                    <span>to</span>
-                    <div className="input-wrapper w-[160px] mt-2">
-                      <InputText
-                        label="*End"
-                        type="time"
-                        name="employees_working_hours_end"
-                        disabled={mutation.isPending}
-                      />
+                    <div
+                      className="flex items-center justify-between"
+                      
+                    >
+                      <div className="input-wrapper w-[160px] mt-2">
+                        <InputText
+                          label="*Start"
+                          type="time"
+                          name="employees_working_hours_start"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+                      <span>to</span>
+                      <div className="input-wrapper w-[160px] mt-2">
+                        <InputText
+                          label="*End"
+                          type="time"
+                          name="employees_working_hours_end"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

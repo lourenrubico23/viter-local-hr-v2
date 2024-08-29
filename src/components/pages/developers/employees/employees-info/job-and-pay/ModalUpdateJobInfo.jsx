@@ -19,7 +19,7 @@ import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
 
-const ModalUpdateJobInfo = ({ itemEdit }) => {
+const ModalUpdateJobInfo = ({ itemEdit, setHireDate, setTenure, calculateTenure, hireDate }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [loading, setLoading] = React.useState(false);
@@ -71,6 +71,16 @@ const ModalUpdateJobInfo = ({ itemEdit }) => {
   const [subscriberCode, setSubscriberCode] = React.useState(
     itemEdit ? itemEdit.subscribers_code : ""
   );
+
+  
+
+  // Handle date change
+  const handleDateChange = (e) => {
+    const date = e.target.value;
+    setHireDate(date);
+    setTenure(calculateTenure(date));
+  };
+
 
   const {
     isFetching: departmentFilterDataIsFetching,
@@ -532,6 +542,8 @@ const ModalUpdateJobInfo = ({ itemEdit }) => {
                       label="Date Employed"
                       type="date"
                       name="employees_date_hire"
+                      value={hireDate}
+                      onChange={handleDateChange}
                       disabled={mutation.isPending}
                     />
                   </div>
