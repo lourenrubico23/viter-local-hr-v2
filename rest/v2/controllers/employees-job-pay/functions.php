@@ -4,7 +4,7 @@
 function checkUpdatePayInfo($object)
 {
     $query = $object->updatePayInfo();
-    checkQuery($query, "There's a problem processing your request. (update)");
+    checkQuery($query, "There's a problem processing your request. (update pay info)");
     return $query;
 }
 

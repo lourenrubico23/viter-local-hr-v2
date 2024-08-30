@@ -63,6 +63,7 @@ RewriteRule ^job-pay/([0-9]+)$ controllers/employees-job-pay/employeesJobAndPay.
 RewriteRule ^job-pay/filter-job-level$ controllers/employees-job-pay/filter-job-level.php [L]
 RewriteRule ^job-pay/filter-job-title$ controllers/employees-job-pay/filter-job-title.php [L]
 RewriteRule ^job-pay/filter-department$ controllers/employees-job-pay/filter-department.php [L]
+RewriteRule ^job-pay/update-pay-info/([0-9]+)$ controllers/employees-job-pay/update-pay-info.php?employeesJobAndPayid=$1 [L]
 
 # SETTINGS ANNOUNCEMENT
 RewriteRule ^announcement$ controllers/announcement/announcement.php [L]

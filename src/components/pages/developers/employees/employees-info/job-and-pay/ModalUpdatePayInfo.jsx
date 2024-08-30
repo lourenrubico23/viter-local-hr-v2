@@ -14,6 +14,14 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [isCheck, setIsCheck] = React.useState(false);
+  const [flexitime, setflexitime] = React.useState(
+    itemEdit
+      ? itemEdit.employees_working_hours_start
+      : "flexitime"
+  );
+  const [eligibility, setEligibility] = React.useState(
+    itemEdit ? itemEdit.employees_eligibility : ""
+  );
 
   const handleClose = () => {
     setAnimate("translate-x-full");
@@ -28,6 +36,20 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
     } else {
       setIsCheck(true);
     }
+
+    if (flexitime) {
+      setflexitime("");
+    } else {
+      setflexitime("flexitime");
+    }
+  };
+
+  const handleClickEligibility = () => {
+    if (eligibility) {
+      setEligibility("Yes");
+    } else {
+      setEligibility("No");
+    }
   };
 
   const queryClient = useQueryClient();
@@ -36,7 +58,7 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `/v2/job-pay/${itemEdit.employees_aid}` // update
+          ? `/v2/job-pay/update-pay-info/${itemEdit.employees_aid}` // update
           : null, // create
         itemEdit ? "put" : "post",
         values
@@ -66,7 +88,7 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
     employees_bank_account: itemEdit ? itemEdit.employees_bank_account : "",
     employees_pay_type: itemEdit ? itemEdit.employees_pay_type : "",
     employees_per_hour: itemEdit ? itemEdit.employees_per_hour : "",
-    employees_hours_per_day: itemEdit ? itemEdit.employees_hours_per_day : "",
+    employees_hour_per_pay: itemEdit ? itemEdit.employees_hour_per_pay : "",
     employees_pay_frequency: itemEdit ? itemEdit.employees_pay_frequency : "",
     employees_working_days: itemEdit ? itemEdit.employees_working_days : "",
     employees_rest_day: itemEdit ? itemEdit.employees_rest_day : "",
@@ -84,12 +106,10 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
     employees_bank_account: Yup.string().required("Required"),
     employees_pay_type: Yup.string().required("Required"),
     employees_per_hour: Yup.string().required("Required"),
-    employees_hours_per_day: Yup.string().required("Required"),
+    employees_hour_per_pay: Yup.string().required("Required"),
     employees_pay_frequency: Yup.string().required("Required"),
     employees_working_days: Yup.string().required("Required"),
     employees_rest_day: Yup.string().required("Required"),
-    employees_working_hours_start: Yup.string().required("Required"),
-    employees_working_hours_end: Yup.string().required("Required"),
   });
 
   return (
@@ -108,7 +128,13 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
           initialValues={initVal}
           validationSchema={yupSchema}
           onSubmit={async (values) => {
-            mutation.mutate(values);
+            const data = {
+              ...values,
+              employees_eligibility: eligibility,
+              // employees_working_hours_start: flexitime,
+              // employees_working_hours_end: flexitime,
+            };
+            mutation.mutate(data);
           }}
         >
           {(props) => {
@@ -122,9 +148,12 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                     <div className="w-[12px]">
                       <InputText
                         type="checkbox"
+                        value={eligibility}
                         name="employees_eligibility"
                         disabled={mutation.isPending}
+                        onClick={handleClickEligibility}
                       />
+                      {console.log(eligibility)}
                     </div>
                   </div>
                   <div className="input-wrapper mt-0">
@@ -159,7 +188,7 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                     <InputText
                       label="*Hours Per Day"
                       type="text"
-                      name="employees_hours_per_day"
+                      name="employees_hour_per_pay"
                       disabled={mutation.isPending}
                     />
                   </div>
@@ -208,26 +237,24 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                     <div className="w-[12px]">
                       <InputText
                         type="checkbox"
-                        name="employees_working_hours_start"
+                        name="employees_working"
                         disabled={mutation.isPending}
                         onClick={handleClickCheck}
                       />
                     </div>
                   </div>
-                  <div className={isCheck ? "hidden" : "" }>
+                  <div className={isCheck ? "opacity-0" : "opacity-1"}>
                     <div className="input-wrapper mt-0 pt-0">
                       <span htmlFor="" className="mt-0 text-primary font-bold">
                         Working Hours
                       </span>
                     </div>
-                    <div
-                      className="flex items-center justify-between"
-                      
-                    >
+                    <div className="flex items-center justify-between">
                       <div className="input-wrapper w-[160px] mt-2">
                         <InputText
                           label="*Start"
                           type="time"
+                          // value={flexitime}
                           name="employees_working_hours_start"
                           disabled={mutation.isPending}
                         />
@@ -237,6 +264,7 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                         <InputText
                           label="*End"
                           type="time"
+                          // value={flexitime}
                           name="employees_working_hours_end"
                           disabled={mutation.isPending}
                         />

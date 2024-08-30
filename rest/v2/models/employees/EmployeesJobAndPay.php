@@ -23,6 +23,19 @@ class EmployeesJobAndPay
     public $employees_drive_link;
     public $employees_comment;
     public $employees_supervisor_name;
+
+
+    public $employees_eligibility;
+    public $employees_bank_account;
+    public $employees_pay_type;
+    public $employees_per_hour;
+    public $employees_hour_per_pay;
+    public $employees_pay_frequency;
+    public $employees_working_days;
+    public $employees_rest_day;
+    public $employees_working_hours_start;
+    public $employees_working_hours_end;
+
     public $employees_created;
     public $employees_datetime;
 
@@ -140,6 +153,43 @@ class EmployeesJobAndPay
                 "employees_philhealth_number" => $this->employees_philhealth_number,
                 "employees_drive_link" => $this->employees_drive_link,
                 "employees_comment" => $this->employees_comment,
+                "employees_datetime" => $this->employees_datetime,
+                "employees_aid" => $this->employees_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function updatePayInfo()
+    {
+        try {
+            $sql = "update {$this->tblEmployees} set ";
+            $sql .= "employees_eligibility = :employees_eligibility, ";
+            $sql .= "employees_bank_account = :employees_bank_account, ";
+            $sql .= "employees_pay_type = :employees_pay_type, ";
+            $sql .= "employees_per_hour = :employees_per_hour, ";
+            $sql .= "employees_hour_per_pay = :employees_hour_per_pay, ";
+            $sql .= "employees_pay_frequency = :employees_pay_frequency, ";
+            $sql .= "employees_working_days = :employees_working_days, ";
+            $sql .= "employees_rest_day = :employees_rest_day, ";
+            $sql .= "employees_working_hours_start = :employees_working_hours_start, ";
+            $sql .= "employees_working_hours_end = :employees_working_hours_end, ";
+            $sql .= "employees_datetime = :employees_datetime ";
+            $sql .= "where employees_aid = :employees_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "employees_eligibility" => $this->employees_eligibility,
+                "employees_bank_account" => $this->employees_bank_account,
+                "employees_pay_type" => $this->employees_pay_type,
+                "employees_per_hour" => $this->employees_per_hour,
+                "employees_hour_per_pay" => $this->employees_hour_per_pay,
+                "employees_pay_frequency" => $this->employees_pay_frequency,
+                "employees_working_days" => $this->employees_working_days,
+                "employees_rest_day" => $this->employees_rest_day,
+                "employees_working_hours_start" => $this->employees_working_hours_start,
+                "employees_working_hours_end" => $this->employees_working_hours_end,
                 "employees_datetime" => $this->employees_datetime,
                 "employees_aid" => $this->employees_aid,
             ]);

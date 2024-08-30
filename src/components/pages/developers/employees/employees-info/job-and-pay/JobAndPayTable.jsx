@@ -15,6 +15,7 @@ import { FaPencilAlt } from "react-icons/fa";
 const JobAndPayTable = ({ setItemEdit, setEditShow, tenure }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const id = getUrlParam().get("id"); // used to extract a query parameter named "id" from the URL and assign its value to a constant named "id".
+  
 
   const {
     isLoading,
@@ -147,6 +148,7 @@ const JobAndPayTable = ({ setItemEdit, setEditShow, tenure }) => {
                     </li>
                     <li className="font-bold">Tenure:</li>
                     <li>{tenure.years} years and {tenure.months} months</li>
+                    {console.log(tenure.years)}
                     <li className="font-bold">TIN:</li>
                     <li>
                       {item.employees_tin_number
