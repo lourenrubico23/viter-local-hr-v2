@@ -34,7 +34,7 @@ const ModalUpdateJobInfo = ({ itemEdit, hireDate, handleDateChange }) => {
     itemEdit ? itemEdit.employees_job_level_id : ""
   );
   const [jobLevelName, setJobLevelName] = React.useState(
-    itemEdit ? itemEdit.job_level_level : ""
+    itemEdit ? itemEdit.employees_job_level_name : ""
   );
 
   const [onFocusJobTitle, setOnFocusJobTitle] = React.useState(false);
@@ -71,9 +71,6 @@ const ModalUpdateJobInfo = ({ itemEdit, hireDate, handleDateChange }) => {
   const [subscriberCode, setSubscriberCode] = React.useState(
     itemEdit ? itemEdit.subscribers_code : ""
   );
-
-  
-
 
   const {
     isFetching: departmentFilterDataIsFetching,
@@ -392,6 +389,8 @@ const ModalUpdateJobInfo = ({ itemEdit, hireDate, handleDateChange }) => {
               employees_job_title_id: jobTitleid,
               employees_department_id: departmentid,
               employees_department_name: departmentName,
+              employees_job_title_name: jobLevelName,
+              employees_job_level_name: jobTitleName,
             };
             mutation.mutate(data);
           }}
@@ -611,7 +610,16 @@ const ModalUpdateJobInfo = ({ itemEdit, hireDate, handleDateChange }) => {
                     <button
                       className="btn-modal-submit"
                       type="submit"
-                      disabled={mutation.isPending || !props.dirty}
+                      disabled={
+                        mutation.isPending ||
+                        (!props.dirty &&
+                          Number(props.values.employees_subscribers_id) ===
+                            Number(subscriberId) &&
+                          Number(props.values.employees_job_title_id) ===
+                            Number(jobLevelid) &&
+                          Number(props.values.employees_job_level_id) ===
+                            Number(jobTitleid))
+                      }
                     >
                       {mutation.isPending ? <ButtonSpinner /> : "Update"}
                     </button>

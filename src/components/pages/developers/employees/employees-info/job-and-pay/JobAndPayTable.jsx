@@ -11,11 +11,11 @@ import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import { FaPencilAlt } from "react-icons/fa";
+import { getSuperviorName } from "./functions";
 
 const JobAndPayTable = ({ setItemEdit, setEditShow, tenure }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const id = getUrlParam().get("id"); // used to extract a query parameter named "id" from the URL and assign its value to a constant named "id".
-  
 
   const {
     isLoading,
@@ -27,6 +27,18 @@ const JobAndPayTable = ({ setItemEdit, setEditShow, tenure }) => {
     `/v2/employees/${id}`, // endpoint
     "get", // method
     "job-pay" // key
+  );
+
+  const {
+    isLoadingDirectReport,
+    isFetchingDirectReport,
+    errorDirectReport,
+    statusDirectReport,
+    data: directReport,
+  } = useQueryData(
+    `/v2/direct-report`, // endpoint
+    "get", // method
+    "direct-report" // key
   );
 
   const handleJob = (item) => {
@@ -112,10 +124,14 @@ const JobAndPayTable = ({ setItemEdit, setEditShow, tenure }) => {
                     </li>
                     <li className="font-bold">Supervisor:</li>
                     <li>
-                      {item.direct_report_supervisor_name
-                        ? item.direct_report_supervisor_name
-                        : "Unspecified"}
+                      {directReport?.data.map((item, key) => {
+                        <div key={key}>
+                          {item.direct_report_supervisor_name}
+                          {console.log(item.direct_report_supervisor_name)}
+                        </div>
+                      })}
                     </li>
+
                     <li className="font-bold">Work Email:</li>
                     <li>
                       {item.employees_work_email
@@ -124,31 +140,26 @@ const JobAndPayTable = ({ setItemEdit, setEditShow, tenure }) => {
                     </li>
                     <li className="font-bold">Date Hired:</li>
                     <li>
-                      {formatDate(
-                        item.employees_date_hire
-                          ? item.employees_date_hire
-                          : "Unspecified"
-                      )}
+                      {formatDate(item.employees_date_hire)
+                        ? item.employees_date_hire
+                        : "Unspecified"}
                     </li>
                     <li className="font-bold">Regularized On:</li>
                     <li>
-                      {formatDate(
-                        item.employees_regularized_date
-                          ? item.employees_regularized_date
-                          : "Unspecified"
-                      )}
+                      {formatDate(item.employees_regularized_date)
+                        ? item.employees_regularized_date
+                        : "Unspecified"}
                     </li>
                     <li className="font-bold">Date Separated:</li>
                     <li>
-                      {formatDate(
-                        item.employees_separated_date
-                          ? item.employees_separated_date
-                          : "Unspecified"
-                      )}
+                      {formatDate(item.employees_separated_date)
+                        ? item.employees_separated_date
+                        : "Unspecified"}
                     </li>
                     <li className="font-bold">Tenure:</li>
-                    <li>{tenure.years} years and {tenure.months} months</li>
-                    {console.log(tenure.years)}
+                    <li>
+                      {tenure.years} years and {tenure.months} months
+                    </li>
                     <li className="font-bold">TIN:</li>
                     <li>
                       {item.employees_tin_number
@@ -240,8 +251,8 @@ const JobAndPayTable = ({ setItemEdit, setEditShow, tenure }) => {
                     </li>
                     <li className="font-bold">Working Hours:</li>
                     <li>
-                      {item.employees_working_hours
-                        ? item.employees_working_hours
+                      {item.employees_working_hours_start
+                        ? item.employees_working_hours_start
                         : "Unspecified"}
                     </li>
                     <li className="font-bold">Hours Per Day:</li>

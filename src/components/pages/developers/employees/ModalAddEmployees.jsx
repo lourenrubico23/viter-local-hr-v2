@@ -310,14 +310,17 @@ const ModalAddEmployees = ({ itemEdit, departmentData }) => {
                       type="text"
                       name="employees_department_id"
                       disabled={mutation.isPending}
-                      
                     >
                       <option hidden></option>
                       {activeDepartment?.length === 0 ? (
                         <option>No Data</option>
                       ) : (
                         activeDepartment?.map((item, key) => (
-                          <option value={item.department_aid} key={key} onClick={handleClickDepartment(item)}>
+                          <option
+                            value={item.department_aid}
+                            key={key}
+                            onClick={handleClickDepartment(item)}
+                          >
                             {item.department_name}
                           </option>
                         ))

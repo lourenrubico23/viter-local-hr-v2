@@ -231,12 +231,12 @@ const ModalAddCompanyInfo = ({ itemEdit }) => {
               company_info_subscriber_code: subscriberCode,
               company_info_subscriber_company_name: subscriberCompany,
               subscriberName: subscriber,
-              company_info_image: photo?.name || "",
+              company_info_image: photo?.name || itemEdit.company_info_image,
             };
             uploadPhoto(); // to save the photo when submit
             mutation.mutate(data);
 
-            // to change the color when submitted 
+            // to change the color when submitted
             document
               .querySelector(":root")
               .style.setProperty(
@@ -439,7 +439,8 @@ const ModalAddCompanyInfo = ({ itemEdit }) => {
                       disabled={
                         (mutation.isPending || !props.dirty) &&
                         (photo === null || photo === "")
-                        // initVal.company_info_image === photo?.name
+                        // ||
+                        // (initVal.company_info_image === photo?.name)
                       }
                     >
                       {mutation.isPending ? (

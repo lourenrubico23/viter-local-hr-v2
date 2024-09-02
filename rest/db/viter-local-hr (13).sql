@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2024 at 10:01 AM
+-- Generation Time: Sep 02, 2024 at 05:04 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -108,8 +108,8 @@ CREATE TABLE `hris_company_info` (
 --
 
 INSERT INTO `hris_company_info` (`company_info_aid`, `company_info_is_active`, `company_info_subscriber_id`, `company_info_subscriber_code`, `company_info_subscriber_company_name`, `company_info_phone`, `company_info_email`, `company_info_street`, `company_info_city`, `company_info_province`, `company_info_postal`, `company_info_country`, `company_info_primary_color`, `company_info_secondary_color`, `company_info_accent_color`, `company_info_image`, `company_info_created`, `company_info_datetime`) VALUES
-(2, 1, '11', 'FBS002', 'Manalo', '09121212121', 'manalo@gmail.com', 'Brgy. Bulakin 1', 'Dolores', 'Quezon', '4326', 'Philippines', '#b6ca4e', '#d25151', '#768ed5', 'fbs-logo (1).png', '2024-08-21 14:18:40', '2024-08-22 15:46:47'),
-(6, 1, '10', 'FBS001', 'Louren222', '678679', 'louren@gmail.com', 'Brgy. Bulakin 1', 'Dolores', 'Quezon', '', '', '#054c70', '#0c63c0', '#d5e8ec', '', '2024-08-22 13:32:42', '2024-08-29 13:46:27'),
+(2, 1, '11', 'FBS002', 'Manalo', '09121212121', 'manalo@gmail.com', 'Brgy. Bulakin 1', 'Dolores', 'Quezon', '34343', 'Philippines', '#b6ca4e', '#d25151', '#768ed5', '', '2024-08-21 14:18:40', '2024-09-02 10:10:34'),
+(6, 1, '10', 'FBS001', 'Louren222', '678679', 'louren@gmail.com', 'Brgy. Bulakin 1', 'Dolores', 'Quezon', '6565', '', '#054c70', '#0c63c0', '#d5e8ec', 'logo-fbs.png', '2024-08-22 13:32:42', '2024-09-02 10:31:14'),
 (7, 1, '14', 'FBS003', 'mmm', '78787', 'mmm@gmail.com', '', '', '', '', '', '#000000', '#000000', '#000000', 'fbs-logo.png', '2024-08-29 13:45:58', '2024-08-29 13:45:58');
 
 -- --------------------------------------------------------
@@ -187,7 +187,9 @@ CREATE TABLE `hris_direct_report` (
 INSERT INTO `hris_direct_report` (`direct_report_aid`, `direct_report_is_active`, `direct_report_subscriber_id`, `direct_report_subscriber_code`, `direct_report_supervisor_id`, `direct_report_subordinate_id`, `direct_report_supervisor_name`, `direct_report_subordinate_name`, `direct_report_created`, `direct_report_datetime`) VALUES
 (24, 1, '11', 'FBS002', '39', '38', 'Aagaard, Ally', 'Dela Cruz, Juan', '2024-08-27 12:33:58', '2024-08-27 12:33:58'),
 (33, 0, '10', 'FBS001', '37', '41', 'Manalo, Rona', 'Acevedo, Reily', '2024-08-27 14:57:58', '2024-08-28 07:45:47'),
-(46, 1, '10', 'FBS001', '36', '37', 'Rubico, Louren Isobel', 'Manalo, Rona', '2024-08-27 16:02:19', '2024-08-28 07:43:09');
+(46, 1, '10', 'FBS001', '36', '37', 'Rubico, Louren Isobel', 'Manalo, Rona', '2024-08-27 16:02:19', '2024-08-28 07:43:09'),
+(47, 1, '14', 'FBS003', '43', '45', 'Barber, Lane', 'Lopez, Mika', '2024-09-02 09:14:42', '2024-09-02 09:14:42'),
+(48, 1, '11', 'FBS002', '39', '46', 'Aagaard, Ally', 'yyyyy, yyyy', '2024-09-02 10:51:54', '2024-09-02 10:51:54');
 
 -- --------------------------------------------------------
 
@@ -242,7 +244,7 @@ CREATE TABLE `hris_employees` (
   `employees_sss_number` varchar(20) NOT NULL,
   `employees_pagibig_number` varchar(20) NOT NULL,
   `employees_philhealth_number` varchar(20) NOT NULL,
-  `employees_supervisor_name` varchar(100) NOT NULL,
+  `employees_supervisor_id` varchar(20) NOT NULL,
   `employees_drive_link` varchar(50) NOT NULL,
   `employees_comment` varchar(100) NOT NULL,
   `employees_eligibility` tinyint(1) NOT NULL,
@@ -263,8 +265,8 @@ CREATE TABLE `hris_employees` (
 -- Dumping data for table `hris_employees`
 --
 
-INSERT INTO `hris_employees` (`employees_aid`, `employees_is_active`, `employees_subscribers_id`, `employees_subscriber_code`, `employees_number`, `employees_lname`, `employees_fname`, `employees_mname`, `employees_gender`, `employees_department_id`, `employees_department_name`, `employees_personal_email`, `employees_birth_date`, `employees_marital_status`, `employees_date_employed`, `employees_mobile_number`, `employees_work_email`, `employees_street`, `employees_city`, `employees_province`, `employees_country`, `employees_postal_code`, `employees_telephone_number`, `employees_mother_maiden`, `employees_mother_fname`, `employees_mother_mname`, `employees_father_lname`, `employees_father_fname`, `employees_father_mname`, `employees_family_contact`, `employees_family_address`, `employees_emergency_contact_name`, `employees_emergency_contact_relationship`, `employees_emergency_contact_number`, `employees_emergency_contact_address`, `employees_job_level_id`, `employees_job_level_name`, `employees_job_title_id`, `employees_job_title_name`, `employees_date_hire`, `employees_regularized_date`, `employees_separated_date`, `employees_tin_number`, `employees_sss_number`, `employees_pagibig_number`, `employees_philhealth_number`, `employees_supervisor_name`, `employees_drive_link`, `employees_comment`, `employees_eligibility`, `employees_bank_account`, `employees_pay_type`, `employees_per_hour`, `employees_hour_per_pay`, `employees_pay_frequency`, `employees_working_days`, `employees_rest_day`, `employees_working_hours_start`, `employees_working_hours_end`, `employees_created`, `employees_datetime`) VALUES
-(36, 1, '10', 'FBS001', '001', 'Rubico', 'Louren Isobel', 'Macandili', 'female', '24', '', 'louren@gmail.com', '2024-08-22', 'single', '2024-08-22', '932424', 'louren.rubico@frontline.business.com', 'Brgy. Bulakin 1', 'Dolores', 'Quezon', 'Philippines', '4326', '65765756', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '2024-08-22 15:22:50', '2024-08-29 08:59:50'),
+INSERT INTO `hris_employees` (`employees_aid`, `employees_is_active`, `employees_subscribers_id`, `employees_subscriber_code`, `employees_number`, `employees_lname`, `employees_fname`, `employees_mname`, `employees_gender`, `employees_department_id`, `employees_department_name`, `employees_personal_email`, `employees_birth_date`, `employees_marital_status`, `employees_date_employed`, `employees_mobile_number`, `employees_work_email`, `employees_street`, `employees_city`, `employees_province`, `employees_country`, `employees_postal_code`, `employees_telephone_number`, `employees_mother_maiden`, `employees_mother_fname`, `employees_mother_mname`, `employees_father_lname`, `employees_father_fname`, `employees_father_mname`, `employees_family_contact`, `employees_family_address`, `employees_emergency_contact_name`, `employees_emergency_contact_relationship`, `employees_emergency_contact_number`, `employees_emergency_contact_address`, `employees_job_level_id`, `employees_job_level_name`, `employees_job_title_id`, `employees_job_title_name`, `employees_date_hire`, `employees_regularized_date`, `employees_separated_date`, `employees_tin_number`, `employees_sss_number`, `employees_pagibig_number`, `employees_philhealth_number`, `employees_supervisor_id`, `employees_drive_link`, `employees_comment`, `employees_eligibility`, `employees_bank_account`, `employees_pay_type`, `employees_per_hour`, `employees_hour_per_pay`, `employees_pay_frequency`, `employees_working_days`, `employees_rest_day`, `employees_working_hours_start`, `employees_working_hours_end`, `employees_created`, `employees_datetime`) VALUES
+(36, 1, '10', 'FBS001', '001', 'Rubico', 'Louren Isobel', 'Macandili', 'female', '24', 'APIL- MESA LIPAfff', 'louren@gmail.com', '2024-08-22', 'single', '2024-08-22', '932424', 'louren.rubico@frontline.business.com', 'Brgy. Bulakin 1', 'Dolores', 'Quezon', 'Philippines', '4326', '65765756', '', '', '', '', '', '', '', '', '', '', '', '', '17', 'Utility', '25', 'CEO', '2024-01-01', '2024-09-02', '2027-06-10', '999999', '999999', '999999', '9999999', '', 'pppppppppp', 'ppppppppppp', 0, '', '', '', '', '', '', 'monday,tuesday', '', '', '2024-08-22 15:22:50', '2024-09-02 07:51:18'),
 (37, 1, '10', 'FBS001', '0002', 'Manalo', 'Rona', '', 'female', '24', 'APIL- MESA LIPAfff', 'manalo@gmail.com', '2024-08-22', 'single', '2023-12-07', '564564654', 'rona.manalo@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '15', 'Entry-level', '25', 'Utility', '2023-11-01', '2024-12-29', '2026-07-29', '1313131313', '1313131313', '131313131', '999999', '', 'GFGFGFGF', 'FGFGFGFG', 0, '', '', '', '', '', '', '', '', '', '2024-08-22 15:40:31', '2024-08-29 14:08:45'),
 (38, 1, '11', 'FBS002', '', 'Dela Cruz', 'Juan', '', 'male', '24', '', 'delacruz@gmail.com', '2024-02-14', 'married', '2022-06-07', '786876876', 'juan.delacruz@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '2024-08-22 15:42:25', '2024-08-22 15:42:25'),
 (39, 1, '11', 'FBS002', '', 'Aagaard', 'Ally', '', 'female', '25', '', 'ally@gmail.com', '2024-08-23', 'single', '2024-08-23', '435353', 'ally@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '2024-08-23 12:06:08', '2024-08-23 12:06:08'),
@@ -272,7 +274,9 @@ INSERT INTO `hris_employees` (`employees_aid`, `employees_is_active`, `employees
 (41, 1, '10', 'FBS001', '', 'Acevedo', 'Reily', '', 'male', '24', '', 'reily@gmail.com', '2024-02-07', 'widow', '2024-08-23', '67567567', 'reily@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '2024-08-23 12:08:12', '2024-08-23 12:08:12'),
 (42, 1, '14', 'FBS003', '', 'Banks', 'Madison', '', 'female', '25', '', 'madison@gmail.com', '2024-08-01', 'married', '2024-08-27', '435353', 'banks.madison@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '2024-08-27 08:06:13', '2024-08-27 08:06:13'),
 (43, 1, '14', 'FBS003', '', 'Barber', 'Lane', '', 'male', '24', '', 'lane@gmail.com', '2024-04-10', 'widow', '2024-08-27', '45345', 'lane.barber@frontlinebusiness.com', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '2024-08-27 08:07:08', '2024-08-27 08:07:08'),
-(44, 1, '10', 'FBS001', '', 'xxxx', 'xxxxx', 'xxxxx', 'male', '24', 'ENEB- MESA CALAMBA', 'xxxxx@xxxxx', '2024-08-29', 'single', '2024-08-29', '5345435345', 'xxxx@xxxxx', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '2024-08-29 10:44:56', '2024-08-29 10:44:56');
+(44, 1, '10', 'FBS001', '002', 'xxxx', 'xxxxx', 'xxxxx', 'male', '24', 'APIL- MESA LIPAfff', 'xxxxx@xxxxx', '2024-08-29', 'single', '2024-08-29', '5345435345', 'xxxx@xxxxx', '', '', '', '', '', '', 'mother', 'sdsd', 'sdsdsd', 'sdsdsds', 'sdsdsd', 'sdsdsd', 'sdsdsd', 'sdsds', 'sdsd', 'sdsds', 'sdsds', 'sdsd', '17', '', '25', '', '2023-10-04', '2024-08-01', '2026-03-19', '666666', '66666666', '66666666', '66666666', '', 'hhhhhhhh', 'kkkklkkk', 0, '', '', '', '', '', '', '', '', '', '2024-08-29 10:44:56', '2024-08-30 09:43:37'),
+(45, 1, '14', 'FBS003', '001', 'Lopez', 'Mika', '', 'female', '25', 'ENEB- MESA CALAMBA', 'lopez@gmail.com', '2024-02-06', 'single', '2023-08-30', '9343433434', 'lopez.mika@frontlinebusiness.com.ph', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '13', 'HR', '27', 'Executive', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '2024-09-02 09:13:54', '2024-09-02 10:33:07'),
+(46, 1, '11', 'FBS002', '', 'yyyyy', 'yyyy', '', 'male', '24', 'ENEB- MESA CALAMBA', 'yyyyy@yyyy', '2024-09-02', 'married', '2024-09-02', '454545', 'yyyy@yyyyyyy', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '2024-09-02 10:51:14', '2024-09-02 10:51:14');
 
 -- --------------------------------------------------------
 
@@ -752,13 +756,13 @@ ALTER TABLE `hris_department`
 -- AUTO_INCREMENT for table `hris_direct_report`
 --
 ALTER TABLE `hris_direct_report`
-  MODIFY `direct_report_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `direct_report_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `hris_employees`
 --
 ALTER TABLE `hris_employees`
-  MODIFY `employees_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `employees_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `hris_features`

@@ -266,7 +266,7 @@ const EmployeesTable = ({ setItemEdit, departmentData }) => {
                     <td onClick={() => handleGoToPage(item)}>
                       {item.employees_subscriber_code}
                     </td>
-                    <td onClick={() => handleGoToPage(item)}>{}</td>
+                    <td onClick={() => handleGoToPage(item)}>{item.employees_number}</td>
                     <td onClick={() => handleGoToPage(item)}>
                       {item.employees_fname} {item.employees_lname}
                     </td>

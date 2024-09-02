@@ -22,7 +22,7 @@ class EmployeesJobAndPay
     public $employees_philhealth_number;
     public $employees_drive_link;
     public $employees_comment;
-    public $employees_supervisor_name;
+    public $employees_supervisor_id;
 
 
     public $employees_eligibility;
@@ -74,7 +74,7 @@ class EmployeesJobAndPay
             $sql .= "{$this->tblDirectReport} as report ";
             $sql .= "where employees.employees_job_title_id = title.job_title_aid ";
             $sql .= "and employees.employees_job_level_id = level.job_level_aid ";
-            $sql .= "and employees.employees_supervisor_name = report.direct_report_aid  ";
+            $sql .= "and employees.employees_supervisor_id = report.direct_report_aid ";
             $sql .= "order by employees.employees_is_active desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
@@ -94,7 +94,7 @@ class EmployeesJobAndPay
             $sql .= "{$this->tblDirectReport} as report ";
             $sql .= "where employees.employees_job_title_id = title.job_title_aid ";
             $sql .= "and employees.employees_job_level_id = level.job_level_aid ";
-            $sql .= "and employees.employees_supervisor_name = report.direct_report_aid  ";
+            $sql .= "and employees.employees_supervisor_id = report.direct_report_aid ";
             $sql .= "order by employees.employees_is_active desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
@@ -205,10 +205,12 @@ class EmployeesJobAndPay
             $sql = "select * from {$this->tblEmployees} ";
             $sql .= "where employees_number = :employees_number ";
             $sql .= "and employees_subscribers_id = :employees_subscribers_id ";
+            $sql .= "and employees_bank_account = :employees_bank_account ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "employees_number" => "{$this->employees_number}",
                 "employees_subscribers_id" => "{$this->employees_subscribers_id}",
+                "employees_bank_account" => "{$this->employees_bank_account}",
             ]);
         } catch (PDOException $ex) {
             $query = false;

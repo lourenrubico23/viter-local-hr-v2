@@ -15,12 +15,10 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [isCheck, setIsCheck] = React.useState(false);
   const [flexitime, setflexitime] = React.useState(
-    itemEdit
-      ? itemEdit.employees_working_hours_start
-      : "flexitime"
+    itemEdit ? itemEdit.employees_working_hours_start : "flexitime"
   );
   const [eligibility, setEligibility] = React.useState(
-    itemEdit ? itemEdit.employees_eligibility : ""
+    itemEdit ? itemEdit.employees_eligibility : "No"
   );
 
   const handleClose = () => {
@@ -36,13 +34,8 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
     } else {
       setIsCheck(true);
     }
-
-    if (flexitime) {
-      setflexitime("");
-    } else {
-      setflexitime("flexitime");
-    }
   };
+
 
   const handleClickEligibility = () => {
     if (eligibility) {
@@ -237,9 +230,9 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                     <div className="w-[12px]">
                       <InputText
                         type="checkbox"
-                        name="employees_working"
+                        name="flexitime"
                         disabled={mutation.isPending}
-                        onClick={handleClickCheck}
+                        onClick={() => handleClickCheck(props)}
                       />
                     </div>
                   </div>
