@@ -124,12 +124,11 @@ const JobAndPayTable = ({ setItemEdit, setEditShow, tenure }) => {
                     </li>
                     <li className="font-bold">Supervisor:</li>
                     <li>
-                      {directReport?.data.map((item, key) => {
+                      {directReport?.data.map((item, key) => (
                         <div key={key}>
                           {item.direct_report_supervisor_name}
-                          {console.log(item.direct_report_supervisor_name)}
                         </div>
-                      })}
+                      ))}
                     </li>
 
                     <li className="font-bold">Work Email:</li>

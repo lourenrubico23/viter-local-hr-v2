@@ -13,13 +13,21 @@ import * as Yup from "yup";
 const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
-  const [isCheck, setIsCheck] = React.useState(false);
-  const [flexitime, setflexitime] = React.useState(
-    itemEdit ? itemEdit.employees_working_hours_start : "flexitime"
-  );
+  const [isCheck, setIsCheck] = React.useState(true);
+  const [isWorkingDays, setIsWorkingDays] = React.useState(false);
+  const [restDay, setRestDay] = React.useState({
+    first: "",
+    second: ""
+  })
+  const [employeesWorkingHours, setEmployeesWorkingHours] = React.useState({
+    start: itemEdit ? itemEdit.employees_working_hours_start : "",
+    end: itemEdit ? itemEdit.employees_working_hours_end : "",
+  });
   const [eligibility, setEligibility] = React.useState(
-    itemEdit ? itemEdit.employees_eligibility : "No"
+    itemEdit ? itemEdit.employees_eligibility === "Yes" : false
   );
+
+  const combinedRestDays = restDay.second ? `${restDay.first}, ${restDay.second}` : restDay.first; // conbine first and second rest days
 
   const handleClose = () => {
     setAnimate("translate-x-full");
@@ -28,21 +36,48 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
     }, 200);
   };
 
-  const handleClickCheck = () => {
-    if (isCheck) {
-      setIsCheck(false);
-    } else {
-      setIsCheck(true);
+  const handleWorkingDaysAndRestDayChange = (key, value) => {
+    // Handle visibility of the second rest day input
+    if (key === "workingDays") {
+      if (value === "2 rest Day (261)") {
+        setIsWorkingDays(true);
+      } else {
+        setIsWorkingDays(false);
+        setRestDay((prev) => ({
+          ...prev,
+          second: "" // Clear second rest day if only one rest day is selected
+        }));
+      }
     }
+
+    // Handle changes to rest days
+    if (key === "first" || key === "second") {
+      setRestDay((prev) => ({
+        ...prev,
+        [key]: value
+      }));
+    }
+  }
+
+  
+  const handleClickCheck = () => {
+    setIsCheck(!isCheck); // Toggle the isCheck state
+  if (!isCheck) {
+    setEmployeesWorkingHours({
+      start: itemEdit?.employees_working_hours_start || "",
+      end: itemEdit?.employees_working_hours_end || ""
+    });
+  } else {
+    setEmployeesWorkingHours({
+      start: "flexitime",
+      end: "flexitime"
+    });
+  }
   };
 
 
-  const handleClickEligibility = () => {
-    if (eligibility) {
-      setEligibility("Yes");
-    } else {
-      setEligibility("No");
-    }
+  const handleEligibilityChange = (e) => {
+    setEligibility(e.target.checked);
   };
 
   const queryClient = useQueryClient();
@@ -121,13 +156,16 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
           initialValues={initVal}
           validationSchema={yupSchema}
           onSubmit={async (values) => {
-            const data = {
+              const data = {
               ...values,
               employees_eligibility: eligibility,
-              // employees_working_hours_start: flexitime,
-              // employees_working_hours_end: flexitime,
+              employees_rest_day: combinedRestDays,
+              employees_working_hours_start: !isCheck ? "flexitime" : employeesWorkingHours.start,
+              employees_working_hours_end: !isCheck ? "flexitime" : employeesWorkingHours.end,
+            
             };
-            mutation.mutate(data);
+            mutation.mutate(data); 
+            {console.log(employeesWorkingHours)}
           }}
         >
           {(props) => {
@@ -141,10 +179,10 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                     <div className="w-[12px]">
                       <InputText
                         type="checkbox"
-                        value={eligibility}
                         name="employees_eligibility"
                         disabled={mutation.isPending}
-                        onClick={handleClickEligibility}
+                        onChange={handleEligibilityChange}
+                        checked={eligibility}
                       />
                       {console.log(eligibility)}
                     </div>
@@ -202,10 +240,12 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                       type="text"
                       name="employees_working_days"
                       disabled={mutation.isPending}
+                      onChange={(e) => handleWorkingDaysAndRestDayChange("workingDays", e.target.value)}
                     >
                       <option hidden></option>
                       <option value="1 rest Day (313)">1 rest Day (313)</option>
-                      <option value="2 rest Day (261)">2 rest Day (261)</option>
+                      <option value="2 rest Day (261)" >2 rest Day (261)</option>
+                      {console.log(isWorkingDays)}
                     </InputSelect>
                   </div>
                   <div className="input-wrapper">
@@ -214,6 +254,7 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                       type="text"
                       name="employees_rest_day"
                       disabled={mutation.isPending}
+                      onChange={(e) => handleWorkingDaysAndRestDayChange("first", e.target.value)}
                     >
                       <option hidden></option>
                       <option value="Monday">Monday</option>
@@ -223,6 +264,24 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                       <option value="Friday">Friday</option>
                     </InputSelect>
                   </div>
+                   {isWorkingDays && (
+                    <div className="input-wrapper">
+                    <InputSelect
+                      label="*Second Rest Day"
+                      type="text"
+                      name="second_restday"
+                      disabled={mutation.isPending}
+                      onChange={(e) => handleWorkingDaysAndRestDayChange('second', e.target.value)}
+                    >
+                      <option hidden></option>
+                      <option value="Monday">Monday</option>
+                      <option value="Tuesday">Tuesday</option>
+                      <option value="Wednesday">Wednesday</option>
+                      <option value="Thursday">Thursday</option>
+                      <option value="Friday">Friday</option>
+                    </InputSelect>
+                  </div>
+                   )}
                   <div className="input-wrapper mt-2 h-[35px]">
                     <label htmlFor="" className="pt-[17px] pl-4 text-[14px]">
                       Flexitime
@@ -232,12 +291,13 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                         type="checkbox"
                         name="flexitime"
                         disabled={mutation.isPending}
-                        onClick={() => handleClickCheck(props)}
+                        onClick={handleClickCheck}
                       />
                     </div>
                   </div>
-                  <div className={isCheck ? "opacity-0" : "opacity-1"}>
-                    <div className="input-wrapper mt-0 pt-0">
+                 {isCheck && (
+                  <div>
+                  <div className="input-wrapper mt-0 pt-0">
                       <span htmlFor="" className="mt-0 text-primary font-bold">
                         Working Hours
                       </span>
@@ -247,9 +307,16 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                         <InputText
                           label="*Start"
                           type="time"
-                          // value={flexitime}
+                          // value={isCheck ? "flexitime" : employeesWorkingHours.start}
                           name="employees_working_hours_start"
-                          disabled={mutation.isPending}
+                          disabled={!isCheck || mutation.isPending}
+                          onChange={(e) =>
+                            isCheck &&
+                            setEmployeesWorkingHours({
+                              ...employeesWorkingHours,
+                              start: e.target.value,
+                            })
+                          }
                         />
                       </div>
                       <span>to</span>
@@ -257,13 +324,25 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                         <InputText
                           label="*End"
                           type="time"
-                          // value={flexitime}
+                          // value={isCheck ? "flexitime" : employeesWorkingHours.end}
                           name="employees_working_hours_end"
-                          disabled={mutation.isPending}
+                          disabled={!isCheck || mutation.isPending}
+                          onChange={(e) =>
+                            isCheck &&
+                            setEmployeesWorkingHours({
+                              ...employeesWorkingHours,
+                              end: e.target.value,
+                            })
+                          }
                         />
                       </div>
                     </div>
-                  </div>
+                    </div>
+                 )}
+
+                 
+                    
+                  
                 </div>
 
                 <div className="form-action">
