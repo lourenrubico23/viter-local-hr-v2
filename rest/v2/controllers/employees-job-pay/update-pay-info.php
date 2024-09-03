@@ -32,9 +32,9 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $employeesJobAndPay->employees_hour_per_pay = checkIndex($data, "employees_hour_per_pay");
     $employeesJobAndPay->employees_pay_frequency = checkIndex($data, "employees_pay_frequency");
     $employeesJobAndPay->employees_working_days = checkIndex($data, "employees_working_days");
-    $employeesJobAndPay->employees_rest_day = checkIndex($data, "employees_rest_day");
-    $employeesJobAndPay->employees_working_hours_start = checkIndex($data, "employees_working_hours_start");
-    $employeesJobAndPay->employees_working_hours_end = checkIndex($data, "employees_working_hours_end");
+    $employeesJobAndPay->employees_rest_day = $data["employees_rest_day"];
+    $employeesJobAndPay->employees_working_hours_start = $data["employees_working_hours_start"];
+    $employeesJobAndPay->employees_working_hours_end = $data["employees_working_hours_end"];
 
     $employeesJobAndPay->employees_datetime = date("Y-m-d H:i:s");
     checkId($employeesJobAndPay->employees_aid);
@@ -42,7 +42,15 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
     //checks current data to avoid same entries from being updated
     $employees_bank_account_old = checkIndex($data, 'employees_bank_account_old');
-    compareName($employeesJobAndPay, $employees_bank_account_old, $employeesJobAndPay->employees_bank_account);
+    $second_restday = $data['second_restday'];
+    $flexitime = $data['flexitime'];
+    compareName(
+      $employeesJobAndPay,
+      $employees_bank_account_old,
+      $employeesJobAndPay->employees_bank_account,
+      $second_restday,
+      $employeesJobAndPay->employees_rest_day,
+    );
 
     // update
     $query = checkUpdatePayInfo($employeesJobAndPay);
