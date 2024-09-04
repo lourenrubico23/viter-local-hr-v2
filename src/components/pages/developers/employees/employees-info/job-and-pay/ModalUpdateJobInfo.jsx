@@ -1,5 +1,6 @@
 import useQueryData from "@/components/custom-hooks/useQueryData";
 import { InputText, InputTextArea } from "@/components/helpers/FormInputs";
+import { calculateTenure } from "@/components/helpers/functions-general";
 import { queryData } from "@/components/helpers/queryData";
 import ModalWrapper from "@/components/partials/modals/ModalWrapper";
 import NoData from "@/components/partials/NoData";
@@ -19,7 +20,7 @@ import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
 
-const ModalUpdateJobInfo = ({ itemEdit, hireDate, handleDateChange }) => {
+const ModalUpdateJobInfo = ({ itemEdit, hireDate, setHireDate, setTenure}) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [loading, setLoading] = React.useState(false);
@@ -131,6 +132,13 @@ const ModalUpdateJobInfo = ({ itemEdit, hireDate, handleDateChange }) => {
     },
     true // refetchOnWindowFocus
   );
+
+  // Handle date change
+  const handleDateChange = (e) => {
+    const date = e.target.value;
+    setHireDate(date);
+    setTenure(calculateTenure(date));
+  };
 
   const handleClose = () => {
     setAnimate("translate-x-full");

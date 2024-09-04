@@ -19,13 +19,19 @@ $directReport->direct_report_subordinate_name = $data["direct_report_subordinate
 $directReport->direct_report_created = date("Y-m-d H:i:s");
 $directReport->direct_report_datetime = date("Y-m-d H:i:s");
 
+
+
 // id to text convertion
 $supervior = checkIndex($data, "supervior");
 $subordinate = checkIndex($data, "subordinate");
 //checks newly added data if it already exists
 isNameExist($directReport, $supervior, $subordinate);
 
-
 $query = checkCreate($directReport);
+
+$directReport->employees_supervisor_id = $directReport->direct_report_supervisor_id;
+$directReport->employees_aid = $directReport->direct_report_subordinate_id;
+checkUpdateEmployeeSupervisor($directReport);
+
 
 returnSuccess($directReport, "direct_report", $query);

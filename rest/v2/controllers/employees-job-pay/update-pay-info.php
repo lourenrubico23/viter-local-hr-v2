@@ -25,13 +25,13 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
     // get data
     $employeesJobAndPay->employees_aid = $_GET['employeesJobAndPayid'];
-    $employeesJobAndPay->employees_eligibility = $data["employees_eligibility"];
+    $employeesJobAndPay->employees_eligibility = checkIndex($data, "employees_eligibility");
     $employeesJobAndPay->employees_bank_account = checkIndex($data, "employees_bank_account");
     $employeesJobAndPay->employees_pay_type = checkIndex($data, "employees_pay_type");
     $employeesJobAndPay->employees_per_hour = checkIndex($data, "employees_per_hour");
     $employeesJobAndPay->employees_hour_per_pay = checkIndex($data, "employees_hour_per_pay");
     $employeesJobAndPay->employees_pay_frequency = checkIndex($data, "employees_pay_frequency");
-    $employeesJobAndPay->employees_working_days = checkIndex($data, "employees_working_days");
+    $employeesJobAndPay->employees_working_days = $data["employees_working_days"];
     $employeesJobAndPay->employees_rest_day = $data["employees_rest_day"];
     $employeesJobAndPay->employees_working_hours_start = $data["employees_working_hours_start"];
     $employeesJobAndPay->employees_working_hours_end = $data["employees_working_hours_end"];
@@ -41,15 +41,15 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
 
     //checks current data to avoid same entries from being updated
-    $employees_bank_account_old = checkIndex($data, 'employees_bank_account_old');
-    $second_restday = $data['second_restday'];
-    $flexitime = $data['flexitime'];
+    $employees_bank_account_old = $data['employees_bank_account_old'];
+    // $second_restday = $data['second_restday'];
+    // $flexitime = $data['flexitime'];
     compareName(
       $employeesJobAndPay,
       $employees_bank_account_old,
       $employeesJobAndPay->employees_bank_account,
-      $second_restday,
-      $employeesJobAndPay->employees_rest_day,
+      // $second_restday,
+      // $employeesJobAndPay->employees_rest_day,
     );
 
     // update

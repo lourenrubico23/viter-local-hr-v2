@@ -29,6 +29,7 @@ $subscribers->subscribers_datetime = date("Y-m-d H:i:s");
 isNameExist($subscribers, $subscribers->subscribers_contact_email);
 $subscribers->subscribers_code = setSubscriberCode($subscribers);
 $query = checkCreate($subscribers);
+// for backlogs, updating the table of blocklog when the subscriber is updated
 $subscribers->subscribers_log_subscriber_code = $subscribers->subscribers_code;
 $subscribers->subscribers_log_subscriber_id = $subscribers->lastInsertedId; // get the last id
 $subscribers->subscribers_log_subscriber_changes = "{$subscribers->subscribers_total_employees} employees";

@@ -14,6 +14,10 @@ class DirectReport
     public $direct_report_datetime;
 
     public $employees_subscribers_id;
+    public $employees_supervisor_id;
+    public $employees_datetime;
+    public $employees_created;
+    public $employees_aid;
 
     public $connection;
     public $lastInsertedId;
@@ -292,39 +296,6 @@ class DirectReport
         return $query;
     }
 
-
-    // public function filterEmployees()
-    // {
-    //     try {
-    //         $sql = "select *, concat(employees_lname, ', ', employees_fname) as full_name_display ";
-    //         $sql .= "from {$this->tblEmployees} ";
-    //         $sql .= "where employees_is_active = 1 "; // common condition
-    //         // Check if a search term is provided
-    //         if (!empty($this->direct_report_search)) {
-    //             $sql .= "and concat(employees_lname, ', ', employees_fname) like :full_name ";
-    //         }
-    //         // Check if a subscriber ID is provided
-    //         if (!empty($this->employees_subscribers_id)) {
-    //             $sql .= "and employees_subscribers_id = :employees_subscribers_id ";
-    //         }
-    //         $sql .= "order by employees_lname asc ";
-    //         $query = $this->connection->prepare($sql);
-    //         // Prepare the parameters for the query
-    //         $params = [];
-    //         if (!empty($this->direct_report_search)) {
-    //             $params['full_name'] = "%{$this->direct_report_search}%";
-    //         }
-    //         if (!empty($this->employees_subscribers_id)) {
-    //             $params['employees_subscribers_id'] = $this->employees_subscribers_id;
-    //         }
-    //         $query->execute($params);
-    //     } catch (PDOException $ex) {
-    //         $query = false;
-    //     }
-
-    //     return $query;
-    // }
-
     public function filterEmployees() //for employees filter, when subscriber is selected, the active in employees is get. kukunin ang employees mula sa subscriber. this is combination of filter and search
     {
         try {
@@ -340,6 +311,25 @@ class DirectReport
             $query->execute([
                 "full_name" => "%{$this->direct_report_search}%",
                 "employees_subscribers_id" => $this->employees_subscribers_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function updateEmployeeSupervisor()
+    {
+        try {
+            $sql = "update {$this->tblEmployees} set ";
+            $sql .= "employees_supervisor_id = :direct_report_supervisor_id, ";
+            $sql .= "employees_datetime = :employees_datetime ";
+            $sql .= "where employees_aid = :direct_report_subordinate_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "direct_report_supervisor_id" => $this->direct_report_supervisor_id,
+                "direct_report_subordinate_id" => $this->direct_report_subordinate_id,
+                "employees_datetime" => $this->direct_report_datetime,
             ]);
         } catch (PDOException $ex) {
             $query = false;

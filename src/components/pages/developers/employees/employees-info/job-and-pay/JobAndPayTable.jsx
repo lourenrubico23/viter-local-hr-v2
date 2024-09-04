@@ -13,32 +13,35 @@ import React from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { getSuperviorName } from "./functions";
 
-const JobAndPayTable = ({ setItemEdit, setEditShow, tenure }) => {
+const JobAndPayTable = ({
+  setItemEdit,
+  setEditShow,
+  tenure,
+  employees,
+  isFetching,
+  isLoading,
+  error,
+  status,
+}) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const id = getUrlParam().get("id"); // used to extract a query parameter named "id" from the URL and assign its value to a constant named "id".
+  //to get the subscriber and code from employees.
+  const subscriberId = employees?.data[0].employees_subscribers_id; 
+  const subscriberCode = employees?.data[0].subscribers_code;
 
   const {
-    isLoading,
-    isFetching,
-    error,
-    status,
-    data: employees,
+    employeesSubscriberisLoading,
+    employeesSubscriberisFetching,
+    employeesSubscribererror,
+    employeesSubscriberstatus,
+    data: employeesSubscriber,
   } = useQueryData(
-    `/v2/employees/${id}`, // endpoint
+    `/v2/employees`, // endpoint
     "get", // method
-    "job-pay" // key
-  );
-
-  const {
-    isLoadingDirectReport,
-    isFetchingDirectReport,
-    errorDirectReport,
-    statusDirectReport,
-    data: directReport,
-  } = useQueryData(
-    `/v2/direct-report`, // endpoint
-    "get", // method
-    "direct-report" // key
+    "employees", // key
+    {
+      employees_subscribers_id: subscriberId,
+      employees_subscriber_code: subscriberCode,
+    }
   );
 
   const handleJob = (item) => {
@@ -124,11 +127,10 @@ const JobAndPayTable = ({ setItemEdit, setEditShow, tenure }) => {
                     </li>
                     <li className="font-bold">Supervisor:</li>
                     <li>
-                      {directReport?.data.map((item, key) => (
-                        <div key={key}>
-                          {item.direct_report_supervisor_name}
-                        </div>
-                      ))}
+                      {getSuperviorName(
+                        item.employees_supervisor_id,
+                        employeesSubscriber
+                      )}
                     </li>
 
                     <li className="font-bold">Work Email:</li>

@@ -9,6 +9,11 @@ import ModalUpdateJobInfo from "./ModalUpdateJobInfo";
 import ModalUpdatePayInfo from "./ModalUpdatePayInfo";
 import ModalSuccess from "@/components/partials/modals/ModalSuccess";
 import ModalError from "@/components/partials/modals/ModalError";
+import {
+  calculateTenure,
+  getUrlParam,
+} from "@/components/helpers/functions-general";
+import useQueryData from "@/components/custom-hooks/useQueryData";
 
 const JobAndPay = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -16,37 +21,22 @@ const JobAndPay = () => {
   const [isEditShow, setEditShow] = React.useState(false);
   const [hireDate, setHireDate] = React.useState("");
   const [tenure, setTenure] = React.useState({ years: 0, months: 0 });
+  const id = getUrlParam().get("id"); // used to extract a query parameter named "id" from the URL and assign its value to a constant named "id".
+  
 
-  // Function to calculate tenure
-  const calculateTenure = (date) => {
-    const currentDate = new Date();
-    const hire = new Date(date);
+  const {
+    isLoading,
+    isFetching,
+    error,
+    status,
+    data: employees,
+  } = useQueryData(
+    `/v2/employees/${id}`, // endpoint
+    "get", // method
+    "job-pay" // key
+  );
 
-    let years = currentDate.getFullYear() - hire.getFullYear();
-    let months = currentDate.getMonth() - hire.getMonth();
-
-    if (months < 0) {
-      years--;
-      months += 12;
-    }
-
-    if (currentDate.getDate() < hire.getDate()) {
-      months--;
-      if (months < 0) {
-        years--;
-        months += 12;
-      }
-    }
-
-    return { years, months };
-  };
-
-  // Handle date change
-  const handleDateChange = (e) => {
-    const date = e.target.value;
-    setHireDate(date);
-    setTenure(calculateTenure(date));
-  };
+  
 
   return (
     <>
@@ -60,6 +50,11 @@ const JobAndPay = () => {
           setItemEdit={setItemEdit}
           setEditShow={setEditShow}
           tenure={tenure}
+          employees={employees}
+          isFetching={isFetching}
+          isLoading={isLoading}
+          error={error}
+          status={status}
         />
         <Footer />
       </div>
@@ -68,7 +63,8 @@ const JobAndPay = () => {
         <ModalUpdateJobInfo
           itemEdit={itemEdit}
           hireDate={hireDate}
-          handleDateChange={handleDateChange}
+          setHireDate={setHireDate}
+          setTenure={setTenure}
         />
       )}
       {isEditShow && (

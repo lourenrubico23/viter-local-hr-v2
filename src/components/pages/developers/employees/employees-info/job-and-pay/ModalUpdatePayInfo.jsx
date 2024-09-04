@@ -128,7 +128,7 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
       : "",
 
     employees_bank_account_old: itemEdit ? itemEdit.employees_bank_account : "",
-    second_restday: itemEdit ? itemEdit.employees_rest_day : "",
+    // second_restday: itemEdit ? itemEdit.employees_rest_day : "",
   };
 
   const yupSchema = Yup.object({
@@ -310,8 +310,8 @@ const ModalUpdatePayInfo = ({ itemEdit, setEditShow }) => {
                         name="flexitime"
                         disabled={mutation.isPending}
                         onClick={handleClickCheck}
-                        
-                      />{console.log(handleClickCheck)}
+                      />
+                      {console.log(handleClickCheck)}
                     </div>
                   </div>
                   {isCheck && (

@@ -174,4 +174,28 @@ export const fetchFormData = (url, fd = {}) => {
   return data;
 };
 
+// Function to calculate tenure
+export const calculateTenure = (date) => {
+  const currentDate = new Date();
+  const hire = new Date(date);
+
+  let years = currentDate.getFullYear() - hire.getFullYear();
+  let months = currentDate.getMonth() - hire.getMonth();
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  if (currentDate.getDate() < hire.getDate()) {
+    months--;
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+  }
+
+  return { years, months };
+};
+
 

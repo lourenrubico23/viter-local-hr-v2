@@ -40,6 +40,15 @@ function checkFilterEmployeeName($object)
     return $query;
 }
 
+
+// Update Employee Supervisor
+function checkUpdateEmployeeSupervisor($object)
+{
+    $query = $object->updateEmployeeSupervisor();
+    checkQuery($query, "There's a problem processing your request. (update employee supervisor)");
+    return $query;
+}
+
 // compare name of supervisor id and subordinate id
 function compareEmployeeIdSupervisorSubordinate(
     $object,
@@ -51,7 +60,7 @@ function compareEmployeeIdSupervisorSubordinate(
 ) {
     if (
         strtolower($supervisorIdOld) !=  strtolower($supervisorId) ||
-        strtolower($subordinateIdOld) !=  strtolower($subordinateId) 
+        strtolower($subordinateIdOld) !=  strtolower($subordinateId)
     ) {
         isNameExist($object, $name);
     }
@@ -70,4 +79,3 @@ function compareSupervisorSubordinate(
         isNameExist($object, $name);
     }
 }
-
