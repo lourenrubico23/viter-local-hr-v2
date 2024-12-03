@@ -25,7 +25,7 @@ const JobAndPayTable = ({
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   //to get the subscriber and code from employees.
-  const subscriberId = employees?.data[0].employees_subscribers_id; 
+  const subscriberId = employees?.data[0].employees_subscribers_id;
   const subscriberCode = employees?.data[0].subscribers_code;
 
   const {
@@ -161,6 +161,7 @@ const JobAndPayTable = ({
                     <li>
                       {tenure.years} years and {tenure.months} months
                     </li>
+                    
                     <li className="font-bold">TIN:</li>
                     <li>
                       {item.employees_tin_number

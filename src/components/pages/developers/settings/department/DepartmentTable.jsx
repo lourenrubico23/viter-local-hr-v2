@@ -118,6 +118,7 @@ const DepartmentTable = ({ setItemEdit }) => {
       fetchNextPage();
     }
   }, [inView]);
+  
   return (
     <>
       <div className="flex items-center gap-3 w-full">

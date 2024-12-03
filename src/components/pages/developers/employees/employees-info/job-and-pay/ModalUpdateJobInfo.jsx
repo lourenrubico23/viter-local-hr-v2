@@ -20,7 +20,7 @@ import React from "react";
 import { GrFormClose } from "react-icons/gr";
 import * as Yup from "yup";
 
-const ModalUpdateJobInfo = ({ itemEdit, hireDate, setHireDate, setTenure}) => {
+const ModalUpdateJobInfo = ({ itemEdit, hireDate, setHireDate, setTenure }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [animate, setAnimate] = React.useState("translate-x-full");
   const [loading, setLoading] = React.useState(false);
@@ -352,6 +352,8 @@ const ModalUpdateJobInfo = ({ itemEdit, hireDate, setHireDate, setTenure}) => {
 
   const yupSchema = Yup.object({
     employees_number: Yup.string().required("Required"),
+    employees_job_level_id: Yup.string().required("Required"),
+    employees_job_title_id: Yup.string().required("Required"),
   });
 
   return (
@@ -397,8 +399,8 @@ const ModalUpdateJobInfo = ({ itemEdit, hireDate, setHireDate, setTenure}) => {
               employees_job_title_id: jobTitleid,
               employees_department_id: departmentid,
               employees_department_name: departmentName,
-              employees_job_title_name: jobLevelName,
-              employees_job_level_name: jobTitleName,
+              employees_job_title_name: jobTitleName,
+              employees_job_level_name: jobLevelName,
             };
             mutation.mutate(data);
           }}
